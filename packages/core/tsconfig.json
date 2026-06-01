@@ -1,0 +1,12 @@
+{
+  "extends": "@codex/config/typescript/base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "noEmit": true,
+    "isolatedModules": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["jest"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

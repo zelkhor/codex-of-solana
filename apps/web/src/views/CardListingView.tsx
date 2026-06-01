@@ -1,0 +1,117 @@
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { SlidersHorizontal } from 'lucide-react';
+import type { AppDispatch, RootState } from '@/store';
+import type { CardDto, PrintingDto } from '@codex/shared';
+import { IMAGE_BASE } from '@codex/shared';
+import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
+import { selectGroupedGridSlots } from '@/store/card-catalog/card-catalog.selectors';
+import { CardGrid } from '@/components/card/card-grid/CardGrid';
+import { CardGridSkeleton } from '@/components/card/CardGridSkeleton';
+import { CardFlipAnimation } from '@/components/card/CardFlipAnimation';
+import { AppHeader } from '@/components/layout/AppHeader';
+import { FilterDrawer } from '@/components/layout/FilterDrawer';
+import { CardDetailModal } from '@/components/card/card-detail/CardDetailModal.tsx';
+
+interface ActiveCard {
+  card: CardDto;
+  printing: PrintingDto;
+  imageUrl: string;
+  sourceRect: DOMRect;
+}
+
+export const CardListingView = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const slots = useSelector(selectGroupedGridSlots);
+  const status = useSelector((s: RootState) => s.cardCatalog.status);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
+  const [animating, setAnimating] = useState(false);
+  const cardImageContainerRef = useRef<HTMLDivElement>(null);
+
+  const cardCount = slots.filter((s) => s.type === 'card').length;
+
+  useEffect(() => {
+    if (status === 'idle') void dispatch(fetchAllCards());
+  }, [dispatch, status]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setFilterOpen((v) => !v);
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
+
+  const handleCardClick = (card: CardDto, printing: PrintingDto, rect: DOMRect) => {
+    setActiveCard({
+      card,
+      printing,
+      imageUrl: `${IMAGE_BASE}${printing.image}.webp`,
+      sourceRect: rect,
+    });
+    setAnimating(true);
+  };
+
+  const handleClose = () => {
+    setActiveCard(null);
+    setAnimating(false);
+  };
+
+  return (
+    <div className="flex flex-col h-screen overflow-hidden">
+      <AppHeader />
+      <div className="flex-1 overflow-hidden px-6 pb-6">
+        <main className="relative h-full bg-[#f3f1f3] dark:bg-[#1d161e] rounded-2xl overflow-hidden">
+          {status === 'loading' && <CardGridSkeleton />}
+          {status === 'failed' && (
+            <div className="flex h-full items-center justify-center">
+              <p className="text-destructive">Failed to load cards. Please try again</p>
+            </div>
+          )}
+          {status === 'succeeded' && <CardGrid slots={slots} onCardClick={handleCardClick} />}
+
+          {/* Floating filter button */}
+          <div className="absolute bottom-5 right-5 z-10 flex flex-col items-center gap-2">
+            {status === 'succeeded' && (
+              <span className="text-xs text-muted-foreground bg-background/80 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
+                {cardCount.toLocaleString()} cards
+              </span>
+            )}
+            <button
+              onClick={() => setFilterOpen((v) => !v)}
+              title="Filters (⌘K)"
+              className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-zinc-800 shadow-lg border border-black/8 dark:border-white/10 hover:bg-neutral-50 dark:hover:bg-zinc-700 transition-colors"
+            >
+              <SlidersHorizontal size={18} />
+            </button>
+          </div>
+        </main>
+      </div>
+
+      <FilterDrawer isOpen={filterOpen} onClose={() => setFilterOpen(false)} />
+
+      {activeCard && (
+        <CardDetailModal
+          card={activeCard.card}
+          printing={activeCard.printing}
+          onClose={handleClose}
+          cardImageContainerRef={cardImageContainerRef}
+          cardImageVisible={!animating}
+        />
+      )}
+
+      {activeCard && animating && (
+        <CardFlipAnimation
+          imageUrl={activeCard.imageUrl}
+          sourceRect={activeCard.sourceRect}
+          targetRef={cardImageContainerRef}
+          onComplete={() => setAnimating(false)}
+        />
+      )}
+    </div>
+  );
+};

@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.claude
+
+# Build outputs
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Prisma generated client
+packages/orm/src/generated/
+
+# Turbo cache
+.turbo/
+
+# Misc
+*.log
+.DS_Store
+coverage/

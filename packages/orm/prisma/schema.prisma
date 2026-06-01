@@ -1,0 +1,10 @@
+// Models are added incrementally in Plans 2–4.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}

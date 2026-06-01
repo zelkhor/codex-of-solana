@@ -1,0 +1,29 @@
+{
+  "name": "@codex/core",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@codex/orm": "workspace:*",
+    "@codex/shared": "workspace:*",
+    "@flesh-and-blood/cards": "^3.9.2",
+    "@flesh-and-blood/types": "^3.8.24"
+  },
+  "devDependencies": {
+    "@codex/config": "workspace:*",
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "eslint": "^9.10.0",
+    "eslint-config-prettier": "^9.1.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
+    "typescript": "^6.0.3"
+  }
+}
