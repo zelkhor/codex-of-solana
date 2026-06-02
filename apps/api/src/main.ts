@@ -8,7 +8,7 @@ async function bootstrap(): Promise<void> {
   app.enableCors({ origin: process.env.CORS_ORIGIN ?? 'http://localhost:3000', credentials: true });
   const port = process.env.PORT ?? 3001;
   await app.listen(port);
-  console.log(`API running on http://localhost:${port}/api`);
+  console.log(`API running on port ${port}`);
 }
 
 bootstrap();

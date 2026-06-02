@@ -5,10 +5,13 @@ import { App } from '@/App';
 import { createStore } from '@/store';
 import { CardApiGateway } from '@/gateways/card.api.gateway';
 import { FuseSearchGateway } from '@/gateways/search.fuse.gateway';
+import { HttpClient } from '@/gateways/http-client';
 import './index.css';
 
+const http = new HttpClient(import.meta.env.VITE_API_URL ?? '');
+
 const store = createStore({
-  cardGateway: new CardApiGateway(),
+  cardGateway: new CardApiGateway(http),
   searchGateway: new FuseSearchGateway(),
   collectionService: {},
   authService: {},
