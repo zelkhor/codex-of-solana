@@ -28,45 +28,50 @@ export const CardFlipAnimation = ({
     const inner = innerRef.current;
     if (!outer || !inner) return;
 
-    const targetRect = targetRef.current?.getBoundingClientRect();
-    if (!targetRect) {
-      onComplete();
-      return;
-    }
+    let cancelled = false;
 
-    const startX = sourceRect.left + sourceRect.width / 2 - vw / 2;
-    const startY = sourceRect.top + sourceRect.height / 2 - vh / 2;
-    const startScale = sourceRect.width / targetW;
+    void document.fonts.ready.then(() => {
+      if (cancelled) return;
 
-    const endX = targetRect.left + targetRect.width / 2 - vw / 2;
-    const endY = targetRect.top + targetRect.height / 2 - vh / 2;
-    const endScale = targetRect.width / targetW;
+      const targetRect = targetRef.current?.getBoundingClientRect();
+      if (!targetRect) {
+        onComplete();
+        return;
+      }
 
-    const midX = startX + (endX - startX) * 0.35;
-    const midY = startY + (endY - startY) * 0.35;
-    const midScale = Math.max(Math.min(startScale, endScale) * 0.85, 0.6);
+      const startX = sourceRect.left + sourceRect.width / 2 - vw / 2;
+      const startY = sourceRect.top + sourceRect.height / 2 - vh / 2;
+      const startScale = sourceRect.width / targetW;
 
-    const posAnim = outer.animate(
-      [
-        { transform: `translate(${startX}px, ${startY}px) scale(${startScale})`, offset: 0 },
-        { transform: `translate(${midX}px, ${midY}px) scale(${midScale})`, offset: 0.35 },
-        { transform: `translate(${midX}px, ${midY}px) scale(${midScale})`, offset: 0.6 },
-        { transform: `translate(${endX}px, ${endY}px) scale(${endScale})`, offset: 1 },
-      ],
-      { duration: 1000, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' },
-    );
+      const endX = targetRect.left + targetRect.width / 2 - vw / 2;
+      const endY = targetRect.top + targetRect.height / 2 - vh / 2;
+      const endScale = targetRect.width / targetW;
 
-    inner.animate(
-      [
-        { transform: 'perspective(900px) rotateY(0deg)', offset: 0 },
-        { transform: 'perspective(900px) rotateY(180deg)', offset: 0.35 },
-        { transform: 'perspective(900px) rotateY(180deg)', offset: 0.6 },
-        { transform: 'perspective(900px) rotateY(360deg)', offset: 1 },
-      ],
-      { duration: 1000, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' },
-    );
+      const midX = startX + (endX - startX) * 0.35;
+      const midY = startY + (endY - startY) * 0.35;
+      const midScale = Math.max(Math.min(startScale, endScale) * 0.85, 0.6);
 
-    posAnim.onfinish = onComplete;
+      const posAnim = outer.animate(
+        [
+          { transform: `translate(${startX}px, ${startY}px) scale(${startScale})`, offset: 0, easing: 'cubic-bezier(0.4, 0, 1, 1)' },
+          { transform: `translate(${midX}px, ${midY}px) scale(${midScale})`, offset: 0.4, easing: 'cubic-bezier(0, 0, 0.2, 1)' },
+          { transform: `translate(${endX}px, ${endY}px) scale(${endScale})`, offset: 1 },
+        ],
+        { duration: 1000, easing: 'linear', fill: 'forwards' },
+      );
+
+      inner.animate(
+        [
+          { transform: 'perspective(900px) rotateY(0deg)', offset: 0 },
+          { transform: 'perspective(900px) rotateY(360deg)', offset: 1 },
+        ],
+        { duration: 1000, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'forwards' },
+      );
+
+      posAnim.onfinish = onComplete;
+    });
+
+    return () => { cancelled = true; };
   }, [sourceRect, targetRef, onComplete, vw, vh, targetW]);
 
   return createPortal(
