@@ -1,5 +1,4 @@
 import type { PrintingDto } from '@codex/shared';
-import { IMAGE_BASE } from '@codex/shared';
 import type { TiltEffect } from '@/components/card/TiltCard';
 import { foilingToEffect } from '@/components/card/card.helpers';
 
@@ -11,6 +10,6 @@ export interface CardGridItemViewModel {
 
 export const buildCardGridItemViewModel = (printing: PrintingDto): CardGridItemViewModel => ({
   displayPrinting: printing,
-  imageUrl: `${IMAGE_BASE}${printing.image}.webp`,
+  imageUrl: printing.image,
   tiltEffect: foilingToEffect(printing.foiling),
 });

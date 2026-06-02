@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "@codex/config": "workspace:*",
-    "@types/jest": "^29.5.13",
     "@types/pg": "^8.20.0",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SlidersHorizontal } from 'lucide-react';
 import type { AppDispatch, RootState } from '@/store';
 import type { CardDto, PrintingDto } from '@codex/shared';
-import { IMAGE_BASE } from '@codex/shared';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
 import { selectGroupedGridSlots } from '@/store/card-catalog/card-catalog.selectors';
 import { CardGrid } from '@/components/card/card-grid/CardGrid';
@@ -50,7 +49,7 @@ export const CardListingView = () => {
     setActiveCard({
       card,
       printing,
-      imageUrl: `${IMAGE_BASE}${printing.image}.webp`,
+      imageUrl: printing.image,
       sourceRect: rect,
     });
     setAnimating(true);

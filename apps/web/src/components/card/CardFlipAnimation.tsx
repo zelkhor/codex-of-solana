@@ -53,8 +53,16 @@ export const CardFlipAnimation = ({
 
       const posAnim = outer.animate(
         [
-          { transform: `translate(${startX}px, ${startY}px) scale(${startScale})`, offset: 0, easing: 'cubic-bezier(0.4, 0, 1, 1)' },
-          { transform: `translate(${midX}px, ${midY}px) scale(${midScale})`, offset: 0.4, easing: 'cubic-bezier(0, 0, 0.2, 1)' },
+          {
+            transform: `translate(${startX}px, ${startY}px) scale(${startScale})`,
+            offset: 0,
+            easing: 'cubic-bezier(0.4, 0, 1, 1)',
+          },
+          {
+            transform: `translate(${midX}px, ${midY}px) scale(${midScale})`,
+            offset: 0.4,
+            easing: 'cubic-bezier(0, 0, 0.2, 1)',
+          },
           { transform: `translate(${endX}px, ${endY}px) scale(${endScale})`, offset: 1 },
         ],
         { duration: 1000, easing: 'linear', fill: 'forwards' },
@@ -71,7 +79,9 @@ export const CardFlipAnimation = ({
       posAnim.onfinish = onComplete;
     });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [sourceRect, targetRef, onComplete, vw, vh, targetW]);
 
   return createPortal(

@@ -8,6 +8,7 @@ export const CARD_RARITIES = {
   Legendary: 'Legendary',
   Fabled: 'Fabled',
   Marvel: 'Marvel',
+  Promo: 'Promo',
 } as const;
 export type CardRarityT = (typeof CARD_RARITIES)[keyof typeof CARD_RARITIES];
 
@@ -150,6 +151,7 @@ export const RARITY_ORDER: CardRarityT[] = [
   'Legendary',
   'Fabled',
   'Marvel',
+  'Promo',
 ];
 
 export const SET_ORDER: CardSetT[] = [

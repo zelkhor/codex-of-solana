@@ -1,14 +1,18 @@
 import { cards as fabCards } from '@flesh-and-blood/cards';
 import type { CardDto, PrintingDto, Result } from '@codex/shared';
-import { ok, err } from '@codex/shared';
+import { ok, err, IMAGE_BASE } from '@codex/shared';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
 import { CardCatalogLoadError } from '../domain/card-catalog.errors';
+import { CARD_PRINTING_OVERRIDES } from './card-catalog.overrides';
 
 export class CardCatalogFabRepository implements ICardCatalogRepository {
   private readonly cached: CardDto[];
 
   constructor() {
-    this.cached = fabCards.map(mapToCardDto);
+    this.cached = fabCards.map(mapToCardDto).map((card) => {
+      const extra = CARD_PRINTING_OVERRIDES[card.cardIdentifier];
+      return extra ? { ...card, printings: [...card.printings, ...extra] } : card;
+    });
   }
 
   async getAll(): Promise<Result<CardDto[], CardCatalogLoadError>> {
@@ -50,7 +54,7 @@ const mapToPrintingDto = (p: (typeof fabCards)[number]['printings'][number]): Pr
   rarity: p.rarity as PrintingDto['rarity'],
   edition: p.edition as PrintingDto['edition'],
   foiling: p.foiling as PrintingDto['foiling'],
-  image: p.image ?? '',
-  oppositeImage: p.oppositeImage ?? undefined,
+  image: p.image ? `${IMAGE_BASE}${p.image}.webp` : '',
+  oppositeImage: p.oppositeImage ? `${IMAGE_BASE}${p.oppositeImage}.webp` : undefined,
   artists: p.artists,
 });

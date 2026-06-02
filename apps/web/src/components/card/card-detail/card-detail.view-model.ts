@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { CardDto, PrintingDto } from '@codex/shared';
-import { IMAGE_BASE } from '@codex/shared';
 import { selectImageIndex } from '@/store/card-catalog/card-catalog.selectors';
 import type { TiltEffect } from '@/components/card/TiltCard';
 import { foilingToEffect } from '@/components/card/card.helpers';
@@ -41,6 +40,6 @@ export const useCardDetailViewModel = (
     isFlipped,
     flip: () => setActivePrinting(isFlipped ? initialPrinting : backPrinting!),
     tiltEffect: foilingToEffect(activePrinting.foiling),
-    imageUrl: `${IMAGE_BASE}${activePrinting.image}.webp`,
+    imageUrl: activePrinting.image,
   };
 };
