@@ -29,7 +29,7 @@ export const CardDetailModal = ({
   return (
     <>
       <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="fixed inset-4 z-[101] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-3xl bg-card rounded-2xl shadow-2xl overflow-y-auto sm:overflow-visible">
+      <div className="fixed inset-4 z-[101] sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-4xl bg-card rounded-2xl shadow-2xl overflow-y-auto sm:overflow-visible">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"

@@ -1,4 +1,5 @@
 import { useState, useRef, useId, type ReactNode } from 'react';
+import { cn } from '@/lib/utils.ts';
 
 export type TiltEffect = 'standard' | 'rainbow-foil' | 'cold-foil';
 
@@ -137,7 +138,6 @@ export const TiltCard = ({ children, className, onClick, effect = 'standard' }: 
   return (
     <div
       ref={containerRef}
-      className={className}
       style={{ perspective: '600px' }}
       onClick={() => {
         const rect = containerRef.current?.getBoundingClientRect();
@@ -153,7 +153,10 @@ export const TiltCard = ({ children, className, onClick, effect = 'standard' }: 
       onMouseLeave={() => setMouse(null)}
     >
       <div
-        className="relative w-full h-full rounded-xl bg-zinc-200 dark:bg-zinc-700 overflow-hidden"
+        className={cn(
+          'relative w-full h-full rounded-[15px] bg-zinc-200 dark:bg-zinc-700 overflow-hidden',
+          className,
+        )}
         style={{
           transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
           transition: mouse ? 'transform 0.08s ease-out' : 'transform 0.5s ease-out',
