@@ -30,7 +30,7 @@ const RainbowFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null 
             hsl(${hue + 180}deg 80% 55%),
             hsl(${hue + 270}deg 80% 55%)
           )`,
-          opacity: mouse ? 0.28 : 0.08,
+          opacity: mouse ? 0.28 : 0,
           mixBlendMode: 'color',
         }}
       />
@@ -78,7 +78,7 @@ const ColdFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
         style={{
           filter: `url(#${filterId})`,
           mixBlendMode: 'soft-light',
-          opacity: mouse ? 0.65 : 0.28,
+          opacity: mouse ? 0.65 : 0,
         }}
       />
 
@@ -94,7 +94,7 @@ const ColdFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
             rgba(130, 160, 190, 0.45)
           )`,
           mixBlendMode: 'overlay',
-          opacity: mouse ? 0.9 : 0.12,
+          opacity: mouse ? 0.9 : 0,
         }}
       />
 
@@ -142,7 +142,7 @@ const GoldFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
         style={{
           filter: `url(#${filterId})`,
           mixBlendMode: 'soft-light',
-          opacity: mouse ? 0.55 : 0.22,
+          opacity: mouse ? 0.75 : 0,
         }}
       />
 
@@ -158,7 +158,7 @@ const GoldFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
             rgba(160, 115, 30, 0.45)
           )`,
           mixBlendMode: 'overlay',
-          opacity: mouse ? 0.55 : 0.15,
+          opacity: mouse ? 0.8 : 0,
         }}
       />
 
@@ -166,7 +166,7 @@ const GoldFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
       <div
         className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-500"
         style={{
-          background: `radial-gradient(ellipse at ${pos.x * 100}% ${pos.y * 100}%, rgba(255, 240, 160, 0.85) 0%, rgba(230, 195, 80, 0.4) 15%, transparent 32%)`,
+          background: `radial-gradient(ellipse at ${pos.x * 100}% ${pos.y * 100}%, rgba(255, 245, 180, 1.0) 0%, rgba(240, 205, 90, 0.55) 18%, transparent 40%)`,
           mixBlendMode: 'overlay',
           opacity: mouse ? 0.95 : 0,
         }}
