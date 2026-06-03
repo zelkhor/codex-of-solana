@@ -10,23 +10,6 @@ interface TiltCardProps {
   effect?: TiltEffect;
 }
 
-const StandardOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) => {
-  const lastPos = useRef({ x: 0.5, y: 0.5 });
-  if (mouse) lastPos.current = mouse;
-  const pos = mouse ?? lastPos.current;
-
-  return (
-    <div
-      className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-500"
-      style={{
-        background: `radial-gradient(circle at ${pos.x * 100}% ${pos.y * 100}%, rgba(255,255,255,0.28) 0%, transparent 65%)`,
-        mixBlendMode: 'overlay',
-        opacity: mouse ? 1 : 0,
-      }}
-    />
-  );
-};
-
 const RainbowFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) => {
   const lastPos = useRef({ x: 0.5, y: 0.5 });
   if (mouse) lastPos.current = mouse;
@@ -167,7 +150,6 @@ export const TiltCard = ({ children, className, onClick, effect = 'standard' }: 
         {children}
         {effect === 'rainbow-foil' && <RainbowFoilOverlay mouse={mouse} />}
         {effect === 'cold-foil' && <ColdFoilOverlay mouse={mouse} />}
-        {effect === 'standard' && <StandardOverlay mouse={mouse} />}
       </div>
     </div>
   );
