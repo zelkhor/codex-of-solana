@@ -51,6 +51,7 @@ const err = <E>(e: E) => ({ ok: false, error: e });
 ### packages/core — domain layer
 
 Organised by bounded context (currently `card-catalog`):
+
 - `domain/` — error types
 - `application/` — use case classes, repository interfaces, fixture factories for tests
 - `infrastructure/` — concrete repository implementations (`card-catalog.fab.repository.ts`, `card-catalog.inmemory.repository.ts`)
@@ -75,10 +76,11 @@ State is managed with Redux Toolkit. Thunks receive **gateway** dependencies (`T
 ## Code conventions
 
 **Style**
+
 - Arrow functions everywhere: `const fn = () => {}` — never `function fn()`.
 - File names: `{entity}.{implementation}.{type}.ts` — e.g. `card.api.gateway.ts`, `card-catalog.fab.repository.ts`.
 - Split in-memory and real implementations into separate files.
-- Data-fetching interfaces are *Gateways* (`ICardGateway`)
+- Data-fetching interfaces are _Gateways_ (`ICardGateway`)
 - Domain constants use `as const` objects, not TypeScript `enum`. Avoid using magic strings and use domain objects instead.
 
 **View models** — extract derived/display logic from components into a co-located `*.view-model.ts` file exporting a `use*ViewModel` hook. Keeps components as pure render functions.
@@ -88,19 +90,23 @@ State is managed with Redux Toolkit. Thunks receive **gateway** dependencies (`T
 ## Testing conventions
 
 **Format**
+
 ```ts
 describe('Feature: My feature description', () => {
   test('Rule: My rule explained in plain english', async () => { … });
 });
 ```
+
 Never use class/function names or any technical terms as describe / test labels. Even non-developers should be able to understand which behavior is tested just by reading the test.
 
 **Test data** — always use test builders like `cardBuilder()` / `printingBuilder()` from `@codex/shared`:
+
 ```ts
 const card = cardBuilder().withName('Ninja Strike').withPitch(CARD_PITCHES.Red).build();
 ```
 
 **FE tests** — use `createTestStore()` from `__tests__/create-test-store.ts` to create a fake store implementation. To preload the store with an initial state, or to test your redux selectors you can use stateBuilder.
+
 ```ts
 const card = cardBuilder().withCardIdentifier('ninja-strike-red').withName('Ninja Strike').build();
 const store = createTestStore({ cardGateway: new InMemoryCardGateway([card]) });
@@ -118,11 +124,11 @@ expect(store.getState().state).toBe('whatever');
 
 ## Packages
 
-| Package | Purpose |
-|---|---|
+| Package         | Purpose                                                           |
+| --------------- | ----------------------------------------------------------------- |
 | `@codex/shared` | DTOs, `Result`, domain constants, `cardBuilder`/`printingBuilder` |
-| `@codex/core` | Use cases, repository interfaces, concrete implementations |
-| `@codex/orm` | Prisma client re-export |
-| `@codex/config` | Shared TypeScript config |
-| `@codex/web` | React frontend |
-| `@codex/api` | NestJS backend |
+| `@codex/core`   | Use cases, repository interfaces, concrete implementations        |
+| `@codex/orm`    | Prisma client re-export                                           |
+| `@codex/config` | Shared TypeScript config                                          |
+| `@codex/web`    | React frontend                                                    |
+| `@codex/api`    | NestJS backend                                                    |

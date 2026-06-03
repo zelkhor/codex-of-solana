@@ -2,20 +2,23 @@
   "name": "@codex/shared",
   "version": "0.0.1",
   "private": true,
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "types": "./src/index.ts",
   "scripts": {
+    "build": "tsc",
     "lint": "eslint \"src/**/*.ts\""
   },
   "dependencies": {
     "@flesh-and-blood/types": "^3.8.24"
   },
   "devDependencies": {
+    "@codex/config": "workspace:*",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.19.19",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
-    "@types/jest": "^30.0.0",
     "typescript": "^6.0.3"
   }
 }
