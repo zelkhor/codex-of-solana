@@ -13,7 +13,9 @@ export const CardDetailView = () => {
   const printingCode = (location.state as { printing?: string } | null)?.printing;
 
   const card = useSelector(selectCardById(cardIdentifier ?? ''));
-  const printing = useSelector(selectPrintingByCardAndCode(cardIdentifier ?? '', printingCode ?? ''));
+  const printing = useSelector(
+    selectPrintingByCardAndCode(cardIdentifier ?? '', printingCode ?? ''),
+  );
 
   if (!card || !printing) {
     return (

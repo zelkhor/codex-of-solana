@@ -12,7 +12,8 @@ export const CARD_PRINTING_OVERRIDES: Record<string, PrintingDto[]> = {
       rarity: CARD_RARITIES.Promo,
       edition: null,
       foiling: null,
-      image: 'https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/large/ZH_FAB401.webp',
+      image:
+        'https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/large/ZH_FAB401.webp',
       backPrinting: null,
       artists: ['Carlos Cruchaga'],
     },

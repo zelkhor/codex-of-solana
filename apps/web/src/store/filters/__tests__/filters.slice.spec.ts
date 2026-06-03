@@ -1,5 +1,13 @@
 import { describe, test, beforeEach } from 'vitest';
-import { CARD_CLASSES, CARD_TALENTS, CARD_TYPES, CARD_KEYWORDS, CARD_SETS, CARD_RARITIES, CARD_FOILINGS } from '@codex/shared';
+import {
+  CARD_CLASSES,
+  CARD_TALENTS,
+  CARD_TYPES,
+  CARD_KEYWORDS,
+  CARD_SETS,
+  CARD_RARITIES,
+  CARD_FOILINGS,
+} from '@codex/shared';
 import { stateBuilderProvider } from '@/store/__tests__/state.builder';
 import { createFiltersFixture, type FiltersFixture } from './filters.fixture';
 

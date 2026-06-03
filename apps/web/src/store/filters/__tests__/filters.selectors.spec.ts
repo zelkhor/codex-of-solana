@@ -50,7 +50,10 @@ describe('Feature: Filter selectors', () => {
     test('Rule: returns the full filters state', () => {
       const store = createTestStore(
         {},
-        stateBuilder().withClasses([CARD_CLASSES.Generic]).withRarities([CARD_RARITIES.Marvel]).build(),
+        stateBuilder()
+          .withClasses([CARD_CLASSES.Generic])
+          .withRarities([CARD_RARITIES.Marvel])
+          .build(),
       );
       const result = selectFilters(store.getState());
       expect(result.classes).toEqual([CARD_CLASSES.Generic]);
