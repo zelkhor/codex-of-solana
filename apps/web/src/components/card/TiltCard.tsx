@@ -111,6 +111,70 @@ const ColdFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
   );
 };
 
+const GoldFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) => {
+  const lastPos = useRef({ x: 0.5, y: 0.5 });
+  if (mouse) lastPos.current = mouse;
+  const pos = mouse ?? lastPos.current;
+  const uid = useId();
+  const filterId = `gf${uid.replace(/[^a-zA-Z0-9]/g, '')}`;
+
+  const angle = 135 + (pos.x - 0.5) * 90;
+
+  return (
+    <>
+      <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}>
+        <defs>
+          <filter
+            id={filterId}
+            x="0%"
+            y="0%"
+            width="100%"
+            height="100%"
+            colorInterpolationFilters="sRGB"
+          >
+            <feTurbulence type="fractalNoise" baseFrequency="0.55 0.55" numOctaves="4" seed="3" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+        </defs>
+      </svg>
+      <div
+        className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-500"
+        style={{
+          filter: `url(#${filterId})`,
+          mixBlendMode: 'soft-light',
+          opacity: mouse ? 0.55 : 0.22,
+        }}
+      />
+
+      {/* Warm gold sheen sweep */}
+      <div
+        className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-500"
+        style={{
+          background: `linear-gradient(
+            ${angle}deg,
+            rgba(180, 140, 40, 0.55),
+            rgba(255, 215, 80, 0.75),
+            rgba(220, 175, 55, 0.50),
+            rgba(160, 115, 30, 0.45)
+          )`,
+          mixBlendMode: 'overlay',
+          opacity: mouse ? 0.55 : 0.15,
+        }}
+      />
+
+      {/* Specular highlight */}
+      <div
+        className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(ellipse at ${pos.x * 100}% ${pos.y * 100}%, rgba(255, 240, 160, 0.85) 0%, rgba(230, 195, 80, 0.4) 15%, transparent 32%)`,
+          mixBlendMode: 'overlay',
+          opacity: mouse ? 0.95 : 0,
+        }}
+      />
+    </>
+  );
+};
+
 export const TiltCard = ({ children, className, onClick, effect = 'standard' }: TiltCardProps) => {
   const [mouse, setMouse] = useState<{ x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -150,6 +214,7 @@ export const TiltCard = ({ children, className, onClick, effect = 'standard' }: 
         {children}
         {effect === 'rainbow-foil' && <RainbowFoilOverlay mouse={mouse} />}
         {effect === 'cold-foil' && <ColdFoilOverlay mouse={mouse} />}
+        {effect === 'gold-foil' && <GoldFoilOverlay mouse={mouse} />}
       </div>
     </div>
   );
