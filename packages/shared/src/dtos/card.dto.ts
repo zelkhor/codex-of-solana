@@ -8,6 +8,7 @@ import type {
   CardTalentT,
   CardTypeT,
   CardKeywordT,
+  CardSubtypeT,
 } from '../constants/card.constants';
 
 export interface PrintingDto {
@@ -15,32 +16,32 @@ export interface PrintingDto {
   print: string;
   set: CardSetT;
   rarity: CardRarityT;
-  edition: CardEditionT | undefined;
-  foiling: CardFoilingT | undefined;
+  edition: CardEditionT | null;
+  foiling: CardFoilingT | null;
   image: string;
-  oppositeImage: string | undefined;
+  backPrinting: PrintingDto | null;
   artists: string[];
 }
 
 export interface CardDto {
   cardIdentifier: string;
   name: string;
-  pitch: CardPitchT | undefined;
+  pitch: CardPitchT | null;
   classes: CardClassT[];
   talents: CardTalentT[];
   types: CardTypeT[];
-  subtypes: string[];
+  subtypes: CardSubtypeT[];
   keywords: CardKeywordT[];
   rarity: CardRarityT;
   rarities: CardRarityT[];
   sets: CardSetT[];
-  typeText: string | undefined;
-  cost: number | undefined;
-  attack: number | undefined;
-  defense: number | undefined;
-  intellect: number | undefined;
-  life: number | undefined;
-  functionalText: string | undefined;
+  typeText: string | null;
+  cost: number | null;
+  attack: number | null;
+  defense: number | null;
+  intellect: number | null;
+  life: number | null;
+  functionalText: string | null;
   printings: PrintingDto[];
   defaultImage: string;
 }

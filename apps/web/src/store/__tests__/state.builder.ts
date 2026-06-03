@@ -1,5 +1,14 @@
 import { createAction, createReducer, type ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import type { CardDto } from '@codex/shared';
+import type {
+  CardDto,
+  CardClassT,
+  CardTalentT,
+  CardTypeT,
+  CardKeywordT,
+  CardSetT,
+  CardRarityT,
+  CardFoilingT,
+} from '@codex/shared';
 import { rootReducer } from '@/store';
 import type { RootState } from '@/store';
 
@@ -7,12 +16,13 @@ const initialState: RootState = rootReducer(undefined, { type: '@@INIT' });
 
 const withAllCards = createAction<CardDto[]>('withAllCards');
 const withSearchResults = createAction<CardDto[]>('withSearchResults');
-const withClasses = createAction<string[]>('withClasses');
-const withTalents = createAction<string[]>('withTalents');
-const withTypes = createAction<string[]>('withTypes');
-const withKeywords = createAction<string[]>('withKeywords');
-const withSets = createAction<string[]>('withSets');
-const withRarities = createAction<string[]>('withRarities');
+const withClasses = createAction<CardClassT[]>('withClasses');
+const withTalents = createAction<CardTalentT[]>('withTalents');
+const withTypes = createAction<CardTypeT[]>('withTypes');
+const withKeywords = createAction<CardKeywordT[]>('withKeywords');
+const withSets = createAction<CardSetT[]>('withSets');
+const withRarities = createAction<CardRarityT[]>('withRarities');
+const withFoilings = createAction<CardFoilingT[]>('withFoilings');
 const withSearchQuery = createAction<string>('withSearchQuery');
 
 const reducer = createReducer(initialState, (builder) => {
@@ -43,6 +53,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withRarities, (state, { payload }) => {
       state.filters.rarities = payload;
     })
+    .addCase(withFoilings, (state, { payload }) => {
+      state.filters.foilings = payload;
+    })
     .addCase(withSearchQuery, (state, { payload }) => {
       state.filters.searchQuery = payload;
     });
@@ -63,9 +76,19 @@ export const stateBuilder = (state = initialState) => {
     withKeywords: reduce(withKeywords),
     withSets: reduce(withSets),
     withRarities: reduce(withRarities),
+    withFoilings: reduce(withFoilings),
     withSearchQuery: reduce(withSearchQuery),
     build: (): RootState => state,
   };
 };
 
+export const stateBuilderProvider = () => {
+  let builder = stateBuilder();
+  return {
+    getState: () => builder.build(),
+    setState: (updateFn: (_builder: StateBuilder) => StateBuilder) => (builder = updateFn(builder)),
+  };
+};
+
 export type StateBuilder = ReturnType<typeof stateBuilder>;
+export type StateBuilderProvider = ReturnType<typeof stateBuilderProvider>;

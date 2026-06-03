@@ -12,10 +12,10 @@ export {
   CARD_TALENTS,
   CARD_TYPES,
   CARD_KEYWORDS,
+  CARD_SUBTYPES,
   RARITY_ORDER,
   SET_ORDER,
   IMAGE_BASE,
-  MAIN_SETS,
 } from './constants/card.constants';
 export type {
   CardRarityT,
@@ -27,5 +27,7 @@ export type {
   CardTalentT,
   CardTypeT,
   CardKeywordT,
+  CardSubtypeT,
 } from './constants/card.constants';
 export { cardBuilder, printingBuilder } from './testing/card.builder';
+export { expectOk, expectErr } from './testing/result.helpers';

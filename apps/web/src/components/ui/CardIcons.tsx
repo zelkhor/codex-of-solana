@@ -80,6 +80,8 @@ export const RarityIcon = ({ rarity }: { rarity: CardRarityT }) => {
           <path d="M6.5 1.5 L12 11.5 L1 11.5 Z" fill="#7e4796" />
         </svg>
       );
+    case CARD_RARITIES.Promo:
+      return <CircleLetter letter="P" fill="#28af38" />;
     default:
       return null;
   }

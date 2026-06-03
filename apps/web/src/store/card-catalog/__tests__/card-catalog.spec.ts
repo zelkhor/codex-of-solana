@@ -1,13 +1,13 @@
 import { describe, test, expect } from 'vitest';
 import { cardBuilder } from '@codex/shared';
-import { CardInMemoryGateway } from '@/gateways/card.inmemory.gateway';
+import { InMemoryCardGateway } from '@/gateways/card.inmemory.gateway';
 import { fetchAllCards, searchCards } from '@/store/card-catalog/card-catalog.thunks';
-import { createTestStore } from '@/store/card-catalog/__tests__/create-test-store';
+import { createTestStore } from '@/store/__tests__/create-test-store.ts';
 
 describe('Feature: Loading cards', () => {
   test('Rule: It should load all printed cards', async () => {
     const card = cardBuilder().withCardIdentifier('card-a').build();
-    const store = createTestStore({ cardGateway: new CardInMemoryGateway([card]) });
+    const store = createTestStore({ cardGateway: new InMemoryCardGateway([card]) });
 
     await store.dispatch(fetchAllCards());
 
@@ -18,7 +18,7 @@ describe('Feature: Loading cards', () => {
 
   test('Rule: It should report a failure when the cards could not be loaded', async () => {
     const store = createTestStore({
-      cardGateway: new CardInMemoryGateway([], 'Network error'),
+      cardGateway: new InMemoryCardGateway([], 'Network error'),
     });
 
     await store.dispatch(fetchAllCards());
@@ -34,7 +34,7 @@ describe('Feature: Searching cards', () => {
       cardBuilder().withCardIdentifier('ninja-strike-red').withName('Ninja Strike').build(),
       cardBuilder().withCardIdentifier('brute-force-red').withName('Brute Force').build(),
     ];
-    const store = createTestStore({ cardGateway: new CardInMemoryGateway(cards) });
+    const store = createTestStore({ cardGateway: new InMemoryCardGateway(cards) });
     await store.dispatch(fetchAllCards());
 
     store.dispatch(searchCards('ninja'));
@@ -48,7 +48,7 @@ describe('Feature: Searching cards', () => {
       cardBuilder().withCardIdentifier('card-a').withName('Alpha').build(),
       cardBuilder().withCardIdentifier('card-b').withName('Beta').build(),
     ];
-    const store = createTestStore({ cardGateway: new CardInMemoryGateway(cards) });
+    const store = createTestStore({ cardGateway: new InMemoryCardGateway(cards) });
     await store.dispatch(fetchAllCards());
 
     store.dispatch(searchCards('alpha'));

@@ -7,6 +7,7 @@ import {
   setKeywords,
   setSets,
   setRarities,
+  setFoilings,
   resetFilters,
 } from '@/store/filters/filters.slice';
 import { selectFilters } from '@/store/filters/filters.selectors';
@@ -16,7 +17,15 @@ import {
   CARD_TYPES,
   CARD_KEYWORDS,
   CARD_RARITIES,
-  MAIN_SETS,
+  CARD_FOILINGS,
+  CardClassT,
+  CardTalentT,
+  CardTypeT,
+  CardKeywordT,
+  CardRarityT,
+  CardFoilingT,
+  CardSetT,
+  CARD_SETS,
 } from '@codex/shared';
 import { SearchInput } from '@/components/filters/SearchInput';
 import { AccordionSection } from '@/components/ui/AccordionSection';
@@ -44,7 +53,7 @@ export const FilterPanel = () => {
         <MultiSelect
           options={Object.values(CARD_CLASSES)}
           selected={f.classes}
-          onChange={(values) => dispatch(setClasses(values))}
+          onChange={(values) => dispatch(setClasses(values as CardClassT[]))}
         />
       </AccordionSection>
 
@@ -52,7 +61,7 @@ export const FilterPanel = () => {
         <MultiSelect
           options={Object.values(CARD_TALENTS)}
           selected={f.talents}
-          onChange={(values) => dispatch(setTalents(values))}
+          onChange={(values) => dispatch(setTalents(values as CardTalentT[]))}
         />
       </AccordionSection>
 
@@ -60,7 +69,7 @@ export const FilterPanel = () => {
         <MultiSelect
           options={Object.values(CARD_TYPES)}
           selected={f.types}
-          onChange={(values) => dispatch(setTypes(values))}
+          onChange={(values) => dispatch(setTypes(values as CardTypeT[]))}
         />
       </AccordionSection>
 
@@ -68,7 +77,7 @@ export const FilterPanel = () => {
         <MultiSelect
           options={Object.values(CARD_KEYWORDS)}
           selected={f.keywords}
-          onChange={(values) => dispatch(setKeywords(values))}
+          onChange={(values) => dispatch(setKeywords(values as CardKeywordT[]))}
         />
       </AccordionSection>
 
@@ -76,31 +85,24 @@ export const FilterPanel = () => {
         <MultiSelect
           options={Object.values(CARD_RARITIES)}
           selected={f.rarities}
-          onChange={(values) => dispatch(setRarities(values))}
+          onChange={(values) => dispatch(setRarities(values as CardRarityT[]))}
+        />
+      </AccordionSection>
+
+      <AccordionSection label="Foiling" badge={f.foilings.length}>
+        <MultiSelect
+          options={Object.values(CARD_FOILINGS)}
+          selected={f.foilings}
+          onChange={(values) => dispatch(setFoilings(values as CardFoilingT[]))}
         />
       </AccordionSection>
 
       <AccordionSection label="Set" badge={f.sets.length}>
-        <div className="flex flex-wrap gap-1">
-          {MAIN_SETS.map((set) => (
-            <button
-              key={set}
-              onClick={() => {
-                const next = f.sets.includes(set)
-                  ? f.sets.filter((s) => s !== set)
-                  : [...f.sets, set];
-                dispatch(setSets(next));
-              }}
-              className={`text-xs px-2 py-0.5 rounded ${
-                f.sets.includes(set)
-                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
-                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600'
-              }`}
-            >
-              {set}
-            </button>
-          ))}
-        </div>
+        <MultiSelect
+          options={Object.values(CARD_SETS)}
+          selected={f.sets}
+          onChange={(values) => dispatch(setSets(values as CardSetT[]))}
+        />
       </AccordionSection>
     </div>
   );

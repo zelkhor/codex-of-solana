@@ -1,37 +1,24 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import type { CardDto, PrintingDto } from '@codex/shared';
-import { selectImageIndex } from '@/store/card-catalog/card-catalog.selectors';
+import type { PrintingDto } from '@codex/shared';
 import type { TiltEffect } from '@/components/card/TiltCard';
 import { foilingToEffect } from '@/components/card/card.helpers';
 
 export interface CardDetailViewModel {
   activePrinting: PrintingDto;
   setActivePrinting: (printing: PrintingDto) => void;
-  backPrinting: PrintingDto | undefined;
+  backPrinting: PrintingDto | null;
   isFlipped: boolean;
   flip: () => void;
   tiltEffect: TiltEffect;
   imageUrl: string;
 }
 
-export const useCardDetailViewModel = (
-  card: CardDto,
-  initialPrinting: PrintingDto,
-): CardDetailViewModel => {
-  const imageIndex = useSelector(selectImageIndex);
+export const useCardDetailViewModel = (initialPrinting: PrintingDto): CardDetailViewModel => {
   const [activePrinting, setActivePrinting] = useState<PrintingDto>(initialPrinting);
 
-  const backPrinting = activePrinting.oppositeImage
-    ? imageIndex.get(activePrinting.oppositeImage)
-    : card.printings.find(
-        (p) =>
-          p.identifier === activePrinting.identifier &&
-          p.print.includes('-Back') &&
-          p.foiling === activePrinting.foiling,
-      );
+  const { backPrinting } = activePrinting;
 
-  const isFlipped = backPrinting !== undefined && activePrinting.print === backPrinting.print;
+  const isFlipped = !!backPrinting && activePrinting.print === backPrinting.print;
 
   return {
     activePrinting,

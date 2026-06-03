@@ -1,145 +1,46 @@
-export const CARD_RARITIES = {
-  Basic: 'Basic',
-  Token: 'Token',
-  Common: 'Common',
-  Rare: 'Rare',
-  SuperRare: 'Super Rare',
-  Majestic: 'Majestic',
-  Legendary: 'Legendary',
-  Fabled: 'Fabled',
-  Marvel: 'Marvel',
-  Promo: 'Promo',
-} as const;
-export type CardRarityT = (typeof CARD_RARITIES)[keyof typeof CARD_RARITIES];
+import {
+  Release,
+  Rarity,
+  Foiling,
+  ReleaseEdition,
+  Class,
+  Talent,
+  Type,
+  Keyword,
+  Subtype,
+} from '@flesh-and-blood/types';
+
+export const CARD_SETS = Release;
+export type CardSetT = `${Release}`;
+
+export const CARD_RARITIES = Rarity;
+export type CardRarityT = `${Rarity}`;
+
+export const CARD_FOILINGS = Foiling;
+export type CardFoilingT = `${Foiling}`;
+
+export const CARD_EDITIONS = ReleaseEdition;
+export type CardEditionT = `${ReleaseEdition}`;
+
+export const CARD_CLASSES = Class;
+export type CardClassT = `${Class}`;
+
+export const CARD_TALENTS = Talent;
+export type CardTalentT = `${Talent}`;
+
+export const CARD_TYPES = Type;
+export type CardTypeT = `${Type}`;
+
+export const CARD_KEYWORDS = Keyword;
+export type CardKeywordT = `${Keyword}`;
+
+export const CARD_SUBTYPES = Subtype;
+export type CardSubtypeT = `${Subtype}`;
 
 export const CARD_PITCHES = { Red: 1, Yellow: 2, Blue: 3 } as const;
 export type CardPitchT = (typeof CARD_PITCHES)[keyof typeof CARD_PITCHES];
 
-export const CARD_FOILINGS = { Rainbow: 'Rainbow', Cold: 'Cold', Gold: 'Gold' } as const;
-export type CardFoilingT = (typeof CARD_FOILINGS)[keyof typeof CARD_FOILINGS];
-
-export const CARD_EDITIONS = { First: 'First', Unlimited: 'Unlimited' } as const;
-export type CardEditionT = (typeof CARD_EDITIONS)[keyof typeof CARD_EDITIONS];
-
-export const CARD_SETS = {
-  WelcomeToRathe: 'Welcome to Rathe',
-  ArcaneRising: 'Arcane Rising',
-  CrucibleOfWar: 'Crucible of War',
-  Monarch: 'Monarch',
-  TalesOfAria: 'Tales of Aria',
-  Everfest: 'Everfest',
-  HistoryPack1: 'History Pack 1',
-  RhinarBlitzDeck: 'Rhinar Blitz Deck',
-  ClassicBattles: 'Classic Battles: Rhinar vs Dorinthea',
-  Uprising: 'Uprising',
-  Dynasty: 'Dynasty',
-  Outsiders: 'Outsiders',
-  DuskTillDawn: 'Dusk till Dawn',
-  RoundTheTable: 'Round the Table',
-  BrightLights: 'Bright Lights',
-  HeavyHitters: 'Heavy Hitters',
-  ArmoryKayo: 'Armory Deck: Kayo',
-  PartTheMistveil: 'Part the Mistveil',
-  ArmoryBoltyn: 'Armory Deck: Boltyn',
-  FirstStrikeAurora: 'First Strike: Aurora',
-  FirstStrikeTerra: 'First Strike: Terra',
-  ArmoryAzalea: 'Armory Deck: Azalea',
-  Rosetta: 'Rosetta',
-  ArmoryDash: 'Armory Deck: Dash',
-  ArmoryOriginsJarl: 'Armory Deck: Origins - Jarl',
-  TheHunted: 'The Hunted',
-  ArmoryAurora: 'Armory Deck: Aurora',
-  ArmoryMaxx: 'Armory Deck: Maxx',
-  ArmoryGravyBones: 'Armory Deck: Gravy Bones',
-  HighSeas: 'High Seas',
-  ArmoryIra: 'Armory Deck: Ira',
-  ArmoryLegendsPrism: 'Armory Deck Legends: Prism',
-  ArmoryLegendsViserai: 'Armory Deck Legends: Viserai',
-  MasteryGuardian: 'Mastery Pack: Guardian',
-  ArmoryPleiades: 'Armory Deck: Pleiades',
-  SuperSlam: 'Super Slam',
-  SmashPalace: 'Smash Palace',
-  ArmoryRhinar: 'Armory Deck: Rhinar',
-  ArmoryArakni: 'Armory Deck: Arakni',
-  CompendiumOfRathe: 'Compendium of Rathe',
-  ArmoryOriginsHala: 'Armory Deck: Origins - Hala',
-  ArmoryZyggy: 'Armory Deck: Zyggy',
-  OmensOfTheThirdAge: 'Omens of the Third Age',
-  GEM: 'GEM',
-  TournamentPack: 'Tournament Pack',
-  Promos: 'Promos',
-} as const;
-export type CardSetT = (typeof CARD_SETS)[keyof typeof CARD_SETS];
-
-export const CARD_CLASSES = {
-  Adjudicator: 'Adjudicator',
-  Assassin: 'Assassin',
-  Bard: 'Bard',
-  Brute: 'Brute',
-  Generic: 'Generic',
-  Guardian: 'Guardian',
-  Illusionist: 'Illusionist',
-  Mechanologist: 'Mechanologist',
-  Merchant: 'Merchant',
-  Necromancer: 'Necromancer',
-  Ninja: 'Ninja',
-  Pirate: 'Pirate',
-  Ranger: 'Ranger',
-  Runeblade: 'Runeblade',
-  Shapeshifter: 'Shapeshifter',
-  Thief: 'Thief',
-  Warrior: 'Warrior',
-  Wizard: 'Wizard',
-  NotClassed: 'NotClassed',
-} as const;
-export type CardClassT = (typeof CARD_CLASSES)[keyof typeof CARD_CLASSES];
-
-export const CARD_TALENTS = {
-  Chaos: 'Chaos',
-  Draconic: 'Draconic',
-  Earth: 'Earth',
-  Elemental: 'Elemental',
-  Ice: 'Ice',
-  Light: 'Light',
-  Lightning: 'Lightning',
-  Mystic: 'Mystic',
-  Revered: 'Revered',
-  Reviled: 'Reviled',
-  Royal: 'Royal',
-  Shadow: 'Shadow',
-} as const;
-export type CardTalentT = (typeof CARD_TALENTS)[keyof typeof CARD_TALENTS];
-
-export const CARD_TYPES = {
-  Action: 'Action',
-  AttackReaction: 'Attack Reaction',
-  DefenseReaction: 'Defense Reaction',
-  Equipment: 'Equipment',
-  Instant: 'Instant',
-  Mentor: 'Mentor',
-  Resource: 'Resource',
-  Token: 'Token',
-  Weapon: 'Weapon',
-} as const;
-export type CardTypeT = (typeof CARD_TYPES)[keyof typeof CARD_TYPES];
-
-export const CARD_KEYWORDS = {
-  GoAgain: 'Go again',
-  Legendary: 'Legendary',
-  Boost: 'Boost',
-  BladeBreak: 'Blade Break',
-  Dominate: 'Dominate',
-  Ephemeral: 'Ephemeral',
-  Freeze: 'Freeze',
-  Intimidate: 'Intimidate',
-  Overpowering: 'Overpowering',
-  Phantasm: 'Phantasm',
-  Quell: 'Quell',
-  Spectra: 'Spectra',
-  Temper: 'Temper',
-  Ward: 'Ward',
-} as const;
-export type CardKeywordT = (typeof CARD_KEYWORDS)[keyof typeof CARD_KEYWORDS];
+export const IMAGE_BASE = 'https://content.fabrary.net/cards/';
 
 export const RARITY_ORDER: CardRarityT[] = [
   'Basic',
@@ -155,74 +56,106 @@ export const RARITY_ORDER: CardRarityT[] = [
 ];
 
 export const SET_ORDER: CardSetT[] = [
+  CARD_SETS.IraWelcomeDeck,
+  CARD_SETS.BravoHeroDeck,
+  CARD_SETS.DorintheaHeroDeck,
+  CARD_SETS.KatsuHeroDeck,
+  CARD_SETS.RhinarHeroDeck,
   CARD_SETS.WelcomeToRathe,
   CARD_SETS.ArcaneRising,
   CARD_SETS.CrucibleOfWar,
+  CARD_SETS.BoltynBlitzDeck,
+  CARD_SETS.ChaneBlitzDeck,
+  CARD_SETS.LeviaBlitzDeck,
+  CARD_SETS.PrismBlitzDeck,
   CARD_SETS.Monarch,
+  CARD_SETS.BriarBlitzDeck,
+  CARD_SETS.LexiBlitzDeck,
+  CARD_SETS.OldhimBlitzDeck,
   CARD_SETS.TalesOfAria,
   CARD_SETS.Everfest,
   CARD_SETS.HistoryPack1,
-  CARD_SETS.RhinarBlitzDeck,
-  CARD_SETS.ClassicBattles,
+  CARD_SETS.ClassicBattlesRhinarDorinthea,
+  CARD_SETS.DromaiBlitzDeck,
+  CARD_SETS.FaiBlitzDeck,
   CARD_SETS.Uprising,
   CARD_SETS.Dynasty,
+  CARD_SETS.ArakniBlitzDeck,
+  CARD_SETS.AzaleaBlitzDeck,
+  CARD_SETS.BenjiBlitzDeck,
+  CARD_SETS.KatsuBlitzDeck,
+  CARD_SETS.RiptideBlitzDeck,
+  CARD_SETS.UzuriBlitzDeck,
   CARD_SETS.Outsiders,
   CARD_SETS.DuskTillDawn,
   CARD_SETS.RoundTheTable,
   CARD_SETS.BrightLights,
+  CARD_SETS.KassaiBlitzDeck,
+  CARD_SETS.KayoBlitzDeck,
+  CARD_SETS.BetsyBlitzDeck,
+  CARD_SETS.OlympiaBlitzDeck,
+  CARD_SETS.RhinarBlitzDeck,
+  CARD_SETS.VictorBlitzDeck,
   CARD_SETS.HeavyHitters,
-  CARD_SETS.ArmoryKayo,
+  CARD_SETS.ArmoryDeckKayo,
+  CARD_SETS.EnigmaBlitzDeck,
+  CARD_SETS.NuuBlitzDeck,
+  CARD_SETS.ZenBlitzDeck,
   CARD_SETS.PartTheMistveil,
-  CARD_SETS.ArmoryBoltyn,
+  CARD_SETS.ArmoryDeckBoltyn,
   CARD_SETS.FirstStrikeAurora,
   CARD_SETS.FirstStrikeTerra,
-  CARD_SETS.ArmoryAzalea,
+  CARD_SETS.ArmoryDeckAzalea,
+  CARD_SETS.FlorianBlitzDeck,
+  CARD_SETS.VerdanceBlitzDeck,
+  CARD_SETS.AuroraBlitzDeck,
+  CARD_SETS.OscilioBlitzDeck,
   CARD_SETS.Rosetta,
-  CARD_SETS.ArmoryDash,
-  CARD_SETS.ArmoryOriginsJarl,
+  CARD_SETS.ArmoryDeckDash,
+  CARD_SETS.ArmoryDeckOriginsJarl,
+  CARD_SETS.ArakniBlitzDeckARK,
+  CARD_SETS.ArakniWebOfDeceitBlitzDeck,
+  CARD_SETS.CindraBlitzDeck,
+  CARD_SETS.FangBlitzDeck,
   CARD_SETS.TheHunted,
-  CARD_SETS.ArmoryAurora,
-  CARD_SETS.ArmoryMaxx,
-  CARD_SETS.ArmoryGravyBones,
+  CARD_SETS.ArmoryDeckAurora,
+  CARD_SETS.ArmoryDeckMaxx,
+  CARD_SETS.ArmoryDeckGravyBones,
   CARD_SETS.HighSeas,
-  CARD_SETS.ArmoryIra,
-  CARD_SETS.ArmoryLegendsPrism,
-  CARD_SETS.ArmoryLegendsViserai,
-  CARD_SETS.MasteryGuardian,
-  CARD_SETS.ArmoryPleiades,
+  CARD_SETS.ArmoryDeckIra,
+  CARD_SETS.ArmoryDeckLegendsPrism,
+  CARD_SETS.ArmoryDeckLegendsViserai,
+  CARD_SETS.BravoDemoDeck,
+  CARD_SETS.MasteryPackGuardian,
+  CARD_SETS.ArmoryDeckPleiades,
   CARD_SETS.SuperSlam,
   CARD_SETS.SmashPalace,
-  CARD_SETS.ArmoryRhinar,
-  CARD_SETS.ArmoryArakni,
+  CARD_SETS.ArmoryDeckRhinar,
+  CARD_SETS.ArmoryDeckArakni,
   CARD_SETS.CompendiumOfRathe,
-  CARD_SETS.ArmoryOriginsHala,
-  CARD_SETS.ArmoryZyggy,
+  CARD_SETS.BravoSilverAgeDeck,
+  CARD_SETS.DashSilverAgeDeck,
+  CARD_SETS.IyslanderSilverAgeDeck,
+  CARD_SETS.KayoSilverAgeDeck,
+  CARD_SETS.ViseraiSilverAgeDeck,
+  CARD_SETS.ArakniSilverAgeDeck,
+  CARD_SETS.AzaleaSilverAgeDeck,
+  CARD_SETS.DorintheaSilverAgeDeck,
+  CARD_SETS.EnigmaSilverAgeDeck,
+  CARD_SETS.FaiSilverAgeDeck,
+  CARD_SETS.ArmoryDeckOriginsHala,
+  CARD_SETS.ArmoryDeckZyggy,
   CARD_SETS.OmensOfTheThirdAge,
+  CARD_SETS.BlazeSilverAgeDeck,
+  CARD_SETS.BoltynSilverAgeDeck,
+  CARD_SETS.BriarSilverAgeDeck,
+  CARD_SETS.GravyBonesSilverAgeDeck,
+  CARD_SETS.LyathSilverAgeDeck,
+  CARD_SETS.ArmoryDeckOlympia,
+  CARD_SETS.DorintheaDemoDeck,
+  CARD_SETS.MasteryPackWarrior,
+  CARD_SETS.IAR,
+  CARD_SETS.Promos,
   CARD_SETS.GEM,
   CARD_SETS.TournamentPack,
-];
-
-export const IMAGE_BASE = 'https://content.fabrary.net/cards/';
-
-export const MAIN_SETS: CardSetT[] = [
-  CARD_SETS.WelcomeToRathe,
-  CARD_SETS.ArcaneRising,
-  CARD_SETS.CrucibleOfWar,
-  CARD_SETS.Monarch,
-  CARD_SETS.TalesOfAria,
-  CARD_SETS.Everfest,
-  CARD_SETS.Uprising,
-  CARD_SETS.Dynasty,
-  CARD_SETS.Outsiders,
-  CARD_SETS.DuskTillDawn,
-  CARD_SETS.BrightLights,
-  CARD_SETS.HeavyHitters,
-  CARD_SETS.PartTheMistveil,
-  CARD_SETS.Rosetta,
-  CARD_SETS.TheHunted,
-  CARD_SETS.HighSeas,
-  CARD_SETS.OmensOfTheThirdAge,
-  CARD_SETS.GEM,
-  CARD_SETS.SuperSlam,
-  CARD_SETS.SmashPalace,
 ];

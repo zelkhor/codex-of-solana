@@ -2,8 +2,9 @@
   "extends": "@codex/config/typescript/base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": ["jest", "node"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "src/testing/**"]
+  "exclude": ["node_modules", "dist"]
 }

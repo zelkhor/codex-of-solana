@@ -28,7 +28,7 @@ export const CardDetail = ({
   cardImageContainerRef,
   cardImageVisible = true,
 }: CardDetailProps) => {
-  const vm = useCardDetailViewModel(card, initialPrinting);
+  const vm = useCardDetailViewModel(initialPrinting);
 
   return (
     <div className="p-6">

@@ -16,7 +16,8 @@ export const createCardCatalogFixture = () => {
       result = await useCase.execute();
     },
     thenCardsShouldBe(expected: CardDto[]) {
-      if (!result?.ok) throw new Error('Expected successful result but got an error');
+      if (!result?.ok)
+        throw new Error('thenCardsShouldBe: Expected successful result but got an error');
       expect(result.value).toEqual(expected);
     },
   };

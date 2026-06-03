@@ -2,7 +2,7 @@ import type { CardDto, Result } from '@codex/shared';
 import { ok, err, AppError } from '@codex/shared';
 import type { ICardGateway } from '@/gateways/card.gateway';
 
-export class CardInMemoryGateway implements ICardGateway {
+export class InMemoryCardGateway implements ICardGateway {
   constructor(
     private readonly cards: CardDto[] = [],
     private readonly simulatedError?: string,

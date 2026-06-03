@@ -1,18 +1,19 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { CardDto } from '@codex/shared';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
+import { ASYNC_STATUS, type AsyncStatusT } from '@/store/async-status';
 
 export interface CardCatalogState {
   allCards: CardDto[];
   searchResults: CardDto[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: AsyncStatusT;
   error: string | undefined;
 }
 
 const initialState: CardCatalogState = {
   allCards: [],
   searchResults: [],
-  status: 'idle',
+  status: ASYNC_STATUS.Idle,
   error: undefined,
 };
 
@@ -27,16 +28,16 @@ export const cardCatalogSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllCards.pending, (state) => {
-        state.status = 'loading';
+        state.status = ASYNC_STATUS.Loading;
         state.error = undefined;
       })
       .addCase(fetchAllCards.fulfilled, (state, action) => {
         state.allCards = action.payload;
         state.searchResults = action.payload;
-        state.status = 'succeeded';
+        state.status = ASYNC_STATUS.Succeeded;
       })
       .addCase(fetchAllCards.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = ASYNC_STATUS.Failed;
         state.error = action.payload ?? action.error.message ?? 'Failed to load cards';
       });
   },

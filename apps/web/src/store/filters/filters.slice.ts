@@ -1,12 +1,22 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type {
+  CardClassT,
+  CardTalentT,
+  CardTypeT,
+  CardKeywordT,
+  CardSetT,
+  CardRarityT,
+  CardFoilingT,
+} from '@codex/shared';
 
 export interface FiltersState {
-  classes: string[];
-  talents: string[];
-  types: string[];
-  keywords: string[];
-  sets: string[];
-  rarities: string[];
+  classes: CardClassT[];
+  talents: CardTalentT[];
+  types: CardTypeT[];
+  keywords: CardKeywordT[];
+  sets: CardSetT[];
+  rarities: CardRarityT[];
+  foilings: CardFoilingT[];
   searchQuery: string;
 }
 
@@ -17,6 +27,7 @@ const initialState: FiltersState = {
   keywords: [],
   sets: [],
   rarities: [],
+  foilings: [],
   searchQuery: '',
 };
 
@@ -24,23 +35,26 @@ export const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    setClasses(state, action: PayloadAction<string[]>) {
+    setClasses(state, action: PayloadAction<CardClassT[]>) {
       state.classes = action.payload;
     },
-    setTalents(state, action: PayloadAction<string[]>) {
+    setTalents(state, action: PayloadAction<CardTalentT[]>) {
       state.talents = action.payload;
     },
-    setTypes(state, action: PayloadAction<string[]>) {
+    setTypes(state, action: PayloadAction<CardTypeT[]>) {
       state.types = action.payload;
     },
-    setKeywords(state, action: PayloadAction<string[]>) {
+    setKeywords(state, action: PayloadAction<CardKeywordT[]>) {
       state.keywords = action.payload;
     },
-    setSets(state, action: PayloadAction<string[]>) {
+    setSets(state, action: PayloadAction<CardSetT[]>) {
       state.sets = action.payload;
     },
-    setRarities(state, action: PayloadAction<string[]>) {
+    setRarities(state, action: PayloadAction<CardRarityT[]>) {
       state.rarities = action.payload;
+    },
+    setFoilings(state, action: PayloadAction<CardFoilingT[]>) {
+      state.foilings = action.payload;
     },
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
@@ -58,6 +72,7 @@ export const {
   setKeywords,
   setSets,
   setRarities,
+  setFoilings,
   setSearchQuery,
   resetFilters,
 } = filtersSlice.actions;

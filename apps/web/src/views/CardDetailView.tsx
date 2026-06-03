@@ -1,29 +1,27 @@
 import { useNavigate, useParams, useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
-import type { RootState } from '@/store';
-import type { CardDto, PrintingDto } from '@codex/shared';
 import { CardDetail } from '@/components/card/card-detail/CardDetail';
+import {
+  selectCardById,
+  selectPrintingByCardAndCode,
+} from '@/store/card-catalog/card-catalog.selectors';
 
 export const CardDetailView = () => {
   const { cardIdentifier } = useParams<{ cardIdentifier: string }>();
   const location = useLocation();
   const navigate = useNavigate();
+  const printingCode = (location.state as { printing?: string } | null)?.printing;
 
-  const card = useSelector((state: RootState) =>
-    state.cardCatalog.allCards.find((c: CardDto) => c.cardIdentifier === cardIdentifier),
-  );
+  const card = useSelector(selectCardById(cardIdentifier ?? ''));
+  const printing = useSelector(selectPrintingByCardAndCode(cardIdentifier ?? '', printingCode ?? ''));
 
-  if (!card) {
+  if (!card || !printing) {
     return (
       <div className="flex h-screen items-center justify-center">
         <p className="text-muted-foreground">Card not found.</p>
       </div>
     );
   }
-
-  const printingCode = (location.state as { printing?: string } | null)?.printing;
-  const printing: PrintingDto =
-    card.printings.find((p) => p.print === printingCode) ?? card.printings[0];
 
   return <CardDetail card={card} initialPrinting={printing} onBack={() => void navigate(-1)} />;
 };

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PrintingSchema = z.object({
+const PrintingBaseSchema = z.object({
   identifier: z.string(),
   print: z.string(),
   set: z.string(),
@@ -8,8 +8,11 @@ export const PrintingSchema = z.object({
   edition: z.string().optional(),
   foiling: z.string().optional(),
   image: z.string(),
-  oppositeImage: z.string().optional(),
   artists: z.array(z.string()),
+});
+
+export const PrintingSchema = PrintingBaseSchema.extend({
+  backPrinting: PrintingBaseSchema.optional(),
 });
 
 export const CardSchema = z.object({

@@ -2,14 +2,14 @@ import { configureStore, isAsyncThunkAction } from '@reduxjs/toolkit';
 import type { Middleware, UnknownAction } from '@reduxjs/toolkit';
 import { rootReducer } from '@/store';
 import type { RootState, ThunkDependencies } from '@/store';
-import { CardInMemoryGateway } from '@/gateways/card.inmemory.gateway';
-import { InMemorySearchGateway } from '@/gateways/search.inmemory.gateway';
+import { InMemoryCardGateway } from '@/gateways/card.inmemory.gateway.ts';
+import { InMemorySearchGateway } from '@/gateways/search.inmemory.gateway.ts';
 
 export const EMPTY_ARGS = 'EMPTY_ARGS' as const;
 
 export const createTestStore = (
   {
-    cardGateway = new CardInMemoryGateway(),
+    cardGateway = new InMemoryCardGateway(),
     searchGateway = new InMemorySearchGateway(),
     collectionService = {},
     authService = {},

@@ -4,7 +4,8 @@ import { SlidersHorizontal } from 'lucide-react';
 import type { AppDispatch, RootState } from '@/store';
 import type { CardDto, PrintingDto } from '@codex/shared';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
-import { selectGroupedGridSlots } from '@/store/card-catalog/card-catalog.selectors';
+import { selectVisiblePrintings } from '@/store/card-catalog/card-catalog.selectors';
+import { ASYNC_STATUS } from '@/store/async-status';
 import { CardGrid } from '@/components/card/card-grid/CardGrid';
 import { CardGridSkeleton } from '@/components/card/CardGridSkeleton';
 import { CardFlipAnimation } from '@/components/card/CardFlipAnimation';
@@ -21,17 +22,16 @@ interface ActiveCard {
 
 export const CardListingView = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const slots = useSelector(selectGroupedGridSlots);
+  const visiblePrintings = useSelector(selectVisiblePrintings);
   const status = useSelector((s: RootState) => s.cardCatalog.status);
   const [filterOpen, setFilterOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
-
-  const cardCount = slots.filter((s) => s.type === 'card').length;
+  const printingCount = visiblePrintings.length;
 
   useEffect(() => {
-    if (status === 'idle') void dispatch(fetchAllCards());
+    if (status === ASYNC_STATUS.Idle) void dispatch(fetchAllCards());
   }, [dispatch, status]);
 
   useEffect(() => {
@@ -65,19 +65,21 @@ export const CardListingView = () => {
       <AppHeader />
       <div className="flex-1 overflow-hidden px-6 pb-6">
         <main className="relative h-full bg-[#f3f1f3] dark:bg-[#1d161e] rounded-2xl overflow-hidden">
-          {status === 'loading' && <CardGridSkeleton />}
-          {status === 'failed' && (
+          {status === ASYNC_STATUS.Loading && <CardGridSkeleton />}
+          {status === ASYNC_STATUS.Failed && (
             <div className="flex h-full items-center justify-center">
               <p className="text-destructive">Failed to load cards. Please try again</p>
             </div>
           )}
-          {status === 'succeeded' && <CardGrid slots={slots} onCardClick={handleCardClick} />}
+          {status === ASYNC_STATUS.Succeeded && (
+            <CardGrid slots={visiblePrintings} onCardClick={handleCardClick} />
+          )}
 
           {/* Floating filter button */}
           <div className="absolute bottom-5 right-5 z-10 flex flex-col items-center gap-2">
-            {status === 'succeeded' && (
+            {status === ASYNC_STATUS.Succeeded && (
               <span className="text-xs text-muted-foreground bg-background/80 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
-                {cardCount.toLocaleString()} cards
+                {printingCount.toLocaleString()} cards
               </span>
             )}
             <button

@@ -12,57 +12,54 @@ export type GridSlot = {
   backPrinting?: PrintingDto;
 };
 
-const selectSearchResults = (state: RootState) => state.cardCatalog.searchResults;
 const selectAllCards = (state: RootState) => state.cardCatalog.allCards;
+const selectSearchResults = (state: RootState) => state.cardCatalog.searchResults;
 
-// Index of image → printing built from ALL cards, used to resolve cross-card back sides
-export const selectImageIndex = createSelector(selectAllCards, (allCards) => {
-  const index = new Map<string, PrintingDto>();
-  for (const card of allCards) {
-    for (const printing of card.printings) {
-      index.set(printing.image, printing);
-    }
-  }
-  return index;
-});
+export const selectCardById = (cardIdentifier: string) => (state: RootState) =>
+  selectAllCards(state).find((c) => c.cardIdentifier === cardIdentifier);
 
-const selectCardLevelFiltered = createSelector(selectSearchResults, selectFilters, (cards, f) =>
-  cards.filter((card) => {
-    if (!matchesMultiFilter(card.classes, f.classes)) return false;
-    if (!matchesMultiFilter(card.talents, f.talents)) return false;
-    if (!matchesMultiFilter(card.types, f.types)) return false;
-    return matchesMultiFilter(card.keywords, f.keywords);
-  }),
-);
+export const selectPrintingByCode = (printingCode: string) => (state: RootState) =>
+  selectAllCards(state)
+    .flatMap((c) => c.printings)
+    .find((p) => p.print === printingCode);
 
-export const selectGroupedGridSlots = createSelector(
-  selectCardLevelFiltered,
-  selectImageIndex,
+export const selectPrintingByCardAndCode =
+  (cardIdentifier: string, printingCode: string) => (state: RootState) => {
+    const card = selectAllCards(state).find((c) => c.cardIdentifier === cardIdentifier);
+    return card?.printings.find((p) => p.print === printingCode) ?? card?.printings[0];
+  };
+
+export const selectVisiblePrintings = createSelector(
+  selectSearchResults,
   selectFilters,
-  (filteredCards, imageIndex, f) => {
+  (cards, f) => {
+    const filteredCards = cards.filter((card) => {
+      if (!matchesMultiFilter(card.classes, f.classes)) return false;
+      if (!matchesMultiFilter(card.talents, f.talents)) return false;
+      if (!matchesMultiFilter(card.types, f.types)) return false;
+      return matchesMultiFilter(card.keywords, f.keywords);
+    });
+
     const matchesPrintingFilters = (p: PrintingDto) => {
       if (f.sets.length > 0 && !f.sets.includes(p.set)) return false;
-      return f.rarities.length === 0 || f.rarities.includes(p.rarity);
+      if (f.rarities.length > 0 && !f.rarities.includes(p.rarity)) return false;
+      if (f.foilings.length > 0 && (!p.foiling || !f.foilings.includes(p.foiling))) return false;
+      return true;
     };
 
     const slots: GridSlot[] = filteredCards.flatMap((card) =>
       card.printings
         .filter((p) => !p.print.includes('-Back'))
-        .map((printing) => {
-          const backPrinting = printing.oppositeImage
-            ? imageIndex.get(printing.oppositeImage)
-            : card.printings.find(
-                (p) =>
-                  p.identifier === printing.identifier &&
-                  p.print.includes('-Back') &&
-                  p.foiling === printing.foiling,
-              );
-          return { type: 'card' as const, card, printing, backPrinting };
-        })
+        .map((printing) => ({
+          type: 'card' as const,
+          card,
+          printing,
+          backPrinting: printing.backPrinting ?? undefined,
+        }))
         .filter(
           ({ printing, backPrinting }) =>
             matchesPrintingFilters(printing) ||
-            (backPrinting !== undefined && matchesPrintingFilters(backPrinting)),
+            (backPrinting && matchesPrintingFilters(backPrinting)),
         ),
     );
 
