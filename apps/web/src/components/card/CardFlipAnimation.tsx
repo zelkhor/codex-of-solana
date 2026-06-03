@@ -1,6 +1,6 @@
 import { type RefObject, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import cardBackImg from '@codex/assets/flesh-back.png';
+import cardBackImg from '../../assets/flesh-back.png';
 
 interface CardFlipAnimationProps {
   imageUrl: string;

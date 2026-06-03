@@ -7,7 +7,6 @@ const config: Config = {
   testMatch: ['**/__tests__/**/*.integration.test.ts'],
   moduleNameMapper: {
     // <rootDir> resolves to packages/orm/src/
-    '^@codex/shared$': '<rootDir>/../../shared/src/index.ts',
   },
 };
 

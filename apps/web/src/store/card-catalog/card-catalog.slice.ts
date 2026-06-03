@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { CardDto } from '@codex/shared';
+import type { Card } from '@codex/core';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
 import { ASYNC_STATUS, type AsyncStatusT } from '@/store/async-status';
 
 export interface CardCatalogState {
-  allCards: CardDto[];
-  searchResults: CardDto[];
+  allCards: Card[];
+  searchResults: Card[];
   status: AsyncStatusT;
   error: string | undefined;
 }
@@ -21,7 +21,7 @@ export const cardCatalogSlice = createSlice({
   name: 'cardCatalog',
   initialState,
   reducers: {
-    setSearchResults(state, action: PayloadAction<CardDto[]>) {
+    setSearchResults(state, action: PayloadAction<Card[]>) {
       state.searchResults = action.payload;
     },
   },

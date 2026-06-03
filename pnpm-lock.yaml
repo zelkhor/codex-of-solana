@@ -23,12 +23,6 @@ importers:
       '@codex/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@codex/orm':
-        specifier: workspace:*
-        version: link:../../packages/orm
-      '@codex/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@nestjs/common':
         specifier: ^11.1.24
         version: 11.1.24(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -66,6 +60,9 @@ importers:
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.6
+      '@types/jest':
+        specifier: ^30.0.0
+        version: 30.0.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.5.0
         version: 8.60.0(@typescript-eslint/parser@8.60.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
@@ -93,9 +90,9 @@ importers:
       '@base-ui/react':
         specifier: ^1.5.0
         version: 1.5.0(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      '@codex/shared':
+      '@codex/core':
         specifier: workspace:*
-        version: link:../../packages/shared
+        version: link:../../packages/core
       '@fontsource-variable/geist':
         specifier: ^5.2.9
         version: 5.2.9
@@ -148,6 +145,9 @@ importers:
       '@testing-library/react':
         specifier: ^16.3.2
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@types/jest':
+        specifier: ^30.0.0
+        version: 30.0.0
       '@types/node':
         specifier: ^22.5.4
         version: 22.19.19
@@ -226,19 +226,16 @@ importers:
       '@codex/orm':
         specifier: workspace:*
         version: link:../orm
-      '@codex/shared':
-        specifier: workspace:*
-        version: link:../shared
       '@flesh-and-blood/cards':
         specifier: ^3.9.2
         version: 3.9.2
-      '@flesh-and-blood/types':
-        specifier: ^3.8.24
-        version: 3.8.24
     devDependencies:
       '@codex/config':
         specifier: workspace:*
         version: link:../config
+      '@flesh-and-blood/types':
+        specifier: ^3.8.24
+        version: 3.8.24
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -269,9 +266,6 @@ importers:
 
   packages/orm:
     dependencies:
-      '@codex/shared':
-        specifier: workspace:*
-        version: link:../shared
       '@prisma/adapter-pg':
         specifier: ^7.8.0
         version: 7.8.0
@@ -309,37 +303,6 @@ importers:
       ts-jest:
         specifier: ^29.4.11
         version: 29.4.11(@babel/core@7.29.7)(@jest/transform@30.4.1)(@jest/types@30.4.1)(babel-jest@30.4.1(@babel/core@7.29.7))(jest-util@30.4.1)(jest@30.4.2(@types/node@22.19.19))(typescript@6.0.3)
-      typescript:
-        specifier: ^6.0.3
-        version: 6.0.3
-
-  packages/shared:
-    dependencies:
-      '@flesh-and-blood/types':
-        specifier: ^3.8.24
-        version: 3.8.24
-    devDependencies:
-      '@codex/config':
-        specifier: workspace:*
-        version: link:../config
-      '@types/jest':
-        specifier: ^30.0.0
-        version: 30.0.0
-      '@types/node':
-        specifier: ^22.19.19
-        version: 22.19.19
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^8.5.0
-        version: 8.60.0(@typescript-eslint/parser@8.60.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3))(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
-      '@typescript-eslint/parser':
-        specifier: ^8.5.0
-        version: 8.60.0(eslint@9.39.4(jiti@2.7.0))(typescript@6.0.3)
-      eslint:
-        specifier: ^9.10.0
-        version: 9.39.4(jiti@2.7.0)
-      eslint-config-prettier:
-        specifier: ^9.1.0
-        version: 9.1.2(eslint@9.39.4(jiti@2.7.0))
       typescript:
         specifier: ^6.0.3
         version: 6.0.3

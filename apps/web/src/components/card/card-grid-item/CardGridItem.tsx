@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import type { CardDto, PrintingDto } from '@codex/shared';
+import type { Card, Printing } from '@codex/core';
 import { FlipHorizontal2 } from 'lucide-react';
 import { CardBack } from '@/components/card/CardBack';
 import { buildCardGridItemViewModel } from './card-grid-item.view-model';
 import { TiltCard } from '@/components/card/TiltCard';
 
 interface CardGridItemProps {
-  card: CardDto;
-  printing: PrintingDto;
-  backPrinting?: PrintingDto;
+  card: Card;
+  printing: Printing;
+  backPrinting?: Printing;
   onClick: (rect: DOMRect) => void;
 }
 

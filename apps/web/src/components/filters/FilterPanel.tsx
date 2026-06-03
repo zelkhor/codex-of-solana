@@ -26,7 +26,7 @@ import {
   type CardRarityT,
   type CardFoilingT,
   type CardSetT,
-} from '@codex/shared';
+} from '@codex/core';
 import { SearchInput } from '@/components/filters/SearchInput';
 import { AccordionSection } from '@/components/ui/AccordionSection';
 import { MultiSelect } from '@/components/ui/MultiSelect';

@@ -1,15 +1,14 @@
 import { createSelector } from '@reduxjs/toolkit';
-import type { CardDto, PrintingDto } from '@codex/shared';
-import { SET_ORDER } from '@codex/shared';
-import type { CardSetT } from '@codex/shared';
+import type { Card, Printing, CardSetT } from '@codex/core';
+import { SET_ORDER } from '@codex/core';
 import type { RootState } from '@/store';
 import { selectFilters } from '@/store/filters/filters.selectors';
 
 export type GridSlot = {
   type: 'card';
-  card: CardDto;
-  printing: PrintingDto;
-  backPrinting?: PrintingDto;
+  card: Card;
+  printing: Printing;
+  backPrinting?: Printing;
 };
 
 const selectAllCards = (state: RootState) => state.cardCatalog.allCards;
@@ -40,7 +39,7 @@ export const selectVisiblePrintings = createSelector(
       return matchesMultiFilter(card.keywords, f.keywords);
     });
 
-    const matchesPrintingFilters = (p: PrintingDto) => {
+    const matchesPrintingFilters = (p: Printing) => {
       if (f.sets.length > 0 && !f.sets.includes(p.set)) return false;
       if (f.rarities.length > 0 && !f.rarities.includes(p.rarity)) return false;
       if (f.foilings.length > 0 && (!p.foiling || !f.foilings.includes(p.foiling))) return false;

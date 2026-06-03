@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { cardBuilder } from '@codex/shared';
+import { cardBuilder } from '@codex/core';
 import { InMemoryCardGateway } from '@/gateways/card.inmemory.gateway';
 import { fetchAllCards, searchCards } from '@/store/card-catalog/card-catalog.thunks';
 import { createTestStore } from '@/store/__tests__/create-test-store.ts';

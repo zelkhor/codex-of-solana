@@ -1,17 +1,17 @@
-import type { CardDto, Result } from '@codex/shared';
-import { ok } from '@codex/shared';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
 import type { CardCatalogLoadError } from '../domain/card-catalog.errors';
+import type { Card } from '../domain/card';
+import { ok, type Result } from '../../shared/result';
 
 export class CardCatalogInMemoryRepository implements ICardCatalogRepository {
-  private cards: CardDto[] = [];
+  private cards: Card[] = [];
 
-  withCards(cards: CardDto[]): this {
+  withCards(cards: Card[]): this {
     this.cards = cards;
     return this;
   }
 
-  async getAll(): Promise<Result<CardDto[], CardCatalogLoadError>> {
+  async getAll(): Promise<Result<Card[], CardCatalogLoadError>> {
     return ok(this.cards);
   }
 }

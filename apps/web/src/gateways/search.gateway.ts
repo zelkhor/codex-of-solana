@@ -1,4 +1,6 @@
+import type { Card } from '@codex/core';
+
 export interface ISearchGateway {
-  index(items: unknown[]): void;
-  search(query: string): unknown[];
+  index(items: Card[]): void;
+  search(query: string): Card[];
 }

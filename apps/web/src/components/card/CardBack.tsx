@@ -1,4 +1,4 @@
-import cardBackImg from '@codex/assets/flesh-back.png';
+import cardBackImg from '../../assets/flesh-back.png';
 
 export const CardBack = ({ className }: { className?: string }) => (
   <img

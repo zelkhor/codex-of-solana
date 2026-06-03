@@ -9,8 +9,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@codex/shared': path.resolve(__dirname, '../../packages/shared/src/index.ts'),
-      '@codex/assets': path.resolve(__dirname, '../../packages/shared/src/assets'),
     },
   },
   server: {

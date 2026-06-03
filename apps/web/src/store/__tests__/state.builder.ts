@@ -1,6 +1,6 @@
 import { createAction, createReducer, type ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import type {
-  CardDto,
+  Card,
   CardClassT,
   CardTalentT,
   CardTypeT,
@@ -8,14 +8,14 @@ import type {
   CardSetT,
   CardRarityT,
   CardFoilingT,
-} from '@codex/shared';
+} from '@codex/core';
 import { rootReducer } from '@/store';
 import type { RootState } from '@/store';
 
 const initialState: RootState = rootReducer(undefined, { type: '@@INIT' });
 
-const withAllCards = createAction<CardDto[]>('withAllCards');
-const withSearchResults = createAction<CardDto[]>('withSearchResults');
+const withAllCards = createAction<Card[]>('withAllCards');
+const withSearchResults = createAction<Card[]>('withSearchResults');
 const withClasses = createAction<CardClassT[]>('withClasses');
 const withTalents = createAction<CardTalentT[]>('withTalents');
 const withTypes = createAction<CardTypeT[]>('withTypes');

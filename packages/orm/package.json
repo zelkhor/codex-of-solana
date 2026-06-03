@@ -15,7 +15,6 @@
     "db:migrate": "prisma migrate dev --schema ./prisma/schema.prisma"
   },
   "dependencies": {
-    "@codex/shared": "workspace:*",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "pg": "^8.21.0"

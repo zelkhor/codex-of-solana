@@ -1,5 +1,5 @@
-import type { CardFoilingT } from '@codex/shared';
-import { CARD_FOILINGS } from '@codex/shared';
+import type { CardFoilingT } from '@codex/core';
+import { CARD_FOILINGS } from '@codex/core';
 import type { TiltEffect } from '@/components/card/TiltCard';
 
 export const foilingToEffect = (foiling: CardFoilingT | null): TiltEffect => {

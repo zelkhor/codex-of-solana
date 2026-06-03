@@ -1,21 +1,21 @@
 import { cards as fabCards } from '@flesh-and-blood/cards';
-import type { CardDto, PrintingDto, Result } from '@codex/shared';
-import { ok, err, IMAGE_BASE } from '@codex/shared';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
 import { CardCatalogLoadError } from '../domain/card-catalog.errors';
 import { CARD_PRINTING_OVERRIDES } from './card-catalog.overrides';
+import { err, ok, type Result } from '../../shared/result';
+import { Card, CARD_FOILINGS, Printing } from '../domain/card';
 
 type SourceCard = (typeof fabCards)[number];
 type SourcePrinting = SourceCard['printings'][number];
 
 export class CardCatalogFabRepository implements ICardCatalogRepository {
-  private readonly cached: CardDto[];
+  private readonly cached: Card[];
 
   constructor() {
     this.cached = this.toDtos(fabCards);
   }
 
-  async getAll(): Promise<Result<CardDto[], CardCatalogLoadError>> {
+  async getAll(): Promise<Result<Card[], CardCatalogLoadError>> {
     try {
       return ok(this.cached);
     } catch (e) {
@@ -23,7 +23,7 @@ export class CardCatalogFabRepository implements ICardCatalogRepository {
     }
   }
 
-  private toDtos(cards: typeof fabCards): CardDto[] {
+  private toDtos(cards: typeof fabCards): Card[] {
     const printingImageIndex = this.printingImageIndex(cards);
 
     return cards.map((card) => {
@@ -36,7 +36,7 @@ export class CardCatalogFabRepository implements ICardCatalogRepository {
     });
   }
 
-  private deduplicatePrintings(printings: PrintingDto[]): PrintingDto[] {
+  private deduplicatePrintings(printings: Printing[]): Printing[] {
     const seen = new Set<string>();
     return printings.filter((p) => !seen.has(p.print) && seen.add(p.print) !== undefined);
   }
@@ -52,21 +52,18 @@ export class CardCatalogFabRepository implements ICardCatalogRepository {
   }
 }
 
-const mapToCardDto = (
-  card: SourceCard,
-  printingImageIndex: Map<string, SourcePrinting>,
-): CardDto => ({
+const mapToCardDto = (card: SourceCard, printingImageIndex: Map<string, SourcePrinting>): Card => ({
   cardIdentifier: card.cardIdentifier,
   name: card.name,
-  pitch: (card.pitch ?? null) as CardDto['pitch'],
-  classes: card.classes as CardDto['classes'],
-  talents: (card.talents ?? []) as CardDto['talents'],
-  types: card.types as CardDto['types'],
+  pitch: (card.pitch ?? null) as Card['pitch'],
+  classes: card.classes as Card['classes'],
+  talents: (card.talents ?? []) as Card['talents'],
+  types: card.types as Card['types'],
   subtypes: card.subtypes,
-  keywords: (card.keywords ?? []) as CardDto['keywords'],
-  rarity: card.rarity as CardDto['rarity'],
-  rarities: card.rarities as CardDto['rarities'],
-  sets: card.sets as CardDto['sets'],
+  keywords: (card.keywords ?? []) as Card['keywords'],
+  rarity: card.rarity as Card['rarity'],
+  rarities: card.rarities as Card['rarities'],
+  sets: card.sets as Card['sets'],
   typeText: card.typeText ?? null,
   cost: card.cost ?? null,
   attack: card.power ?? null,
@@ -78,28 +75,30 @@ const mapToCardDto = (
   defaultImage: card.defaultImage ?? '',
 });
 
+export const IMAGE_BASE = 'https://content.fabrary.net/cards/';
+
 const mapToPrintingDto = (
   p: SourcePrinting,
   printingImageIndex: Map<string, SourcePrinting>,
-): PrintingDto => {
+): Printing => {
   const backPrinting = p.oppositeImage ? printingImageIndex.get(p.oppositeImage) : undefined;
   return {
     identifier: p.identifier,
     print: p.print,
-    set: p.set as PrintingDto['set'],
-    rarity: p.rarity as PrintingDto['rarity'],
-    edition: (p.edition ?? null) as PrintingDto['edition'],
-    foiling: (p.foiling ?? null) as PrintingDto['foiling'],
+    set: p.set as Printing['set'],
+    rarity: p.rarity as Printing['rarity'],
+    edition: (p.edition ?? null) as Printing['edition'],
+    foiling: (p.foiling ?? CARD_FOILINGS.Regular) as Printing['foiling'],
     image: p.image ? `${IMAGE_BASE}${p.image}.webp` : '',
     artists: p.artists,
     backPrinting: backPrinting
       ? {
           identifier: backPrinting.identifier,
           print: backPrinting.print,
-          set: backPrinting.set as PrintingDto['set'],
-          rarity: backPrinting.rarity as PrintingDto['rarity'],
-          edition: (backPrinting.edition ?? null) as PrintingDto['edition'],
-          foiling: (backPrinting.foiling ?? null) as PrintingDto['foiling'],
+          set: backPrinting.set as Printing['set'],
+          rarity: backPrinting.rarity as Printing['rarity'],
+          edition: (backPrinting.edition ?? null) as Printing['edition'],
+          foiling: (backPrinting.foiling ?? CARD_FOILINGS.Regular) as Printing['foiling'],
           image: backPrinting.image ? `${IMAGE_BASE}${backPrinting.image}.webp` : '',
           artists: backPrinting.artists,
           backPrinting: null,

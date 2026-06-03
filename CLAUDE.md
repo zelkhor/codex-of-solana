@@ -2,6 +2,49 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## App overview
+
+A personal Flesh and Blood card collection manager. Users can browse the full FaB card catalog, filter and search cards, track their owned cards (by printing, edition, foiling), see what they're missing, and export a wishlist for CardMarket.
+Browsing and filtering are available without authentication. Collection management requires an account.
+
+## Tech Stack
+
+| Layer              | Technology                                               |
+| ------------------ | -------------------------------------------------------- |
+| Monorepo           | Turborepo + pnpm                                         |
+| Language           | TypeScript throughout                                    |
+| Frontend           | React, Redux Toolkit, shadcn/ui, Tailwind CSS            |
+| Backend            | NestJS                                                   |
+| ORM                | Prisma                                                   |
+| Database           | PostgreSQL                                               |
+| Validation         | Zod (API layer)                                          |
+| Linting/Formatting | ESLint + Prettier                                        |
+| Email              | SendGrid                                                 |
+| Card metadata      | `@flesh-and-blood/cards` + `@flesh-and-blood/types`      |
+| Fuzzy search       | Fuse.js (client-side, injected via Redux extra argument) |
+
+## Monorepo Structure
+
+```
+codex-of-solana/
+├── apps/
+│   ├── api/                          # NestJS backend
+│   └── web/                          # React frontend
+├── packages/
+│   ├── config/                       # Shared ESLint, TS, Prettier configs
+│   ├── core/                         # Domain + Application + Infrastructure and shared kernel (e.g. AppError)
+│   └── orm/                          # Prisma schema, client re-export, fabbrica factories, migrations
+├── turbo.json
+├── pnpm-workspace.yaml
+└── package.json
+```
+
+**Principles:**
+
+- `core` Contains domain logic, use cases, repository interfaces, and concrete implementations. Should not depend on any web or API concerns. Also contains shared kernel types like `AppError` and `Result`.
+- `apps/api` wires NestJS DI and imports use cases from `core`.
+- `apps/web` imports only from `shared` for API types, never from `core` directly.
+
 ## Commands
 
 ```bash
@@ -23,20 +66,6 @@ pnpm --filter @codex/api test       # Jest
 pnpm --filter @codex/web exec vitest run src/store/card-catalog/__tests__/card-catalog.spec.ts
 ```
 
-`VITE_API_URL` — set in web `.env` to point at the API (defaults to `''` / same origin).
-
-## Architecture
-
-**Monorepo** managed with pnpm workspaces + Turborepo. Three layers:
-
-```
-packages/shared   — DTOs, Result type, constants, test builders (used by everyone)
-packages/core     — domain + use cases + repository interfaces + implementations
-packages/orm      — Prisma client re-export (consumers depend on @codex/orm, not @prisma/client)
-apps/api          — NestJS, injects @codex/core use cases via DI
-apps/web          — React 19 + Redux Toolkit + Vite, talks to API through gateways
-```
-
 ### Result pattern
 
 Repositories and gateways return `Promise<Result<T, E>>`. `try/catch` lives **only** in infrastructure adapters (Repository implementation, API gateway, Prisma adapter). The application layer and thunks propagate `Result` without try/catch; thunks use `rejectWithValue` to surface errors.
@@ -50,17 +79,17 @@ const err = <E>(e: E) => ({ ok: false, error: e });
 
 ### packages/core — domain layer
 
-Organised by bounded context (currently `card-catalog`):
+Organised by bounded context :
 
-- `domain/` — error types
-- `application/` — use case classes, repository interfaces, fixture factories for tests
+- `domain/` — error types and aggregate roots (e.g. `Card`, `Printing`) with domain logic and invariants; no data-fetching concerns
+- `application/` — use case classes, repository interfaces and unit test for use cases; no infrastructure concerns
 - `infrastructure/` — concrete repository implementations (`card-catalog.fab.repository.ts`, `card-catalog.inmemory.repository.ts`)
 
-The FaB (Flesh and Blood) repository reads from the `@flesh-and-blood/cards` npm package and maps to `CardDto`. An in-memory repository is the standard test double.
+The FaB (Flesh and Blood) repository reads from the `@flesh-and-blood/cards` npm package and maps to `Card`. An in-memory repository is the standard test double.
 
 ### apps/api — NestJS
 
-Each domain has a NestJS module. The module wires use cases to concrete repositories via `useFactory`. A global `DomainErrorFilter` converts thrown `AppError` instances into HTTP responses.
+Each domain has a NestJS module. The module wires use cases to concrete repositories via `useFactory`. A global `HttpError` converts thrown `AppError` instances into HTTP responses.
 
 ### apps/web — Redux + Gateway pattern
 
@@ -89,46 +118,40 @@ State is managed with Redux Toolkit. Thunks receive **gateway** dependencies (`T
 
 ## Testing conventions
 
-**Format**
-
-```ts
-describe('Feature: My feature description', () => {
-  test('Rule: My rule explained in plain english', async () => { … });
-});
-```
-
 Never use class/function names or any technical terms as describe / test labels. Even non-developers should be able to understand which behavior is tested just by reading the test.
 
-**Test data** — always use test builders like `cardBuilder()` / `printingBuilder()` from `@codex/shared`:
+### Backend (core package)
 
-```ts
-const card = cardBuilder().withName('Ninja Strike').withPitch(CARD_PITCHES.Red).build();
-```
+**Sociable unit tests** (`.spec.ts`, co-located in `__tests__/`):
 
-**FE tests** — use `createTestStore()` from `__tests__/create-test-store.ts` to create a fake store implementation. To preload the store with an initial state, or to test your redux selectors you can use stateBuilder.
+- Test use case behavior end-to-end using in-memory repository implementations.
+- Format: `test('Rule: <description>', ...)`
+- One test per business rule: happy path and each error / edge case
+- Fixture files expose `givenX()`, `whenY()`, `thenZ()`, etc.
+- Builders: fluent `builder().withProp1('value').withProp2('value').build()` wrapping aggregate creation (or type)
 
-```ts
-const card = cardBuilder().withCardIdentifier('ninja-strike-red').withName('Ninja Strike').build();
-const store = createTestStore({ cardGateway: new InMemoryCardGateway([card]) });
+**Integration tests** (`.integration.test.ts`, in `infrastructure/repositories/__tests__/`):
 
-store.dispatch(myAction());
+- One file per Prisma repository.
+- Bootstrapped via Testcontainers + Prisma migrations.
+- Seeded via Prisma Fabbrica factories (`UserFactory.create()`).
+- Wrapped in transactions for rollback isolation (`wrapInTransaction(prisma, ...)`).
+- Tests: correct return when found, null when not found, correct persistence after save.
 
-expect(store.getState().state).toBe('whatever');
-```
+### Frontend (apps/web)
 
-**Core tests** — use fixture factories (`createCardCatalogFixture`) that wire an in-memory repository and expose `given/when/then` helpers.
+**Store unit tests** (`.spec.ts`, co-located with slices/thunks):
 
-**Assertions** — avoid redundant count checks when `toEqual` on the full array already covers it.
+- Format: given store in state A → dispatch action B → store should be in state C.
+- Stores are often preloaded with an explicit initial state to set up the scenario before dispatching actions. Use createTestStore() with in-memory gateways to set up the initial state. Use stateBuilder helpers to construct complex state shapes.
+- Inject in-memory implementations of all gateway interfaces via extra argument (e.g. `InMemorySearchGateway`, `InMemoryCardGateway`, ...).
+- Test selectors independently with known state shapes.
+- No component rendering in these tests — pure Redux state verification.
+- Also uses fixture files and builders for readability, but focused on the store shape and dispatched actions rather than domain rules.
+- Selector should handle derived state (e.g. filtering) — therefore, they should be tested as well
 
-**Infrastructure wrappers** (e.g. `HttpClient`) do not need tests.
+### Shared principles
 
-## Packages
-
-| Package         | Purpose                                                           |
-| --------------- | ----------------------------------------------------------------- |
-| `@codex/shared` | DTOs, `Result`, domain constants, `cardBuilder`/`printingBuilder` |
-| `@codex/core`   | Use cases, repository interfaces, concrete implementations        |
-| `@codex/orm`    | Prisma client re-export                                           |
-| `@codex/config` | Shared TypeScript config                                          |
-| `@codex/web`    | React frontend                                                    |
-| `@codex/api`    | NestJS backend                                                    |
+- **D.A.M.P.** (Descriptive And Meaningful Phrases): fixture files and builders make test scenarios readable without reading implementation details.
+- No tests for single methods in isolation — test the behavior of units as a whole.
+- Base `createFixture()` provides shared helpers (`thenErrorShouldBe`, etc.) extended by domain-specific fixtures.

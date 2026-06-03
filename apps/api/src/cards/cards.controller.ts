@@ -1,6 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { GetAllCardsUseCase } from '@codex/core';
-import type { CardDto } from '@codex/shared';
+import { type Card, GetAllCardsUseCase } from '@codex/core';
 
 @Controller('cards')
 export class CardsController {
@@ -10,7 +9,7 @@ export class CardsController {
   ) {}
 
   @Get()
-  async getAll(): Promise<CardDto[]> {
+  async getAll(): Promise<Card[]> {
     const result = await this.getAllCards.execute();
     if (!result.ok) throw result.error;
     return result.value;

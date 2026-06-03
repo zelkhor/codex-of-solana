@@ -1,5 +1,5 @@
-import { cardBuilder } from '@codex/shared';
 import { createCardCatalogFixture } from './card-catalog.fixture';
+import { cardBuilder } from '../../../__tests__/builders/card.builder';
 
 describe('Feature: Listing all cards', () => {
   test('Rule: It should list all the printed cards', async () => {

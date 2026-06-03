@@ -1,5 +1,5 @@
-import type { Result } from '../helpers/result';
-import type { AppError } from '../helpers/errors';
+import type { AppError } from '../../shared/errors';
+import type { Result } from '../../shared/result';
 
 export function expectOk<T, E extends AppError>(
   r: Result<T, E>,

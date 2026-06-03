@@ -1,10 +1,10 @@
-import type { CardRarityT } from '@codex/shared';
-import { CARD_RARITIES } from '@codex/shared';
-import attackImg from '@codex/assets/attack.png';
-import defenseImg from '@codex/assets/defense.png';
-import pitchImg from '@codex/assets/pitch.png';
-import lifeImg from '@codex/assets/life.png';
-import intellectImg from '@codex/assets/intellect.png';
+import type { CardRarityT } from '@codex/core';
+import { CARD_RARITIES } from '@codex/core';
+import attackImg from '../../assets/attack.png';
+import defenseImg from '../../assets/defense.png';
+import pitchImg from '../../assets/pitch.png';
+import lifeImg from '../../assets/life.png';
+import intellectImg from '../../assets/intellect.png';
 
 const statIconClass = 'w-4 h-4 object-contain';
 

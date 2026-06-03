@@ -1,11 +1,11 @@
 import { useEffect, type RefObject } from 'react';
 import { X } from 'lucide-react';
-import type { CardDto, PrintingDto } from '@codex/shared';
+import type { Card, Printing } from '@codex/core';
 import { CardDetail } from '@/components/card/card-detail/CardDetail';
 
 interface CardDetailModalProps {
-  card: CardDto;
-  printing: PrintingDto;
+  card: Card;
+  printing: Printing;
   onClose: () => void;
   cardImageContainerRef?: RefObject<HTMLDivElement | null>;
   cardImageVisible?: boolean;

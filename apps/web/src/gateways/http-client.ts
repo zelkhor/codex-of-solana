@@ -1,4 +1,4 @@
-import { type Result, ok, err, AppError } from '@codex/shared';
+import { type Result, ok, err, AppError } from '@codex/core';
 
 export class HttpClient {
   constructor(private readonly baseUrl: string) {}

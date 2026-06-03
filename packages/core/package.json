@@ -11,11 +11,10 @@
   },
   "dependencies": {
     "@codex/orm": "workspace:*",
-    "@codex/shared": "workspace:*",
-    "@flesh-and-blood/cards": "^3.9.2",
-    "@flesh-and-blood/types": "^3.8.24"
+    "@flesh-and-blood/cards": "^3.9.2"
   },
   "devDependencies": {
+    "@flesh-and-blood/types": "^3.8.24",
     "@codex/config": "workspace:*",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.19.19",

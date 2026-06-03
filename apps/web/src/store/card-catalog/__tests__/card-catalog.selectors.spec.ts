@@ -9,7 +9,7 @@ import {
   CARD_TALENTS,
   CARD_TYPES,
   CARD_KEYWORDS,
-} from '@codex/shared';
+} from '@codex/core';
 import { selectVisiblePrintings } from '../card-catalog.selectors';
 import { stateBuilder } from '@/store/__tests__/state.builder';
 

@@ -1,4 +1,4 @@
-import { AppError } from '@codex/shared';
+import { AppError } from '../../shared/errors';
 
 export class CardCatalogLoadError extends AppError {
   constructor(cause?: string) {

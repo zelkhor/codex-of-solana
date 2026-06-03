@@ -1,13 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type {
-  CardClassT,
-  CardTalentT,
-  CardTypeT,
-  CardKeywordT,
-  CardSetT,
-  CardRarityT,
-  CardFoilingT,
-} from '@codex/shared';
+import {
+  type CardClassT,
+  type CardFoilingT,
+  type CardKeywordT,
+  type CardRarityT,
+  type CardSetT,
+  type CardTalentT,
+  type CardTypeT,
+} from '@codex/core';
 
 export interface FiltersState {
   classes: CardClassT[];

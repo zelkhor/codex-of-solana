@@ -1,14 +1,14 @@
-import type { CardDto } from '@codex/shared';
+import type { Card } from '@codex/core';
 import type { ISearchGateway } from '@/gateways/search.gateway';
 
 export class InMemorySearchGateway implements ISearchGateway {
-  private items: CardDto[] = [];
+  private items: Card[] = [];
 
-  index(items: unknown[]): void {
-    this.items = items as CardDto[];
+  index(items: Card[]): void {
+    this.items = items as Card[];
   }
 
-  search(query: string): unknown[] {
+  search(query: string): Card[] {
     const q = query.toLowerCase();
     return this.items.filter(
       (c) =>

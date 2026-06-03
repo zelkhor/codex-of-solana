@@ -1,15 +1,7 @@
 import { createFixture } from '@/store/__tests__/create-fixture';
 import { createTestStore, type AppTestStore } from '@/store/__tests__/create-test-store.ts';
 import type { StateBuilder } from '@/store/__tests__/state.builder';
-import type {
-  CardClassT,
-  CardTalentT,
-  CardTypeT,
-  CardKeywordT,
-  CardSetT,
-  CardRarityT,
-  CardFoilingT,
-} from '@codex/shared';
+
 import {
   setClasses,
   setTalents,
@@ -23,6 +15,15 @@ import {
 } from '../filters.slice';
 import { selectFilters, selectHasActiveFilters } from '../filters.selectors';
 import { expect } from 'vitest';
+import type {
+  CardClassT,
+  CardFoilingT,
+  CardKeywordT,
+  CardRarityT,
+  CardSetT,
+  CardTalentT,
+  CardTypeT,
+} from '@codex/core';
 
 export const createFiltersFixture = createFixture((stateBuilder) => {
   let store: AppTestStore;

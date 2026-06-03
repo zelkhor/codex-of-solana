@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import type { CardDto, PrintingDto } from '@codex/shared';
+import type { Card, Printing } from '@codex/core';
 import { FlipHorizontal2 } from 'lucide-react';
 import { TiltCard } from '@/components/card/TiltCard';
 import { useCardDetailViewModel } from './card-detail.view-model';
@@ -14,8 +14,8 @@ import {
 } from '@/components/ui/CardIcons';
 
 interface CardDetailProps {
-  card: CardDto;
-  initialPrinting: PrintingDto;
+  card: Card;
+  initialPrinting: Printing;
   onBack?: () => void;
   cardImageContainerRef?: RefObject<HTMLDivElement | null>;
   cardImageVisible?: boolean;

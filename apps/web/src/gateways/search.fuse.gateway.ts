@@ -1,12 +1,12 @@
 import Fuse from 'fuse.js';
-import type { CardDto } from '@codex/shared';
+import type { Card } from '@codex/core';
 import type { ISearchGateway } from '@/gateways/search.gateway';
 
 export class FuseSearchGateway implements ISearchGateway {
-  private fuse: Fuse<CardDto> | null = null;
+  private fuse: Fuse<Card> | null = null;
 
-  index(items: unknown[]): void {
-    this.fuse = new Fuse(items as CardDto[], {
+  index(items: Card[]): void {
+    this.fuse = new Fuse(items as Card[], {
       keys: [
         { name: 'name', weight: 0.7 },
         { name: 'cardIdentifier', weight: 0.15 },
@@ -22,7 +22,7 @@ export class FuseSearchGateway implements ISearchGateway {
     });
   }
 
-  search(query: string): unknown[] {
+  search(query: string): Card[] {
     if (!this.fuse) return [];
     return this.fuse.search(query).map((r) => r.item);
   }

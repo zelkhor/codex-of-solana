@@ -1,13 +1,13 @@
 import { useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import type { CardDto, PrintingDto } from '@codex/shared';
+import type { Card, Printing } from '@codex/core';
 import type { GridSlot } from '@/store/card-catalog/card-catalog.selectors';
 import { buildCardGridRows } from './card-grid.view-model';
 import { CardGridItem } from '@/components/card/card-grid-item/CardGridItem';
 
 interface CardGridProps {
   slots: GridSlot[];
-  onCardClick: (card: CardDto, printing: PrintingDto, rect: DOMRect) => void;
+  onCardClick: (card: Card, printing: Printing, rect: DOMRect) => void;
 }
 
 const CARD_ROW_HEIGHT = 280;

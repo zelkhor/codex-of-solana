@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SlidersHorizontal } from 'lucide-react';
 import type { AppDispatch, RootState } from '@/store';
-import type { CardDto, PrintingDto } from '@codex/shared';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
 import { selectVisiblePrintings } from '@/store/card-catalog/card-catalog.selectors';
 import { ASYNC_STATUS } from '@/store/async-status';
@@ -12,10 +11,11 @@ import { CardFlipAnimation } from '@/components/card/CardFlipAnimation';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { FilterDrawer } from '@/components/layout/FilterDrawer';
 import { CardDetailModal } from '@/components/card/card-detail/CardDetailModal.tsx';
+import type { Card, Printing } from '@codex/core';
 
 interface ActiveCard {
-  card: CardDto;
-  printing: PrintingDto;
+  card: Card;
+  printing: Printing;
   imageUrl: string;
   sourceRect: DOMRect;
 }
@@ -45,7 +45,7 @@ export const CardListingView = () => {
     return () => document.removeEventListener('keydown', handler);
   }, []);
 
-  const handleCardClick = (card: CardDto, printing: PrintingDto, rect: DOMRect) => {
+  const handleCardClick = (card: Card, printing: Printing, rect: DOMRect) => {
     setActiveCard({
       card,
       printing,

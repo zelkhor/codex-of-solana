@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import type { PrintingDto } from '@codex/shared';
 import type { TiltEffect } from '@/components/card/TiltCard';
 import { foilingToEffect } from '@/components/card/card.helpers';
+import type { Printing } from '@codex/core';
 
 export interface CardDetailViewModel {
-  activePrinting: PrintingDto;
-  setActivePrinting: (printing: PrintingDto) => void;
-  backPrinting: PrintingDto | null;
+  activePrinting: Printing;
+  setActivePrinting: (printing: Printing) => void;
+  backPrinting: Printing | null;
   isFlipped: boolean;
   flip: () => void;
   tiltEffect: TiltEffect;
 }
 
-export const useCardDetailViewModel = (initialPrinting: PrintingDto): CardDetailViewModel => {
-  const [activePrinting, setActivePrinting] = useState<PrintingDto>(initialPrinting);
+export const useCardDetailViewModel = (initialPrinting: Printing): CardDetailViewModel => {
+  const [activePrinting, setActivePrinting] = useState<Printing>(initialPrinting);
 
   const { backPrinting } = activePrinting;
 

@@ -8,8 +8,6 @@ const config: Config = {
   moduleNameMapper: {
     // <rootDir> resolves to apps/api/src/
     '^@codex/core$': '<rootDir>/../../../packages/core/src/index.ts',
-    '^@codex/orm$': '<rootDir>/../../../packages/orm/src/index.ts',
-    '^@codex/shared$': '<rootDir>/../../../packages/shared/src/index.ts',
   },
 };
 
