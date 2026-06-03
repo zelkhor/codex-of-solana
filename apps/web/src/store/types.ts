@@ -6,6 +6,6 @@ export type { ICardGateway, ISearchGateway };
 export interface ThunkDependencies {
   cardGateway: ICardGateway;
   searchGateway: ISearchGateway;
-  collectionService: unknown;
-  authService: unknown;
+  collectionGateway: unknown;
+  authGateway: unknown;
 }

@@ -10,7 +10,6 @@ export interface CardDetailViewModel {
   isFlipped: boolean;
   flip: () => void;
   tiltEffect: TiltEffect;
-  imageUrl: string;
 }
 
 export const useCardDetailViewModel = (initialPrinting: PrintingDto): CardDetailViewModel => {
@@ -27,6 +26,5 @@ export const useCardDetailViewModel = (initialPrinting: PrintingDto): CardDetail
     isFlipped,
     flip: () => setActivePrinting(isFlipped ? initialPrinting : backPrinting!),
     tiltEffect: foilingToEffect(activePrinting.foiling),
-    imageUrl: activePrinting.image,
   };
 };

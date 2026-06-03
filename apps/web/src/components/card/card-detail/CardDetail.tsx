@@ -50,7 +50,7 @@ export const CardDetail = ({
         >
           <TiltCard className="w-full aspect-5/7 rounded-[17px]" effect={vm.tiltEffect}>
             <img
-              src={vm.imageUrl}
+              src={vm.activePrinting.image}
               alt={card.name}
               className="w-full h-full rounded-lg object-cover"
             />

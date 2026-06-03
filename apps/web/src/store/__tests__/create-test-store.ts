@@ -11,8 +11,8 @@ export const createTestStore = (
   {
     cardGateway = new InMemoryCardGateway(),
     searchGateway = new InMemorySearchGateway(),
-    collectionService = {},
-    authService = {},
+    collectionGateway = {},
+    authGateway = {},
   }: Partial<ThunkDependencies> = {},
   preloadedState?: Partial<RootState>,
 ) => {
@@ -27,7 +27,7 @@ export const createTestStore = (
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
-        thunk: { extraArgument: { cardGateway, searchGateway, collectionService, authService } },
+        thunk: { extraArgument: { cardGateway, searchGateway, collectionGateway, authGateway } },
         serializableCheck: false,
       }).concat(actionLogger),
     preloadedState,

@@ -9,12 +9,12 @@ import { useDebounced } from '@/hooks/useDebounced';
 
 export const SearchInput = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const storeQuery = useSelector(selectSearchQuery);
-  const [value, setValue] = useState(storeQuery);
+  const searchQuery = useSelector(selectSearchQuery);
+  const [value, setValue] = useState(searchQuery);
 
   useEffect(() => {
-    setValue(storeQuery);
-  }, [storeQuery]);
+    setValue(searchQuery);
+  }, [searchQuery]);
 
   useDebounced(
     () => {

@@ -13,8 +13,8 @@ const http = new HttpClient(import.meta.env.VITE_API_URL ?? '');
 const store = createStore({
   cardGateway: new CardApiGateway(http),
   searchGateway: new FuseSearchGateway(),
-  collectionService: {},
-  authService: {},
+  collectionGateway: {},
+  authGateway: {},
 });
 
 const root = document.getElementById('root');

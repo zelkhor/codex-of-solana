@@ -1,7 +1,7 @@
 import { useState, useRef, useId, type ReactNode } from 'react';
 import { cn } from '@/lib/utils.ts';
 
-export type TiltEffect = 'standard' | 'rainbow-foil' | 'cold-foil';
+export type TiltEffect = 'standard' | 'rainbow-foil' | 'cold-foil' | 'gold-foil';
 
 interface TiltCardProps {
   children: ReactNode;

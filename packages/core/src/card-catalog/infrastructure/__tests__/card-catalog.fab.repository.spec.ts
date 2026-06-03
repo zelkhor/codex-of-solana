@@ -1,6 +1,6 @@
+import { expectOk } from '@codex/shared/src/testing/result.helpers';
 import {
   IMAGE_BASE,
-  expectOk,
   cardBuilder,
   printingBuilder,
   CARD_SETS,

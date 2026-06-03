@@ -30,4 +30,3 @@ export type {
   CardSubtypeT,
 } from './constants/card.constants';
 export { cardBuilder, printingBuilder } from './testing/card.builder';
-export { expectOk, expectErr } from './testing/result.helpers';

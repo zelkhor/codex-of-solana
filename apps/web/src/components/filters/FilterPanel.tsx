@@ -18,14 +18,14 @@ import {
   CARD_KEYWORDS,
   CARD_RARITIES,
   CARD_FOILINGS,
-  CardClassT,
-  CardTalentT,
-  CardTypeT,
-  CardKeywordT,
-  CardRarityT,
-  CardFoilingT,
-  CardSetT,
   CARD_SETS,
+  type CardClassT,
+  type CardTalentT,
+  type CardTypeT,
+  type CardKeywordT,
+  type CardRarityT,
+  type CardFoilingT,
+  type CardSetT,
 } from '@codex/shared';
 import { SearchInput } from '@/components/filters/SearchInput';
 import { AccordionSection } from '@/components/ui/AccordionSection';
