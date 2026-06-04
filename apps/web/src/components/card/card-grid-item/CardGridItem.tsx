@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Card, Printing } from '@codex/core';
 import { FlipHorizontal2 } from 'lucide-react';
 import { CardBack } from '@/components/card/CardBack';
+import { FoilingBadge } from '@/components/card/FoilingBadge';
 import { buildCardGridItemViewModel } from './card-grid-item.view-model';
 import { TiltCard } from '@/components/card/TiltCard';
 
@@ -48,6 +49,9 @@ export const CardGridItem = ({ card, printing, backPrinting, onClick }: CardGrid
           />
         )}
       </TiltCard>
+      <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+        <FoilingBadge foiling={activePrinting.foiling} />
+      </div>
       {backPrinting && (
         <button
           onClick={handleFlip}

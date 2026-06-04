@@ -17,8 +17,8 @@ export const CARD_RARITIES = Rarity;
 export type CardRarityT = `${Rarity}`;
 
 export const CARD_FOILINGS = {
-  ...Foiling,
   Regular: 'Regular',
+  ...Foiling,
 } as const;
 export type CardFoilingT = (typeof CARD_FOILINGS)[keyof typeof CARD_FOILINGS];
 

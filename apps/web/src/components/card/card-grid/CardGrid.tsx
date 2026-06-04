@@ -36,7 +36,7 @@ export const CardGrid = ({ slots, onCardClick }: CardGridProps) => {
               data-index={virtualRow.index}
               style={{ position: 'absolute', top: virtualRow.start, left: 0, right: 0 }}
             >
-              <div className="flex flex-col items-center sm:flex-row sm:justify-start gap-2 px-4 sm:px-2 py-1 w-full sm:w-140 lg:w-152 2xl:w-188 mx-auto">
+              <div className="flex flex-col items-center sm:flex-row sm:justify-start gap-6 px-4 sm:px-2 py-3 w-full sm:w-140 lg:w-152 2xl:w-188 mx-auto">
                 {row.slots.map((slot) => (
                   <CardGridItem
                     key={slot.card.cardIdentifier + slot.printing.print}
