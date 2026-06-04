@@ -22,7 +22,7 @@ export interface FiltersState {
   searchQuery: string;
 }
 
-const initialState: FiltersState = {
+export const initialFiltersState: FiltersState = {
   classes: [],
   talents: [],
   types: [],
@@ -36,7 +36,7 @@ const initialState: FiltersState = {
 
 export const filtersSlice = createSlice({
   name: 'filters',
-  initialState,
+  initialState: initialFiltersState,
   reducers: {
     setClasses(state, action: PayloadAction<CardClassT[]>) {
       state.classes = action.payload;
@@ -66,7 +66,7 @@ export const filtersSlice = createSlice({
       state.searchQuery = action.payload;
     },
     resetFilters() {
-      return initialState;
+      return initialFiltersState;
     },
   },
 });

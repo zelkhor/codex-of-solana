@@ -11,7 +11,7 @@ export const CardGridSkeleton = () => (
     {SKELETON_ROWS.map((row, i) => (
       <div
         key={i}
-        className="flex flex-col items-center sm:flex-row sm:justify-start gap-2 px-4 sm:px-2 py-1 w-full sm:w-140 lg:w-152 2xl:w-188 mx-auto"
+        className="flex flex-col items-center sm:flex-row sm:justify-start gap-6 px-4 sm:px-2 py-3 w-full sm:w-140 lg:w-152 2xl:w-188 mx-auto"
       >
         {row.map((key) => (
           <SkeletonCard key={key} />

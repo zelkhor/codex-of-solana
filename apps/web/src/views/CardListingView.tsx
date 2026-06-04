@@ -24,7 +24,7 @@ export const CardListingView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const visiblePrintings = useSelector(selectVisiblePrintings);
   const status = useSelector((s: RootState) => s.cardCatalog.status);
-  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
@@ -63,8 +63,8 @@ export const CardListingView = () => {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <AppHeader />
-      <div className="flex-1 overflow-hidden px-6 pb-6">
-        <main className="relative h-full bg-[#f3f1f3] dark:bg-[#1d161e] rounded-2xl overflow-hidden">
+      <div className="flex-1 overflow-hidden ">
+        <main className="relative h-full bg-[#f3f1f3] dark:bg-[#1d161e] overflow-hidden">
           {status === ASYNC_STATUS.Loading && <CardGridSkeleton />}
           {status === ASYNC_STATUS.Failed && (
             <div className="flex h-full items-center justify-center">
