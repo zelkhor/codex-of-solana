@@ -65,11 +65,11 @@ export const CardDetail = ({
           className="relative w-full max-w-50 mx-auto sm:max-w-none"
           style={{ opacity: cardImageVisible ? 1 : 0 }}
         >
-          <TiltCard className="w-full aspect-5/7 rounded-[17px]" effect={vm.tiltEffect}>
+          <TiltCard className="w-full aspect-5/7" effect={vm.tiltEffect}>
             <img
               src={vm.activePrinting.image}
               alt={card.name}
-              className="w-full h-full rounded-lg object-cover"
+              className="w-full h-full object-cover"
             />
           </TiltCard>
           <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
