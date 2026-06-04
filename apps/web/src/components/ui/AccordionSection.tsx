@@ -20,10 +20,12 @@ export const AccordionSection = ({
     <div>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center justify-between w-full py-0.5 text-left"
+        className="cursor-pointer flex items-center justify-between w-full py-2.5 text-left"
       >
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">{label}</span>
+          <span className="text-sm sm:text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            {label}
+          </span>
           {!open && !!badge && (
             <span className="text-xs bg-zinc-800 text-white dark:bg-gray-200 dark:text-zinc-900 rounded-full w-5 h-5 flex items-center justify-center font-medium">
               {badge}
@@ -31,11 +33,11 @@ export const AccordionSection = ({
           )}
         </div>
         <ChevronDown
-          size={14}
+          size={16}
           className={`text-zinc-400 transition-transform duration-200${open ? ' rotate-180' : ''}`}
         />
       </button>
-      {open && <div className="mt-1.5">{children}</div>}
+      {open && <div className="mt-2 sm:mt-1.5">{children}</div>}
     </div>
   );
 };

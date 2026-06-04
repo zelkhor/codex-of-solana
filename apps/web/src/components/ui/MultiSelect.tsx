@@ -5,7 +5,7 @@ interface MultiSelectProps {
 }
 
 export const MultiSelect = ({ options, selected, onChange }: MultiSelectProps) => (
-  <div className="flex flex-wrap gap-1">
+  <div className="flex flex-wrap gap-2">
     {options.map((opt) => (
       <button
         key={opt}
@@ -15,7 +15,7 @@ export const MultiSelect = ({ options, selected, onChange }: MultiSelectProps) =
             : [...selected, opt];
           onChange(next);
         }}
-        className={`cursor-pointer text-xs px-2 py-0.5 rounded ${
+        className={`cursor-pointer text-sm sm:text-xs px-3 py-1 sm:px-2 sm:py-0.5 rounded ${
           selected.includes(opt)
             ? 'bg-zinc-800 text-white dark:bg-white dark:text-zinc-900'
             : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600'

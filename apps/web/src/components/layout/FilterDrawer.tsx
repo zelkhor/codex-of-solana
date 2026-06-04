@@ -41,14 +41,14 @@ export const FilterDrawer = ({ isOpen, onClose, triggerRef }: FilterDrawerProps)
   return (
     <div
       ref={drawerRef}
-      className={`fixed top-0 left-0 h-full w-80 z-50 bg-white dark:bg-[#2a2028] shadow-2xl transition-transform duration-300 ease-in-out overflow-y-auto ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      className={`fixed top-0 left-0 h-full w-full sm:w-80 z-50 bg-white dark:bg-[#2a2028] shadow-2xl transition-transform duration-300 ease-in-out overflow-y-auto ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+        className="absolute top-4 right-4 p-2 cursor-pointer rounded-full bg-zinc-100 dark:bg-zinc-700 sm:bg-transparent sm:dark:bg-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
         aria-label="Close filters"
       >
-        <X size={18} />
+        <X size={20} />
       </button>
       <FilterPanel />
     </div>

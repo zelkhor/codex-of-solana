@@ -39,12 +39,12 @@ export const FilterPanel = () => {
   const f = useSelector(selectFilters);
 
   return (
-    <div className="p-4 space-y-4">
-      <div className="flex items-center justify-between pr-10">
-        <h2 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Filters</h2>
+    <div className="p-6 space-y-5">
+      <div className="flex items-center justify-between pr-15">
+        <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Filters</h2>
         <button
           onClick={() => dispatch(resetFilters())}
-          className="text-xs text-zinc-500 dark:text-zinc-400 underline"
+          className="cursor-pointer text-sm text-zinc-500 dark:text-zinc-400 underline"
         >
           Reset all
         </button>
