@@ -1,4 +1,4 @@
-import { type RefObject, useLayoutEffect, useRef } from 'react';
+import { type RefObject, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cardBackImg from '../../assets/flesh-back.png';
 
@@ -15,6 +15,8 @@ export const CardFlipAnimation = ({
   targetRef,
   onComplete,
 }: CardFlipAnimationProps) => {
+  const [src, setSrc] = useState(imageUrl);
+
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -118,9 +120,10 @@ export const CardFlipAnimation = ({
           }}
         >
           <img
-            src={imageUrl}
+            src={src}
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             alt="Card front"
+            onError={() => setSrc(cardBackImg)}
           />
         </div>
         <div

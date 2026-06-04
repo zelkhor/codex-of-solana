@@ -28,6 +28,7 @@ import {
   CARD_KEYWORDS,
   CARD_RARITIES,
   CARD_FOILINGS,
+  SET_GROUPS,
   type CardClassT,
   type CardTalentT,
   type CardTypeT,
@@ -36,25 +37,33 @@ import {
   type CardRarityT,
   type CardFoilingT,
   type CardSetT,
-  SET_ORDER,
 } from '@codex/core';
 import { SearchInput } from '@/components/filters/SearchInput';
-import { AccordionSection } from '@/components/ui/AccordionSection';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 import { NumericFilterInput } from '@/components/ui/NumericFilterInput';
-import { RotateCcw, ChevronDown, X } from 'lucide-react';
+import { RotateCcw, X } from 'lucide-react';
 import { Toggle } from '@/components/ui/Toggle.tsx';
+import { Select } from '@/components/ui/Select.tsx';
 
 interface FilterPanelProps {
   onClose?: () => void;
 }
+
+const FilterRow = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="flex items-start gap-3">
+    <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 shrink-0 w-20 pt-2">
+      {label}
+    </span>
+    <div className="flex-1 min-w-0">{children}</div>
+  </div>
+);
 
 export const FilterPanel = ({ onClose }: FilterPanelProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const f = useSelector(selectFilters);
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="p-6 space-y-4">
       <div className="flex items-center gap-3">
         <div className="flex-1">
           <SearchInput />
@@ -70,7 +79,7 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
         )}
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-2">
         <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Filters</h2>
         <button
           onClick={() => dispatch(resetFilters())}
@@ -81,119 +90,116 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
         </button>
       </div>
 
-      <AccordionSection defaultOpen label="Class" badge={f.classes.length}>
-        <MultiSelect
-          options={Object.values(CARD_CLASSES)}
-          selected={f.classes}
-          onChange={(values) => dispatch(setClasses(values as CardClassT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Talent" badge={f.talents.length}>
-        <MultiSelect
-          options={Object.values(CARD_TALENTS)}
-          selected={f.talents}
-          onChange={(values) => dispatch(setTalents(values as CardTalentT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Rarity" badge={f.rarities.length}>
-        <MultiSelect
-          options={Object.values(CARD_RARITIES)}
-          selected={f.rarities}
-          onChange={(values) => dispatch(setRarities(values as CardRarityT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Foiling" badge={f.foilings.length}>
-        <MultiSelect
-          options={Object.values(CARD_FOILINGS)}
-          selected={f.foilings}
-          onChange={(values) => dispatch(setFoilings(values as CardFoilingT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Set" badge={f.sets.length}>
-        <MultiSelect
-          options={SET_ORDER}
-          selected={f.sets}
-          onChange={(values) => dispatch(setSets(values as CardSetT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Type" badge={f.types.length}>
-        <MultiSelect
-          options={Object.values(CARD_TYPES)}
-          selected={f.types}
-          onChange={(values) => dispatch(setTypes(values as CardTypeT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Subtype" badge={f.subtypes.length}>
-        <MultiSelect
-          options={Object.values(CARD_SUBTYPES)}
-          selected={f.subtypes}
-          onChange={(values) => dispatch(setSubtypes(values as CardSubtypeT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Keywords" badge={f.keywords.length}>
-        <MultiSelect
-          options={Object.values(CARD_KEYWORDS)}
-          selected={f.keywords}
-          onChange={(values) => dispatch(setKeywords(values as CardKeywordT[]))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Cost" badge={f.cost.value !== null ? 1 : 0}>
-        <NumericFilterInput
-          value={f.cost}
-          onChange={(v: NumericFilterT) => dispatch(setCostFilter(v))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Pitch" badge={f.pitch.value !== null ? 1 : 0}>
-        <NumericFilterInput
-          value={f.pitch}
-          onChange={(v: NumericFilterT) => dispatch(setPitchFilter(v))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Attack" badge={f.attack.value !== null ? 1 : 0}>
-        <NumericFilterInput
-          value={f.attack}
-          onChange={(v: NumericFilterT) => dispatch(setAttackFilter(v))}
-        />
-      </AccordionSection>
-
-      <AccordionSection defaultOpen label="Defense" badge={f.defense.value !== null ? 1 : 0}>
-        <NumericFilterInput
-          value={f.defense}
-          onChange={(v: NumericFilterT) => dispatch(setDefenseFilter(v))}
-        />
-      </AccordionSection>
-
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Sort</h2>
-          <div className="relative">
-            <select
-              value={f.searchQuery.trim() ? 'relevance' : f.sortOrder}
-              disabled={!!f.searchQuery.trim()}
-              onChange={(e) => dispatch(setSortOrder(e.target.value as SortOrderT))}
-              className="cursor-pointer appearance-none text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md pl-3 pr-7 py-1 text-zinc-700 dark:text-zinc-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {f.searchQuery.trim() && <option value="relevance">By relevance</option>}
-              <option value="set-asc">Set release ↑</option>
-              <option value="set-desc">Set release ↓</option>
-              <option value="name-asc">Name A → Z</option>
-              <option value="name-desc">Name Z → A</option>
-            </select>
-            <ChevronDown
-              size={13}
-              className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400"
-            />
-          </div>
+        <FilterRow label="Class">
+          <MultiSelect
+            options={Object.values(CARD_CLASSES)}
+            selected={f.classes}
+            onChange={(values) => dispatch(setClasses(values as CardClassT[]))}
+            placeholder="e.g. Assassin, Brute, Warrior, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Talent">
+          <MultiSelect
+            options={Object.values(CARD_TALENTS)}
+            selected={f.talents}
+            onChange={(values) => dispatch(setTalents(values as CardTalentT[]))}
+            placeholder="e.g. Earth, Draconic, Mystic, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Type">
+          <MultiSelect
+            options={Object.values(CARD_TYPES)}
+            selected={f.types}
+            onChange={(values) => dispatch(setTypes(values as CardTypeT[]))}
+            placeholder="e.g. Action, Hero, Weapon, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Subtype">
+          <MultiSelect
+            options={Object.values(CARD_SUBTYPES)}
+            selected={f.subtypes}
+            onChange={(values) => dispatch(setSubtypes(values as CardSubtypeT[]))}
+            placeholder="e.g. Arrow, Item, Trap, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Keywords">
+          <MultiSelect
+            options={Object.values(CARD_KEYWORDS)}
+            selected={f.keywords}
+            onChange={(values) => dispatch(setKeywords(values as CardKeywordT[]))}
+            placeholder="e.g. Dominate, Go again, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Set">
+          <MultiSelect
+            groups={SET_GROUPS.map((g) => ({ label: g.group, options: g.sets }))}
+            selected={f.sets}
+            onChange={(values) => dispatch(setSets(values as CardSetT[]))}
+            placeholder="e.g. Dynasty, Armory Deck: Kayo, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Rarity">
+          <MultiSelect
+            options={Object.values(CARD_RARITIES)}
+            selected={f.rarities}
+            onChange={(values) => dispatch(setRarities(values as CardRarityT[]))}
+            placeholder="e.g. Promo, Marvel, Rare, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Foiling">
+          <MultiSelect
+            options={Object.values(CARD_FOILINGS)}
+            selected={f.foilings}
+            onChange={(values) => dispatch(setFoilings(values as CardFoilingT[]))}
+            placeholder="e.g. Regular, Cold Foil, Rainbow Foil, ..."
+          />
+        </FilterRow>
+        <FilterRow label="Cost">
+          <NumericFilterInput
+            value={f.cost}
+            onChange={(v: NumericFilterT) => dispatch(setCostFilter(v))}
+          />
+        </FilterRow>
+        <FilterRow label="Pitch">
+          <NumericFilterInput
+            value={f.pitch}
+            onChange={(v: NumericFilterT) => dispatch(setPitchFilter(v))}
+          />
+        </FilterRow>
+        <FilterRow label="Attack">
+          <NumericFilterInput
+            value={f.attack}
+            onChange={(v: NumericFilterT) => dispatch(setAttackFilter(v))}
+          />
+        </FilterRow>
+        <FilterRow label="Defense">
+          <NumericFilterInput
+            value={f.defense}
+            onChange={(v: NumericFilterT) => dispatch(setDefenseFilter(v))}
+          />
+        </FilterRow>
+      </div>
+
+      <div className="space-y-3 pt-1">
+        <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Sort</h2>
+        <div className="flex items-start gap-3">
+          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 shrink-0 w-20 pt-2">
+            Order
+          </span>
+          <Select
+            value={f.searchQuery.trim() ? 'relevance' : f.sortOrder}
+            disabled={!!f.searchQuery.trim()}
+            onChange={(v) => dispatch(setSortOrder(v as SortOrderT))}
+            className="flex-1"
+            options={[
+              ...(f.searchQuery.trim() ? [{ value: 'relevance', label: 'By relevance' }] : []),
+              { value: 'set-asc', label: 'Set release ↑' },
+              { value: 'set-desc', label: 'Set release ↓' },
+              { value: 'name-asc', label: 'Name A → Z' },
+              { value: 'name-desc', label: 'Name Z → A' },
+            ]}
+          />
         </div>
         <Toggle
           label="Group printings"

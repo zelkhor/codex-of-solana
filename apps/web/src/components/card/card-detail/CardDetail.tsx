@@ -13,6 +13,7 @@ import {
   RarityIcon,
 } from '@/components/ui/CardIcons';
 import { FoilingBadge } from '@/components/card/FoilingBadge';
+import { CardBack } from '@/components/card/CardBack.tsx';
 
 interface CardDetailProps {
   card: Card;
@@ -32,6 +33,7 @@ export const CardDetail = ({
   const vm = useCardDetailViewModel(initialPrinting);
   const printingsRef = useRef<HTMLDivElement>(null);
   const [hasMorePrintings, setHasMorePrintings] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const el = printingsRef.current;
@@ -66,11 +68,16 @@ export const CardDetail = ({
           style={{ opacity: cardImageVisible ? 1 : 0 }}
         >
           <TiltCard className="w-full aspect-5/7" effect={vm.tiltEffect}>
-            <img
-              src={vm.activePrinting.image}
-              alt={card.name}
-              className="w-full h-full object-cover"
-            />
+            {imgError ? (
+              <CardBack className="w-full h-full" />
+            ) : (
+              <img
+                src={vm.activePrinting.image}
+                alt={card.name}
+                onError={() => setImgError(true)}
+                className={`w-full h-full object-cover`}
+              />
+            )}
           </TiltCard>
           <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
             <FoilingBadge foiling={vm.activePrinting.foiling} />

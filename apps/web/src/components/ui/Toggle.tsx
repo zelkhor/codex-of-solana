@@ -13,7 +13,7 @@ export const Toggle = ({ checked, onChange, label }: ToggleProps) => {
     <div className="flex items-center justify-between gap-3">
       <label
         htmlFor={id}
-        className="text-sm text-zinc-700 dark:text-zinc-300 cursor-pointer select-none"
+        className="text-xs font-medium text-zinc-500 dark:text-zinc-400 shrink-0 pt-2"
       >
         {label}
       </label>

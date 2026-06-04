@@ -62,7 +62,7 @@ export const CardListingView = () => {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <AppHeader />
-      <div className="flex-1 overflow-hidden ">
+      <div className="flex-1 overflow-hidden relative">
         <main className="relative h-full bg-[#f3f1f3] dark:bg-[#1d161e] overflow-hidden">
           {status === ASYNC_STATUS.Loading && <CardGridSkeleton />}
           {status === ASYNC_STATUS.Failed && (
@@ -101,13 +101,13 @@ export const CardListingView = () => {
             </button>
           </div>
         </main>
-      </div>
 
-      <FilterDrawer
-        isOpen={filterOpen}
-        onClose={() => setFilterOpen(false)}
-        triggerRef={filterButtonRef}
-      />
+        <FilterDrawer
+          isOpen={filterOpen}
+          onClose={() => setFilterOpen(false)}
+          triggerRef={filterButtonRef}
+        />
+      </div>
 
       {activeCard && (
         <CardDetailModal
