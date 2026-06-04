@@ -7,6 +7,7 @@ import { selectVisiblePrintings } from '@/store/card-catalog/card-catalog.select
 import { ASYNC_STATUS } from '@/store/async-status';
 import { CardGrid } from '@/components/card/card-grid/CardGrid';
 import { CardGridSkeleton } from '@/components/card/CardGridSkeleton';
+import { NoFilterResults } from '@/components/card/NoFilterResults';
 import { CardFlipAnimation } from '@/components/card/CardFlipAnimation';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { FilterDrawer } from '@/components/layout/FilterDrawer';
@@ -71,7 +72,8 @@ export const CardListingView = () => {
               <p className="text-destructive">Failed to load cards. Please try again</p>
             </div>
           )}
-          {status === ASYNC_STATUS.Succeeded && (
+          {status === ASYNC_STATUS.Succeeded && visiblePrintings.length === 0 && <NoFilterResults />}
+          {status === ASYNC_STATUS.Succeeded && visiblePrintings.length > 0 && (
             <CardGrid slots={visiblePrintings} onCardClick={handleCardClick} />
           )}
 
