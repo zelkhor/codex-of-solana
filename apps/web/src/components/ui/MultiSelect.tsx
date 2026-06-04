@@ -17,7 +17,7 @@ export const MultiSelect = ({ options, selected, onChange }: MultiSelectProps) =
         }}
         className={`cursor-pointer text-xs px-2 py-0.5 rounded ${
           selected.includes(opt)
-            ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+            ? 'bg-zinc-800 text-white dark:bg-white dark:text-zinc-900'
             : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-600'
         }`}
       >

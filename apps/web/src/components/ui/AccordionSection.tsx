@@ -25,7 +25,7 @@ export const AccordionSection = ({
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">{label}</span>
           {!open && !!badge && (
-            <span className="text-xs bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 rounded-full w-5 h-5 flex items-center justify-center font-medium">
+            <span className="text-xs bg-zinc-800 text-white dark:bg-gray-200 dark:text-zinc-900 rounded-full w-5 h-5 flex items-center justify-center font-medium">
               {badge}
             </span>
           )}
