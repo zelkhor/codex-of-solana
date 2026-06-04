@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SlidersHorizontal, X } from 'lucide-react';
 import type { AppDispatch, RootState } from '@/store';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
-import { selectCardWithActivePrinting } from '@/store/card-catalog/card-catalog.selectors';
+import {
+  selectCardWithActivePrinting,
+  selectAllCardsMap,
+} from '@/store/card-catalog/card-catalog.selectors';
 import { ASYNC_STATUS } from '@/store/async-status';
 import { CardGrid } from '@/components/card/card-grid/CardGrid';
 import { CardGridSkeleton } from '@/components/card/CardGridSkeleton';
@@ -25,6 +28,7 @@ interface ActiveCard {
 export const CardListingView = () => {
   const dispatch = useDispatch<AppDispatch>();
   const visibleCards = useSelector(selectCardWithActivePrinting);
+  const allCardsMap = useSelector(selectAllCardsMap);
   const status = useSelector((s: RootState) => s.cardCatalog.status);
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
@@ -45,8 +49,9 @@ export const CardListingView = () => {
   });
 
   const handleCardClick = (card: Card, printing: Printing, rect: DOMRect) => {
+    const fullCard = allCardsMap.get(card.cardIdentifier) ?? card;
     setActiveCard({
-      card,
+      card: fullCard,
       printing,
       imageUrl: printing.image,
       sourceRect: rect,

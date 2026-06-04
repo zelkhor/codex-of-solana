@@ -17,6 +17,11 @@ export const selectAllArtists = createSelector(selectAllCards, (cards): string[]
   [...new Set(cards.flatMap((c) => c.printings.flatMap((p) => p.artists)))].sort(),
 );
 
+export const selectAllCardsMap = createSelector(
+  selectAllCards,
+  (cards): Map<string, Card> => new Map(cards.map((c) => [c.cardIdentifier, c])),
+);
+
 export const selectCardById = (cardIdentifier: string) => (state: RootState) =>
   selectAllCards(state).find((c) => c.cardIdentifier === cardIdentifier);
 
