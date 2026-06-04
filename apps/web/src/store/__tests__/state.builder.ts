@@ -28,6 +28,7 @@ const withRarities = createAction<CardRarityT[]>('withRarities');
 const withFoilings = createAction<CardFoilingT[]>('withFoilings');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');
+const withGroupPrintings = createAction<boolean>('withGroupPrintings');
 const withCostFilter = createAction<NumericFilterT>('withCostFilter');
 const withPitchFilter = createAction<NumericFilterT>('withPitchFilter');
 const withAttackFilter = createAction<NumericFilterT>('withAttackFilter');
@@ -73,6 +74,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withSortOrder, (state, { payload }) => {
       state.filters.sortOrder = payload;
     })
+    .addCase(withGroupPrintings, (state, { payload }) => {
+      state.filters.groupPrintings = payload;
+    })
     .addCase(withCostFilter, (state, { payload }) => {
       state.filters.cost = payload;
     })
@@ -106,6 +110,7 @@ export const stateBuilder = (state = initialState) => {
     withFoilings: reduce(withFoilings),
     withSearchQuery: reduce(withSearchQuery),
     withSortOrder: reduce(withSortOrder),
+    withGroupPrintings: reduce(withGroupPrintings),
     withCostFilter: reduce(withCostFilter),
     withPitchFilter: reduce(withPitchFilter),
     withAttackFilter: reduce(withAttackFilter),

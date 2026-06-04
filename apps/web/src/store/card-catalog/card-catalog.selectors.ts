@@ -63,7 +63,8 @@ export const selectVisibleCards = createSelector(
           .sort((a, b) => {
             const diff = setIdx(a.set) - setIdx(b.set);
             return diff !== 0 ? diff : a.identifier.localeCompare(b.identifier);
-          }),
+          })
+          .slice(0, f.groupPrintings ? 1 : undefined),
       }))
       .filter((card) => card.printings.length > 0);
 

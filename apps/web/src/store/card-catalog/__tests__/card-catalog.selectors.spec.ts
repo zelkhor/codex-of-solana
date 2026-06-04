@@ -321,6 +321,22 @@ describe('Feature: Double-sided card pairing', () => {
   });
 });
 
+describe('Feature: Group printings', () => {
+  test('Rule: When grouping is enabled, a card with multiple printings is shown once with the oldest printing', () => {
+    const arcPrinting = printingBuilder()
+      .withIdentifier('ARC001')
+      .withPrint('ARC001')
+      .withSet(CARD_SETS.ArcaneRising)
+      .build();
+    const card = cardBuilder().withPrintings([arcPrinting, wtrPrinting]).build();
+    const cards = selectVisibleCards(
+      stateBuilder().withAllCards([card]).withGroupPrintings(true).build(),
+    );
+    expect(cards[0].printings).toHaveLength(1);
+    expect(cards[0].printings[0].set).toBe(CARD_SETS.WelcomeToRathe);
+  });
+});
+
 describe('Feature: Sorting', () => {
   test('Rule: Sorts cards by set order, earlier sets first', () => {
     const wtrCard = cardBuilder()

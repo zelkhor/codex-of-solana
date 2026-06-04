@@ -49,6 +49,7 @@ export interface FiltersState {
   pitch: NumericFilterT;
   attack: NumericFilterT;
   defense: NumericFilterT;
+  groupPrintings: boolean;
 }
 
 export const initialFiltersState: FiltersState = {
@@ -66,6 +67,7 @@ export const initialFiltersState: FiltersState = {
   pitch: emptyNumericFilter,
   attack: emptyNumericFilter,
   defense: emptyNumericFilter,
+  groupPrintings: false,
 };
 
 export const filtersSlice = createSlice({
@@ -114,6 +116,9 @@ export const filtersSlice = createSlice({
     setDefenseFilter(state, action: PayloadAction<NumericFilterT>) {
       state.defense = action.payload;
     },
+    setGroupPrintings(state, action: PayloadAction<boolean>) {
+      state.groupPrintings = action.payload;
+    },
     resetFilters() {
       return initialFiltersState;
     },
@@ -135,5 +140,6 @@ export const {
   setPitchFilter,
   setAttackFilter,
   setDefenseFilter,
+  setGroupPrintings,
   resetFilters,
 } = filtersSlice.actions;
