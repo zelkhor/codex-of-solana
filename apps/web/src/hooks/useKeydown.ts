@@ -1,12 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-export const useKeydown = (key: string, callback: () => void, enabled = true) => {
+export const useKeydown = (key: string, callback: (e: KeyboardEvent) => void, enabled = true) => {
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
+
   useEffect(() => {
     if (!enabled) return;
     const handler = (e: KeyboardEvent) => {
-      if (e.key === key) callback();
+      if (e.key === key) callbackRef.current(e);
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [key, callback, enabled]);
+  }, [key, enabled]);
 };

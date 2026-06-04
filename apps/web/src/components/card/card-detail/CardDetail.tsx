@@ -203,7 +203,7 @@ export const CardDetail = ({
             <div className="relative">
               <div
                 ref={printingsRef}
-                className="flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-1 pb-4 [mask-image:linear-gradient(to_bottom,black_calc(100%-20px),transparent)]"
+                className="flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-1 pb-4 mask-[linear-gradient(to_bottom,black_calc(100%-20px),transparent)]"
               >
                 {card.printings.map((p) => (
                   <button
@@ -226,7 +226,7 @@ export const CardDetail = ({
                 <div className="absolute -bottom-3 inset-x-0 flex justify-center pointer-events-none">
                   <ChevronDown
                     size={14}
-                    className="text-muted-foreground/70 animate-bounce [animation-duration:1.5s]"
+                    className="text-muted-foreground/70 animate-bounce animation-duration-[1.5s]"
                   />
                 </div>
               )}

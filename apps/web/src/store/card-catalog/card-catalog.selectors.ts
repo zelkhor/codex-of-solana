@@ -10,13 +10,6 @@ import {
   type SortOrderT,
 } from '@/store/filters/filters.slice';
 
-export type GridSlot = {
-  type: 'card';
-  card: Card;
-  printing: Printing;
-  backPrinting?: Printing;
-};
-
 const selectAllCards = (state: RootState) => state.cardCatalog.allCards;
 const selectSearchResults = (state: RootState) => state.cardCatalog.searchResults;
 
@@ -34,10 +27,10 @@ export const selectPrintingByCardAndCode =
     return card?.printings.find((p) => p.print === printingCode) ?? card?.printings[0];
   };
 
-export const selectVisiblePrintings = createSelector(
+export const selectVisibleCards = createSelector(
   selectSearchResults,
   selectFilters,
-  (cards, f) => {
+  (cards, f): Card[] => {
     const filteredCards = cards.filter((card) => {
       if (!matchesMultiFilter(card.classes, f.classes)) return false;
       if (!matchesMultiFilter(card.talents, f.talents)) return false;
@@ -50,30 +43,31 @@ export const selectVisiblePrintings = createSelector(
       return matchesNumericFilter(card.defense, f.defense);
     });
 
-    const matchesPrintingFilters = (p: Printing) => {
+    const matchesPrintingFilters = (p: Printing): boolean => {
       if (f.sets.length > 0 && !f.sets.includes(p.set)) return false;
       if (f.rarities.length > 0 && !f.rarities.includes(p.rarity)) return false;
       if (f.foilings.length > 0 && (!p.foiling || !f.foilings.includes(p.foiling))) return false;
       return true;
     };
 
-    const slots: GridSlot[] = filteredCards.flatMap((card) =>
-      card.printings
-        .filter((p) => !p.print.includes('-Back'))
-        .map((printing) => ({
-          type: 'card' as const,
-          card,
-          printing,
-          backPrinting: printing.backPrinting ?? undefined,
-        }))
-        .filter(
-          ({ printing, backPrinting }) =>
-            matchesPrintingFilters(printing) ||
-            (backPrinting && matchesPrintingFilters(backPrinting)),
-        ),
-    );
+    const visibleCards = filteredCards
+      .map((card) => ({
+        ...card,
+        printings: card.printings
+          .filter((p) => !p.print.includes('-Back'))
+          .filter(
+            (p) =>
+              matchesPrintingFilters(p) ||
+              (p.backPrinting && matchesPrintingFilters(p.backPrinting)),
+          )
+          .sort((a, b) => {
+            const diff = setIdx(a.set) - setIdx(b.set);
+            return diff !== 0 ? diff : a.identifier.localeCompare(b.identifier);
+          }),
+      }))
+      .filter((card) => card.printings.length > 0);
 
-    return f.searchQuery.trim() ? slots : sortSlots(slots, f.sortOrder);
+    return f.searchQuery.trim() ? visibleCards : sortCards(visibleCards, f.sortOrder);
   },
 );
 
@@ -110,20 +104,24 @@ const setIdx = (setName: CardSetT): number => {
   return idx === -1 ? Infinity : idx;
 };
 
-const sortSlots = (slots: GridSlot[], order: SortOrderT): GridSlot[] =>
-  [...slots].sort((a, b) => {
+const sortCards = (cards: Card[], order: SortOrderT): Card[] =>
+  [...cards].sort((a, b) => {
     switch (order) {
       case SORT_ORDER.SET_DESC: {
-        const diff = setIdx(b.printing.set) - setIdx(a.printing.set);
-        return diff !== 0 ? diff : b.printing.identifier.localeCompare(a.printing.identifier);
+        const diff = setIdx(b.printings[0].set) - setIdx(a.printings[0].set);
+        return diff !== 0
+          ? diff
+          : b.printings[0].identifier.localeCompare(a.printings[0].identifier);
       }
       case SORT_ORDER.NAME_ASC:
-        return a.card.name.localeCompare(b.card.name);
+        return a.name.localeCompare(b.name);
       case SORT_ORDER.NAME_DESC:
-        return b.card.name.localeCompare(a.card.name);
+        return b.name.localeCompare(a.name);
       default: {
-        const diff = setIdx(a.printing.set) - setIdx(b.printing.set);
-        return diff !== 0 ? diff : a.printing.identifier.localeCompare(b.printing.identifier);
+        const diff = setIdx(a.printings[0].set) - setIdx(b.printings[0].set);
+        return diff !== 0
+          ? diff
+          : a.printings[0].identifier.localeCompare(b.printings[0].identifier);
       }
     }
   });

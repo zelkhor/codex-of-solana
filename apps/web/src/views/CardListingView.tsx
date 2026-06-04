@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { useKeydown } from '@/hooks/useKeydown';
 import { useDispatch, useSelector } from 'react-redux';
 import { SlidersHorizontal, X } from 'lucide-react';
 import type { AppDispatch, RootState } from '@/store';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
-import { selectVisiblePrintings } from '@/store/card-catalog/card-catalog.selectors';
+import { selectVisibleCards } from '@/store/card-catalog/card-catalog.selectors';
 import { ASYNC_STATUS } from '@/store/async-status';
 import { CardGrid } from '@/components/card/card-grid/CardGrid';
 import { CardGridSkeleton } from '@/components/card/CardGridSkeleton';
@@ -23,29 +24,25 @@ interface ActiveCard {
 
 export const CardListingView = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const visiblePrintings = useSelector(selectVisiblePrintings);
+  const visibleCards = useSelector(selectVisibleCards);
   const status = useSelector((s: RootState) => s.cardCatalog.status);
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
-  const printingCount = visiblePrintings.length;
+  const cardCount = visibleCards.length;
 
   useEffect(() => {
     if (status === ASYNC_STATUS.Idle) void dispatch(fetchAllCards());
   }, [dispatch, status]);
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setFilterOpen((v) => !v);
-      }
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, []);
+  useKeydown('k', (e) => {
+    if (e.metaKey || e.ctrlKey) {
+      e.preventDefault();
+      setFilterOpen((v) => !v);
+    }
+  });
 
   const handleCardClick = (card: Card, printing: Printing, rect: DOMRect) => {
     setActiveCard({
@@ -73,18 +70,16 @@ export const CardListingView = () => {
               <p className="text-destructive">Failed to load cards. Please try again</p>
             </div>
           )}
-          {status === ASYNC_STATUS.Succeeded && visiblePrintings.length === 0 && (
-            <NoFilterResults />
-          )}
-          {status === ASYNC_STATUS.Succeeded && visiblePrintings.length > 0 && (
-            <CardGrid slots={visiblePrintings} onCardClick={handleCardClick} />
+          {status === ASYNC_STATUS.Succeeded && visibleCards.length === 0 && <NoFilterResults />}
+          {status === ASYNC_STATUS.Succeeded && visibleCards.length > 0 && (
+            <CardGrid cards={visibleCards} onCardClick={handleCardClick} />
           )}
 
           {/* Floating filter button */}
           <div className="absolute bottom-10 right-1/2 translate-x-1/2 md:right-20 z-10 flex flex-col items-center gap-2">
             {status === ASYNC_STATUS.Succeeded && (
               <span className="text-xs text-muted-foreground bg-background/80 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
-                {printingCount.toLocaleString()} cards
+                {cardCount.toLocaleString()} cards
               </span>
             )}
             <button
