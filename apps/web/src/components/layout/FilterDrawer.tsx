@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { useKeydown } from '@/hooks/useKeydown';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import type { RefObject } from 'react';
 import { FilterPanel } from '@/components/filters/FilterPanel';
 
@@ -11,31 +13,14 @@ interface FilterDrawerProps {
 export const FilterDrawer = ({ isOpen, onClose, triggerRef }: FilterDrawerProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [isOpen, onClose]);
+  useKeydown('Escape', onClose, isOpen);
 
   useEffect(() => {
     if (!isOpen) return;
     drawerRef.current?.querySelector<HTMLInputElement>('input')?.focus();
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const handler = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (drawerRef.current?.contains(target)) return;
-      if (triggerRef?.current?.contains(target)) return;
-      onClose();
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [isOpen, onClose, triggerRef]);
+  useClickOutside([drawerRef, triggerRef], onClose, isOpen);
 
   return (
     <div

@@ -1,4 +1,5 @@
-import { useEffect, type RefObject } from 'react';
+import { type RefObject } from 'react';
+import { useKeydown } from '@/hooks/useKeydown';
 import { X } from 'lucide-react';
 import type { Card, Printing } from '@codex/core';
 import { CardDetail } from '@/components/card/card-detail/CardDetail';
@@ -18,13 +19,7 @@ export const CardDetailModal = ({
   cardImageContainerRef,
   cardImageVisible,
 }: CardDetailModalProps) => {
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [onClose]);
+  useKeydown('Escape', onClose);
 
   return (
     <>
