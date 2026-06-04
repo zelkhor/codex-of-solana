@@ -1,6 +1,6 @@
-import type { RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import type { Card, Printing } from '@codex/core';
-import { FlipHorizontal2 } from 'lucide-react';
+import { FlipHorizontal2, ChevronDown } from 'lucide-react';
 import { TiltCard } from '@/components/card/TiltCard';
 import { useCardDetailViewModel } from './card-detail.view-model';
 import { ExpandableText } from '@/components/ui/ExpandableText';
@@ -12,6 +12,7 @@ import {
   IntellectIcon,
   RarityIcon,
 } from '@/components/ui/CardIcons';
+import { FoilingBadge } from '@/components/card/FoilingBadge';
 
 interface CardDetailProps {
   card: Card;
@@ -29,9 +30,25 @@ export const CardDetail = ({
   cardImageVisible = true,
 }: CardDetailProps) => {
   const vm = useCardDetailViewModel(initialPrinting);
+  const printingsRef = useRef<HTMLDivElement>(null);
+  const [hasMorePrintings, setHasMorePrintings] = useState(false);
+
+  useEffect(() => {
+    const el = printingsRef.current;
+    if (!el) return;
+    const update = () => setHasMorePrintings(el.scrollTop + el.clientHeight < el.scrollHeight - 4);
+    update();
+    el.addEventListener('scroll', update);
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener('scroll', update);
+      ro.disconnect();
+    };
+  }, []);
 
   return (
-    <div className="p-6">
+    <div className="px-8 pb-8 pt-8">
       {onBack && (
         <button
           onClick={onBack}
@@ -55,6 +72,9 @@ export const CardDetail = ({
               className="w-full h-full rounded-lg object-cover"
             />
           </TiltCard>
+          <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+            <FoilingBadge foiling={vm.activePrinting.foiling} />
+          </div>
           {vm.backPrinting && (
             <button
               onClick={vm.flip}
@@ -180,22 +200,36 @@ export const CardDetail = ({
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
               Printings
             </p>
-            <div className="flex flex-wrap gap-2">
-              {card.printings.map((p) => (
-                <button
-                  key={p.print}
-                  onClick={() => vm.setActivePrinting(p)}
-                  className={`text-xs px-2 py-1 rounded-md transition-colors ${
-                    p.print === vm.activePrinting.print
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-accent'
-                  }`}
-                >
-                  {p.set}
-                  {p.edition ? ` · ${p.edition}` : ''}
-                  {p.foiling ? ` · ${p.foiling}` : ''}
-                </button>
-              ))}
+            <div className="relative">
+              <div
+                ref={printingsRef}
+                className="flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-1 pb-4 [mask-image:linear-gradient(to_bottom,black_calc(100%-20px),transparent)]"
+              >
+                {card.printings.map((p) => (
+                  <button
+                    key={p.print}
+                    onClick={() => vm.setActivePrinting(p)}
+                    className={`text-xs px-2 py-1 rounded-md transition-colors ${
+                      p.print === vm.activePrinting.print
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-accent'
+                    }`}
+                  >
+                    {p.identifier}
+                    {` · ${p.set}`}
+                    {p.edition ? ` · ${p.edition}` : ''}
+                    {p.foiling ? ` · ${p.foiling}` : ''}
+                  </button>
+                ))}
+              </div>
+              {hasMorePrintings && (
+                <div className="absolute -bottom-3 inset-x-0 flex justify-center pointer-events-none">
+                  <ChevronDown
+                    size={14}
+                    className="text-muted-foreground/70 animate-bounce [animation-duration:1.5s]"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
