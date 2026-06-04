@@ -126,7 +126,7 @@ export const CardDetail = ({
                 <dd className="text-muted-foreground truncate">{card.types.join(', ')}</dd>
               </div>
             )}
-            {card.cost !== undefined && (
+            {!!card.cost && (
               <div className="col-span-2 md:col-span-1 flex gap-2 min-w-0 items-center">
                 <dt className="font-medium w-16 shrink-0">Cost</dt>
                 <dd className="text-muted-foreground flex items-center gap-1.5">
@@ -135,7 +135,7 @@ export const CardDetail = ({
                 </dd>
               </div>
             )}
-            {card.pitch !== undefined && (
+            {!!card.pitch && (
               <div className="col-span-2 md:col-span-1 flex gap-2 min-w-0 items-center">
                 <dt className="font-medium w-16 shrink-0">Pitch</dt>
                 <dd className="text-muted-foreground flex items-center gap-1.5">
@@ -144,7 +144,7 @@ export const CardDetail = ({
                 </dd>
               </div>
             )}
-            {card.attack !== undefined && (
+            {!!card.attack && (
               <div className="col-span-2 md:col-span-1 flex gap-2 min-w-0 items-center">
                 <dt className="font-medium w-16 shrink-0">Attack</dt>
                 <dd className="text-muted-foreground flex items-center gap-1.5">
@@ -153,7 +153,7 @@ export const CardDetail = ({
                 </dd>
               </div>
             )}
-            {card.defense !== undefined && (
+            {!!card.defense && (
               <div className="col-span-2 md:col-span-1 flex gap-2 min-w-0 items-center">
                 <dt className="font-medium w-16 shrink-0">Defense</dt>
                 <dd className="text-muted-foreground flex items-center gap-1.5">
@@ -162,7 +162,7 @@ export const CardDetail = ({
                 </dd>
               </div>
             )}
-            {card.life !== undefined && (
+            {!!card.life && (
               <div className="col-span-2 md:col-span-1 flex gap-2 min-w-0 items-center">
                 <dt className="font-medium w-16 shrink-0">Life</dt>
                 <dd className="text-muted-foreground flex items-center gap-1.5">
@@ -171,7 +171,7 @@ export const CardDetail = ({
                 </dd>
               </div>
             )}
-            {card.intellect !== undefined && (
+            {!!card.intellect && (
               <div className="col-span-2 md:col-span-1 flex gap-2 min-w-0 items-center">
                 <dt className="font-medium w-16 shrink-0">Intellect</dt>
                 <dd className="text-muted-foreground flex items-center gap-1.5">
@@ -186,7 +186,7 @@ export const CardDetail = ({
                 <dd className="text-muted-foreground">{card.keywords.join(', ')}</dd>
               </div>
             )}
-            {card.functionalText && (
+            {!!card.functionalText && (
               <div className="col-span-2 flex gap-2 min-w-0">
                 <dt className="font-medium w-16 shrink-0">Text</dt>
                 <dd className="text-muted-foreground min-w-0 flex-1">
