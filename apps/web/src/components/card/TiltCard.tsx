@@ -21,7 +21,7 @@ const RainbowFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null 
   return (
     <>
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           background: `linear-gradient(
             ${angle}deg,
@@ -35,7 +35,7 @@ const RainbowFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null 
         }}
       />
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           background: `radial-gradient(ellipse at ${pos.x * 100}% ${pos.y * 100}%, rgba(255,255,255,0.45) 0%, transparent 50%)`,
           mixBlendMode: 'overlay',
@@ -74,7 +74,7 @@ const ColdFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
         </defs>
       </svg>
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           filter: `url(#${filterId})`,
           mixBlendMode: 'soft-light',
@@ -84,7 +84,7 @@ const ColdFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
 
       {/* Metallic sheen sweep */}
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           background: `linear-gradient(
             ${angle}deg,
@@ -100,7 +100,7 @@ const ColdFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
 
       {/* Specular highlight */}
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           background: `radial-gradient(ellipse at ${pos.x * 100}% ${pos.y * 100}%, rgba(220, 240, 255, 0.85) 0%, rgba(195, 220, 255, 0.4) 20%, transparent 55%)`,
           mixBlendMode: 'overlay',
@@ -138,7 +138,7 @@ const GoldFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
         </defs>
       </svg>
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           filter: `url(#${filterId})`,
           mixBlendMode: 'soft-light',
@@ -148,7 +148,7 @@ const GoldFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
 
       {/* Warm gold sheen sweep */}
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           background: `linear-gradient(
             ${angle}deg,
@@ -164,7 +164,7 @@ const GoldFoilOverlay = ({ mouse }: { mouse: { x: number; y: number } | null }) 
 
       {/* Specular highlight */}
       <div
-        className="absolute inset-0 rounded-sm md:rounded-xl lg:rounded-2xl pointer-events-none transition-opacity duration-500"
+        className="absolute inset-[2.5%] pointer-events-none transition-opacity duration-500"
         style={{
           background: `radial-gradient(ellipse at ${pos.x * 100}% ${pos.y * 100}%, rgba(255, 245, 180, 1.0) 0%, rgba(240, 205, 90, 0.55) 18%, transparent 40%)`,
           mixBlendMode: 'overlay',
@@ -204,7 +204,6 @@ export const TiltCard = ({ children, className, onClick, effect = 'standard' }: 
         style={{
           transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
           transition: mouse ? 'transform 0.08s ease-out' : 'transform 0.5s ease-out',
-          transformStyle: 'preserve-3d',
           willChange: 'transform',
         }}
       >
