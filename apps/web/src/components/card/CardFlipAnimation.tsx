@@ -97,7 +97,6 @@ export const CardFlipAnimation = ({
         marginTop: -targetH / 2,
         zIndex: 200,
         pointerEvents: 'none',
-        borderRadius: 12,
       }}
     >
       <div
@@ -115,7 +114,6 @@ export const CardFlipAnimation = ({
             inset: 0,
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
-            borderRadius: 12,
             overflow: 'hidden',
           }}
         >
@@ -132,7 +130,6 @@ export const CardFlipAnimation = ({
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
-            borderRadius: 12,
             overflow: 'hidden',
           }}
         >

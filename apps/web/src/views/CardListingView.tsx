@@ -81,7 +81,7 @@ export const CardListingView = () => {
           )}
 
           {/* Floating filter button */}
-          <div className="absolute bottom-5 right-5 z-10 flex flex-col items-center gap-2">
+          <div className="absolute bottom-10 right-1/2 translate-x-1/2 md:right-20 z-10 flex flex-col items-center gap-2">
             {status === ASYNC_STATUS.Succeeded && (
               <span className="text-xs text-muted-foreground bg-background/80 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
                 {printingCount.toLocaleString()} cards

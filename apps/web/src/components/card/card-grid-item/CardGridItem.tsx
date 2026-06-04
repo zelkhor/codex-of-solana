@@ -45,7 +45,7 @@ export const CardGridItem = ({ card, printing, backPrinting, onClick }: CardGrid
             loading="lazy"
             onLoad={() => setImgLoaded(true)}
             onError={() => setImgError(true)}
-            className={`w-full h-full rounded-lg object-cover transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-full object-cover transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
         )}
       </TiltCard>

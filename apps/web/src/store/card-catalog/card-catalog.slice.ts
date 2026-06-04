@@ -32,8 +32,8 @@ export const cardCatalogSlice = createSlice({
         state.error = undefined;
       })
       .addCase(fetchAllCards.fulfilled, (state, action) => {
-        state.allCards = action.payload;
-        state.searchResults = action.payload;
+        state.allCards = action.payload.allCards;
+        state.searchResults = action.payload.searchResults;
         state.status = ASYNC_STATUS.Succeeded;
       })
       .addCase(fetchAllCards.rejected, (state, action) => {
