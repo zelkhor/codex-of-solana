@@ -14,6 +14,7 @@ import {
   setPitchFilter,
   setAttackFilter,
   setDefenseFilter,
+  setGroupPrintings,
   resetFilters,
   type SortOrderT,
   type NumericFilterT,
@@ -42,6 +43,7 @@ import { AccordionSection } from '@/components/ui/AccordionSection';
 import { MultiSelect } from '@/components/ui/MultiSelect';
 import { NumericFilterInput } from '@/components/ui/NumericFilterInput';
 import { RotateCcw, ChevronDown, X } from 'lucide-react';
+import { Toggle } from '@/components/ui/Toggle.tsx';
 
 interface FilterPanelProps {
   onClose?: () => void;
@@ -171,26 +173,33 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
         />
       </AccordionSection>
 
-      <div className="flex items-center justify-between">
-        <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Sort</h2>
-        <div className="relative">
-          <select
-            value={f.searchQuery.trim() ? 'relevance' : f.sortOrder}
-            disabled={!!f.searchQuery.trim()}
-            onChange={(e) => dispatch(setSortOrder(e.target.value as SortOrderT))}
-            className="cursor-pointer appearance-none text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md pl-3 pr-7 py-1 text-zinc-700 dark:text-zinc-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {f.searchQuery.trim() && <option value="relevance">By relevance</option>}
-            <option value="set-asc">Set release ↑</option>
-            <option value="set-desc">Set release ↓</option>
-            <option value="name-asc">Name A → Z</option>
-            <option value="name-desc">Name Z → A</option>
-          </select>
-          <ChevronDown
-            size={13}
-            className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400"
-          />
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Sort</h2>
+          <div className="relative">
+            <select
+              value={f.searchQuery.trim() ? 'relevance' : f.sortOrder}
+              disabled={!!f.searchQuery.trim()}
+              onChange={(e) => dispatch(setSortOrder(e.target.value as SortOrderT))}
+              className="cursor-pointer appearance-none text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md pl-3 pr-7 py-1 text-zinc-700 dark:text-zinc-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {f.searchQuery.trim() && <option value="relevance">By relevance</option>}
+              <option value="set-asc">Set release ↑</option>
+              <option value="set-desc">Set release ↓</option>
+              <option value="name-asc">Name A → Z</option>
+              <option value="name-desc">Name Z → A</option>
+            </select>
+            <ChevronDown
+              size={13}
+              className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400"
+            />
+          </div>
         </div>
+        <Toggle
+          label="Group printings"
+          checked={f.groupPrintings}
+          onChange={(v) => dispatch(setGroupPrintings(v))}
+        />
       </div>
     </div>
   );

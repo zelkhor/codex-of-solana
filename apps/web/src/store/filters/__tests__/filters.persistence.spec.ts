@@ -28,6 +28,7 @@ const fullState: FiltersState = {
   pitch: { operator: COMPARISON_OPERATORS.EQ, value: 1 },
   attack: { operator: COMPARISON_OPERATORS.GT, value: 3 },
   defense: { operator: COMPARISON_OPERATORS.LTE, value: 4 },
+  groupPrintings: true,
 };
 
 describe('Feature: Loading persisted filters from local storage', () => {

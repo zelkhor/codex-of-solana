@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
-import type { Card, Printing, CardSetT } from '@codex/core';
-import { SET_ORDER } from '@codex/core';
+import type { Card, Printing, CardSetT, CardFoilingT, CardRarityT } from '@codex/core';
+import { SET_ORDER, FOILING_ORDER, RARITY_ORDER } from '@codex/core';
 import type { RootState } from '@/store';
 import { selectFilters } from '@/store/filters/filters.selectors';
 import {
@@ -58,19 +58,88 @@ export const selectVisibleCards = createSelector(
           .filter(
             (p) =>
               matchesPrintingFilters(p) ||
-              (p.backPrinting && matchesPrintingFilters(p.backPrinting)),
+              (!f.groupPrintings && p.backPrinting && matchesPrintingFilters(p.backPrinting)),
           )
           .sort((a, b) => {
             const diff = setIdx(a.set) - setIdx(b.set);
             return diff !== 0 ? diff : a.identifier.localeCompare(b.identifier);
-          })
-          .slice(0, f.groupPrintings ? 1 : undefined),
+          }),
+      }))
+      .filter((card) => card.printings.length > 0)
+      .map((card) => ({
+        ...card,
+        printings: f.groupPrintings
+          ? [pickGroupedPrinting(card.printings, f.foilings, f.rarities)]
+          : card.printings,
       }))
       .filter((card) => card.printings.length > 0);
 
     return f.searchQuery.trim() ? visibleCards : sortCards(visibleCards, f.sortOrder);
   },
 );
+
+export type CardWithActivePrinting = {
+  card: Card;
+  printing: Printing;
+  backPrinting?: Printing;
+};
+
+export const selectCardPrintings = createSelector(
+  selectVisibleCards,
+  selectFilters,
+  (cards, f): CardWithActivePrinting[] => {
+    const result = cards.flatMap((card) =>
+      card.printings.map((printing) => ({
+        card,
+        printing,
+        backPrinting: printing.backPrinting ?? undefined,
+      })),
+    );
+
+    if (
+      !f.searchQuery.trim() &&
+      (f.sortOrder === SORT_ORDER.SET_ASC || f.sortOrder === SORT_ORDER.SET_DESC)
+    ) {
+      const dir = f.sortOrder === SORT_ORDER.SET_ASC ? 1 : -1;
+      result.sort((a, b) => {
+        const diff = setIdx(a.printing.set) - setIdx(b.printing.set);
+        return diff !== 0 ? diff * dir : a.printing.identifier.localeCompare(b.printing.identifier);
+      });
+    }
+
+    return result;
+  },
+);
+
+// ── Grouping ─────────────────────────────────────────────────────────────────
+
+const foilingIdx = (foiling: CardFoilingT): number => {
+  const idx = FOILING_ORDER.indexOf(foiling);
+  return idx === -1 ? Infinity : idx;
+};
+
+const rarityIdx = (rarity: CardRarityT): number => {
+  const idx = RARITY_ORDER.indexOf(rarity);
+  return idx === -1 ? Infinity : idx;
+};
+
+const pickGroupedPrinting = (
+  printings: Printing[],
+  foilings: CardFoilingT[],
+  rarities: CardRarityT[],
+): Printing =>
+  [...printings].sort((a, b) => {
+    if (foilings.length > 0) {
+      const diff = foilingIdx(a.foiling) - foilingIdx(b.foiling);
+      if (diff !== 0) return diff;
+    }
+    if (rarities.length > 0) {
+      const diff = rarityIdx(a.rarity) - rarityIdx(b.rarity);
+      if (diff !== 0) return diff;
+    }
+    const setDiff = setIdx(a.set) - setIdx(b.set);
+    return setDiff !== 0 ? setDiff : a.identifier.localeCompare(b.identifier);
+  })[0];
 
 // ── Filter helpers ───────────────────────────────────────────────────────────
 

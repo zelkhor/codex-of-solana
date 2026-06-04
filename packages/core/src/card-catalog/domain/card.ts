@@ -22,6 +22,13 @@ export const CARD_FOILINGS = {
 } as const;
 export type CardFoilingT = (typeof CARD_FOILINGS)[keyof typeof CARD_FOILINGS];
 
+export const FOILING_ORDER: CardFoilingT[] = [
+  CARD_FOILINGS.Regular,
+  CARD_FOILINGS.Rainbow,
+  CARD_FOILINGS.Cold,
+  CARD_FOILINGS.Gold,
+];
+
 export const CARD_EDITIONS = ReleaseEdition;
 export type CardEditionT = `${ReleaseEdition}`;
 

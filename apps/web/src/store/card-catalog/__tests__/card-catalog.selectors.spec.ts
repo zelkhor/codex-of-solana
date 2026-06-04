@@ -11,7 +11,7 @@ import {
   CARD_SUBTYPES,
   CARD_KEYWORDS,
 } from '@codex/core';
-import { selectVisibleCards } from '../card-catalog.selectors';
+import { selectVisibleCards, selectCardPrintings } from '../card-catalog.selectors';
 import { stateBuilder } from '@/store/__tests__/state.builder';
 import { COMPARISON_OPERATORS, SORT_ORDER } from '@/store/filters/filters.slice';
 
@@ -322,6 +322,104 @@ describe('Feature: Double-sided card pairing', () => {
 });
 
 describe('Feature: Group printings', () => {
+  test('Rule: When multiple foilings are selected, the printing with the lowest matching foiling is shown', () => {
+    const coldFoilPrinting = printingBuilder()
+      .withIdentifier('WTR001')
+      .withPrint('WTR001-Cold')
+      .withSet(CARD_SETS.WelcomeToRathe)
+      .withFoiling(CARD_FOILINGS.Cold)
+      .build();
+    const rainbowFoilPrinting = printingBuilder()
+      .withIdentifier('ARC001')
+      .withPrint('ARC001-Rainbow')
+      .withSet(CARD_SETS.ArcaneRising)
+      .withFoiling(CARD_FOILINGS.Rainbow)
+      .build();
+    const card = cardBuilder().withPrintings([coldFoilPrinting, rainbowFoilPrinting]).build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([card])
+        .withFoilings([CARD_FOILINGS.Cold, CARD_FOILINGS.Rainbow])
+        .withGroupPrintings(true)
+        .build(),
+    );
+    expect(cards[0].printings).toHaveLength(1);
+    expect(cards[0].printings[0].foiling).toBe(CARD_FOILINGS.Rainbow);
+  });
+
+  test('Rule: When multiple rarities are selected, the printing with the lowest rarity is shown', () => {
+    const majesticPrinting = printingBuilder()
+      .withIdentifier('WTR001')
+      .withPrint('WTR001')
+      .withSet(CARD_SETS.WelcomeToRathe)
+      .withRarity(CARD_RARITIES.Majestic)
+      .build();
+    const commonPrinting = printingBuilder()
+      .withIdentifier('ARC001')
+      .withPrint('ARC001')
+      .withSet(CARD_SETS.ArcaneRising)
+      .withRarity(CARD_RARITIES.Common)
+      .build();
+    const card = cardBuilder().withPrintings([majesticPrinting, commonPrinting]).build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([card])
+        .withRarities([CARD_RARITIES.Majestic, CARD_RARITIES.Common])
+        .withGroupPrintings(true)
+        .build(),
+    );
+    expect(cards[0].printings).toHaveLength(1);
+    expect(cards[0].printings[0].rarity).toBe(CARD_RARITIES.Common);
+  });
+
+  test('Rule: When a single foiling is selected and multiple printings match, the oldest matching printing is shown', () => {
+    const oldColdPrinting = printingBuilder()
+      .withIdentifier('WTR001')
+      .withPrint('WTR001-Cold')
+      .withSet(CARD_SETS.WelcomeToRathe)
+      .withFoiling(CARD_FOILINGS.Cold)
+      .build();
+    const newColdPrinting = printingBuilder()
+      .withIdentifier('ARC001')
+      .withPrint('ARC001-Cold')
+      .withSet(CARD_SETS.ArcaneRising)
+      .withFoiling(CARD_FOILINGS.Cold)
+      .build();
+    const card = cardBuilder().withPrintings([newColdPrinting, oldColdPrinting]).build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([card])
+        .withFoilings([CARD_FOILINGS.Cold])
+        .withGroupPrintings(true)
+        .build(),
+    );
+    expect(cards[0].printings).toHaveLength(1);
+    expect(cards[0].printings[0].identifier).toBe('WTR001');
+  });
+
+  test('Rule: When grouping is enabled and the foiling filter only matches the back printing, the card is not shown', () => {
+    const back = printingBuilder({
+      identifier: 'WTR001',
+      print: 'WTR001-Cold-Back',
+      foiling: CARD_FOILINGS.Cold,
+    }).build();
+    const front = printingBuilder({
+      identifier: 'WTR001',
+      print: 'WTR001',
+      foiling: CARD_FOILINGS.Regular,
+      backPrinting: back,
+    }).build();
+    const card = cardBuilder().withPrintings([front, back]).build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([card])
+        .withFoilings([CARD_FOILINGS.Cold])
+        .withGroupPrintings(true)
+        .build(),
+    );
+    expect(cards).toHaveLength(0);
+  });
+
   test('Rule: When grouping is enabled, a card with multiple printings is shown once with the oldest printing', () => {
     const arcPrinting = printingBuilder()
       .withIdentifier('ARC001')
@@ -463,5 +561,31 @@ describe('Feature: Sorting', () => {
     const cards = selectVisibleCards(stateBuilder().withAllCards([card]).build());
     expect(cards[0].printings[0].identifier).toBe('WTR001');
     expect(cards[0].printings[1].identifier).toBe('WTR002');
+  });
+});
+
+describe('Feature: Card printings grid ordering', () => {
+  test('Rule: With set-asc sort, printings from all cards are interleaved by printing set, not grouped by card', () => {
+    const arcPrinting = printingBuilder()
+      .withIdentifier('ARC001')
+      .withPrint('ARC001')
+      .withSet(CARD_SETS.ArcaneRising)
+      .build();
+    const ira = cardBuilder()
+      .withCardIdentifier('ira')
+      .withPrintings([wtrPrinting, arcPrinting])
+      .build();
+    const other = cardBuilder().withCardIdentifier('other').withPrintings([wtrPrinting]).build();
+
+    const result = selectCardPrintings(
+      stateBuilder().withAllCards([ira, other]).withSortOrder(SORT_ORDER.SET_ASC).build(),
+    );
+
+    expect(result[0].card.cardIdentifier).toBe('ira');
+    expect(result[0].printing.set).toBe(CARD_SETS.WelcomeToRathe);
+    expect(result[1].card.cardIdentifier).toBe('other');
+    expect(result[1].printing.set).toBe(CARD_SETS.WelcomeToRathe);
+    expect(result[2].card.cardIdentifier).toBe('ira');
+    expect(result[2].printing.set).toBe(CARD_SETS.ArcaneRising);
   });
 });

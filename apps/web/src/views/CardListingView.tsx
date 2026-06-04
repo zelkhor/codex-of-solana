@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SlidersHorizontal, X } from 'lucide-react';
 import type { AppDispatch, RootState } from '@/store';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
-import { selectVisibleCards } from '@/store/card-catalog/card-catalog.selectors';
+import { selectCardPrintings } from '@/store/card-catalog/card-catalog.selectors';
 import { ASYNC_STATUS } from '@/store/async-status';
 import { CardGrid } from '@/components/card/card-grid/CardGrid';
 import { CardGridSkeleton } from '@/components/card/CardGridSkeleton';
@@ -24,7 +24,7 @@ interface ActiveCard {
 
 export const CardListingView = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const visibleCards = useSelector(selectVisibleCards);
+  const visibleCards = useSelector(selectCardPrintings);
   const status = useSelector((s: RootState) => s.cardCatalog.status);
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
@@ -72,7 +72,7 @@ export const CardListingView = () => {
           )}
           {status === ASYNC_STATUS.Succeeded && visibleCards.length === 0 && <NoFilterResults />}
           {status === ASYNC_STATUS.Succeeded && visibleCards.length > 0 && (
-            <CardGrid cards={visibleCards} onCardClick={handleCardClick} />
+            <CardGrid cardPrintings={visibleCards} onCardClick={handleCardClick} />
           )}
 
           {/* Floating filter button */}
