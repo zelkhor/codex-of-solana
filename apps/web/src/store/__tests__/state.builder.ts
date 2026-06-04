@@ -10,7 +10,7 @@ import type {
   CardRarityT,
   CardFoilingT,
 } from '@codex/core';
-import type { SortOrderT } from '@/store/filters/filters.slice';
+import type { NumericFilterT, SortOrderT } from '@/store/filters/filters.slice';
 import { rootReducer } from '@/store';
 import type { RootState } from '@/store';
 
@@ -28,6 +28,10 @@ const withRarities = createAction<CardRarityT[]>('withRarities');
 const withFoilings = createAction<CardFoilingT[]>('withFoilings');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');
+const withCostFilter = createAction<NumericFilterT>('withCostFilter');
+const withPitchFilter = createAction<NumericFilterT>('withPitchFilter');
+const withAttackFilter = createAction<NumericFilterT>('withAttackFilter');
+const withDefenseFilter = createAction<NumericFilterT>('withDefenseFilter');
 
 const reducer = createReducer(initialState, (builder) => {
   builder
@@ -68,6 +72,18 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(withSortOrder, (state, { payload }) => {
       state.filters.sortOrder = payload;
+    })
+    .addCase(withCostFilter, (state, { payload }) => {
+      state.filters.cost = payload;
+    })
+    .addCase(withPitchFilter, (state, { payload }) => {
+      state.filters.pitch = payload;
+    })
+    .addCase(withAttackFilter, (state, { payload }) => {
+      state.filters.attack = payload;
+    })
+    .addCase(withDefenseFilter, (state, { payload }) => {
+      state.filters.defense = payload;
     });
 });
 
@@ -90,6 +106,10 @@ export const stateBuilder = (state = initialState) => {
     withFoilings: reduce(withFoilings),
     withSearchQuery: reduce(withSearchQuery),
     withSortOrder: reduce(withSortOrder),
+    withCostFilter: reduce(withCostFilter),
+    withPitchFilter: reduce(withPitchFilter),
+    withAttackFilter: reduce(withAttackFilter),
+    withDefenseFilter: reduce(withDefenseFilter),
     build: (): RootState => state,
   };
 };

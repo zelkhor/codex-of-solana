@@ -10,6 +10,22 @@ import {
   type CardTypeT,
 } from '@codex/core';
 
+export const COMPARISON_OPERATORS = {
+  GT: '>',
+  GTE: '>=',
+  EQ: '=',
+  LTE: '<=',
+  LT: '<',
+};
+export type ComparisonOperatorT = (typeof COMPARISON_OPERATORS)[keyof typeof COMPARISON_OPERATORS];
+
+export interface NumericFilterT {
+  operator: ComparisonOperatorT;
+  value: number | null;
+}
+
+const emptyNumericFilter: NumericFilterT = { operator: COMPARISON_OPERATORS.GTE, value: null };
+
 export const SORT_ORDER = {
   SET_ASC: 'set-asc',
   SET_DESC: 'set-desc',
@@ -29,6 +45,10 @@ export interface FiltersState {
   foilings: CardFoilingT[];
   searchQuery: string;
   sortOrder: SortOrderT;
+  cost: NumericFilterT;
+  pitch: NumericFilterT;
+  attack: NumericFilterT;
+  defense: NumericFilterT;
 }
 
 export const initialFiltersState: FiltersState = {
@@ -42,6 +62,10 @@ export const initialFiltersState: FiltersState = {
   foilings: [],
   searchQuery: '',
   sortOrder: SORT_ORDER.SET_ASC,
+  cost: emptyNumericFilter,
+  pitch: emptyNumericFilter,
+  attack: emptyNumericFilter,
+  defense: emptyNumericFilter,
 };
 
 export const filtersSlice = createSlice({
@@ -78,6 +102,18 @@ export const filtersSlice = createSlice({
     setSortOrder(state, action: PayloadAction<SortOrderT>) {
       state.sortOrder = action.payload;
     },
+    setCostFilter(state, action: PayloadAction<NumericFilterT>) {
+      state.cost = action.payload;
+    },
+    setPitchFilter(state, action: PayloadAction<NumericFilterT>) {
+      state.pitch = action.payload;
+    },
+    setAttackFilter(state, action: PayloadAction<NumericFilterT>) {
+      state.attack = action.payload;
+    },
+    setDefenseFilter(state, action: PayloadAction<NumericFilterT>) {
+      state.defense = action.payload;
+    },
     resetFilters() {
       return initialFiltersState;
     },
@@ -95,5 +131,9 @@ export const {
   setFoilings,
   setSearchQuery,
   setSortOrder,
+  setCostFilter,
+  setPitchFilter,
+  setAttackFilter,
+  setDefenseFilter,
   resetFilters,
 } = filtersSlice.actions;

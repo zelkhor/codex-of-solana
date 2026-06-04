@@ -10,8 +10,13 @@ import {
   setRarities,
   setFoilings,
   setSortOrder,
+  setCostFilter,
+  setPitchFilter,
+  setAttackFilter,
+  setDefenseFilter,
   resetFilters,
   type SortOrderT,
+  type NumericFilterT,
 } from '@/store/filters/filters.slice';
 import { selectFilters } from '@/store/filters/filters.selectors';
 import {
@@ -35,6 +40,7 @@ import {
 import { SearchInput } from '@/components/filters/SearchInput';
 import { AccordionSection } from '@/components/ui/AccordionSection';
 import { MultiSelect } from '@/components/ui/MultiSelect';
+import { NumericFilterInput } from '@/components/ui/NumericFilterInput';
 import { RotateCcw, ChevronDown, X } from 'lucide-react';
 
 interface FilterPanelProps {
@@ -89,6 +95,30 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
         />
       </AccordionSection>
 
+      <AccordionSection defaultOpen label="Rarity" badge={f.rarities.length}>
+        <MultiSelect
+          options={Object.values(CARD_RARITIES)}
+          selected={f.rarities}
+          onChange={(values) => dispatch(setRarities(values as CardRarityT[]))}
+        />
+      </AccordionSection>
+
+      <AccordionSection defaultOpen label="Foiling" badge={f.foilings.length}>
+        <MultiSelect
+          options={Object.values(CARD_FOILINGS)}
+          selected={f.foilings}
+          onChange={(values) => dispatch(setFoilings(values as CardFoilingT[]))}
+        />
+      </AccordionSection>
+
+      <AccordionSection defaultOpen label="Set" badge={f.sets.length}>
+        <MultiSelect
+          options={SET_ORDER}
+          selected={f.sets}
+          onChange={(values) => dispatch(setSets(values as CardSetT[]))}
+        />
+      </AccordionSection>
+
       <AccordionSection defaultOpen label="Type" badge={f.types.length}>
         <MultiSelect
           options={Object.values(CARD_TYPES)}
@@ -113,27 +143,31 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
         />
       </AccordionSection>
 
-      <AccordionSection defaultOpen label="Rarity" badge={f.rarities.length}>
-        <MultiSelect
-          options={Object.values(CARD_RARITIES)}
-          selected={f.rarities}
-          onChange={(values) => dispatch(setRarities(values as CardRarityT[]))}
+      <AccordionSection defaultOpen label="Cost" badge={f.cost.value !== null ? 1 : 0}>
+        <NumericFilterInput
+          value={f.cost}
+          onChange={(v: NumericFilterT) => dispatch(setCostFilter(v))}
         />
       </AccordionSection>
 
-      <AccordionSection defaultOpen label="Foiling" badge={f.foilings.length}>
-        <MultiSelect
-          options={Object.values(CARD_FOILINGS)}
-          selected={f.foilings}
-          onChange={(values) => dispatch(setFoilings(values as CardFoilingT[]))}
+      <AccordionSection defaultOpen label="Pitch" badge={f.pitch.value !== null ? 1 : 0}>
+        <NumericFilterInput
+          value={f.pitch}
+          onChange={(v: NumericFilterT) => dispatch(setPitchFilter(v))}
         />
       </AccordionSection>
 
-      <AccordionSection defaultOpen label="Set" badge={f.sets.length}>
-        <MultiSelect
-          options={SET_ORDER}
-          selected={f.sets}
-          onChange={(values) => dispatch(setSets(values as CardSetT[]))}
+      <AccordionSection defaultOpen label="Attack" badge={f.attack.value !== null ? 1 : 0}>
+        <NumericFilterInput
+          value={f.attack}
+          onChange={(v: NumericFilterT) => dispatch(setAttackFilter(v))}
+        />
+      </AccordionSection>
+
+      <AccordionSection defaultOpen label="Defense" badge={f.defense.value !== null ? 1 : 0}>
+        <NumericFilterInput
+          value={f.defense}
+          onChange={(v: NumericFilterT) => dispatch(setDefenseFilter(v))}
         />
       </AccordionSection>
 

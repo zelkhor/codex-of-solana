@@ -3,7 +3,12 @@ import type { Card, Printing, CardSetT } from '@codex/core';
 import { SET_ORDER } from '@codex/core';
 import type { RootState } from '@/store';
 import { selectFilters } from '@/store/filters/filters.selectors';
-import { SORT_ORDER, type SortOrderT } from '@/store/filters/filters.slice';
+import {
+  COMPARISON_OPERATORS,
+  SORT_ORDER,
+  type NumericFilterT,
+  type SortOrderT,
+} from '@/store/filters/filters.slice';
 
 export type GridSlot = {
   type: 'card';
@@ -38,7 +43,11 @@ export const selectVisiblePrintings = createSelector(
       if (!matchesMultiFilter(card.talents, f.talents)) return false;
       if (!matchesMultiFilter(card.types, f.types)) return false;
       if (!matchesMultiFilter(card.subtypes, f.subtypes)) return false;
-      return matchesMultiFilter(card.keywords, f.keywords);
+      if (!matchesMultiFilter(card.keywords, f.keywords)) return false;
+      if (!matchesNumericFilter(card.cost, f.cost)) return false;
+      if (!matchesNumericFilter(card.pitch, f.pitch)) return false;
+      if (!matchesNumericFilter(card.attack, f.attack)) return false;
+      return matchesNumericFilter(card.defense, f.defense);
     });
 
     const matchesPrintingFilters = (p: Printing) => {
@@ -73,6 +82,25 @@ export const selectVisiblePrintings = createSelector(
 const matchesMultiFilter = (values: string[], filter: string[]): boolean => {
   if (filter.length === 0) return true;
   return filter.some((f) => values.includes(f));
+};
+
+const matchesNumericFilter = (cardValue: number | null, filter: NumericFilterT): boolean => {
+  if (filter.value === null) return true;
+  if (cardValue === null) return false;
+  switch (filter.operator) {
+    case COMPARISON_OPERATORS.GT:
+      return cardValue > filter.value;
+    case COMPARISON_OPERATORS.GTE:
+      return cardValue >= filter.value;
+    case COMPARISON_OPERATORS.EQ:
+      return cardValue === filter.value;
+    case COMPARISON_OPERATORS.LTE:
+      return cardValue <= filter.value;
+    case COMPARISON_OPERATORS.LT:
+      return cardValue < filter.value;
+    default:
+      return true;
+  }
 };
 
 // ── Sorting ──────────────────────────────────────────────────────────────────

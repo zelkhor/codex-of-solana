@@ -13,7 +13,7 @@ import {
 } from '@codex/core';
 import { selectVisiblePrintings } from '../card-catalog.selectors';
 import { stateBuilder } from '@/store/__tests__/state.builder';
-import { SORT_ORDER } from '@/store/filters/filters.slice';
+import { COMPARISON_OPERATORS, SORT_ORDER } from '@/store/filters/filters.slice';
 
 // ─── Printing shortcuts ───────────────────────────────────────────────────────
 
@@ -106,6 +106,71 @@ describe('Feature: Card-level filtering', () => {
     );
     expect(slots).toHaveLength(1);
     expect(slots[0].card.cardIdentifier).toBe('a');
+  });
+});
+
+describe('Feature: Numeric stat filtering', () => {
+  test('Rule: excludes cards whose attack does not satisfy the filter', () => {
+    const matching = cardBuilder().withCardIdentifier('a').withAttack(5).build();
+    const excluded = cardBuilder().withCardIdentifier('b').withAttack(2).build();
+    const slots = selectVisiblePrintings(
+      stateBuilder()
+        .withAllCards([matching, excluded])
+        .withAttackFilter({ operator: COMPARISON_OPERATORS.GTE, value: 4 })
+        .build(),
+    );
+    expect(slots).toHaveLength(1);
+    expect(slots[0].card.cardIdentifier).toBe('a');
+  });
+
+  test('Rule: excludes cards whose defense does not satisfy the filter', () => {
+    const matching = cardBuilder().withCardIdentifier('a').withDefense(3).build();
+    const excluded = cardBuilder().withCardIdentifier('b').withDefense(5).build();
+    const slots = selectVisiblePrintings(
+      stateBuilder()
+        .withAllCards([matching, excluded])
+        .withDefenseFilter({ operator: COMPARISON_OPERATORS.LT, value: 4 })
+        .build(),
+    );
+    expect(slots).toHaveLength(1);
+    expect(slots[0].card.cardIdentifier).toBe('a');
+  });
+
+  test('Rule: excludes cards whose cost does not satisfy the filter', () => {
+    const matching = cardBuilder().withCardIdentifier('a').withCost(2).build();
+    const excluded = cardBuilder().withCardIdentifier('b').withCost(2).build();
+    const slots = selectVisiblePrintings(
+      stateBuilder()
+        .withAllCards([matching, excluded])
+        .withCostFilter({ operator: COMPARISON_OPERATORS.EQ, value: 2 })
+        .build(),
+    );
+    expect(slots).toHaveLength(2);
+  });
+
+  test('Rule: excludes cards with null stat when a numeric filter is active', () => {
+    const withStat = cardBuilder().withCardIdentifier('a').withAttack(3).build();
+    const withoutStat = cardBuilder().withCardIdentifier('b').withAttack(null).build();
+    const slots = selectVisiblePrintings(
+      stateBuilder()
+        .withAllCards([withStat, withoutStat])
+        .withAttackFilter({ operator: COMPARISON_OPERATORS.GTE, value: 1 })
+        .build(),
+    );
+    expect(slots).toHaveLength(1);
+    expect(slots[0].card.cardIdentifier).toBe('a');
+  });
+
+  test('Rule: includes all cards when numeric filter has no value set', () => {
+    const cardA = cardBuilder().withCardIdentifier('a').withAttack(5).build();
+    const cardB = cardBuilder().withCardIdentifier('b').withAttack(null).build();
+    const slots = selectVisiblePrintings(
+      stateBuilder()
+        .withAllCards([cardA, cardB])
+        .withAttackFilter({ operator: COMPARISON_OPERATORS.GTE, value: null })
+        .build(),
+    );
+    expect(slots).toHaveLength(2);
   });
 });
 

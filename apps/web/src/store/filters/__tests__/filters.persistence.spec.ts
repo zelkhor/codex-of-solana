@@ -11,7 +11,7 @@ import {
   CARD_TALENTS,
   CARD_TYPES,
 } from '@codex/core';
-import { SORT_ORDER } from '../filters.slice';
+import { COMPARISON_OPERATORS, SORT_ORDER } from '../filters.slice';
 
 const fullState: FiltersState = {
   classes: [CARD_CLASSES.Ninja],
@@ -24,6 +24,10 @@ const fullState: FiltersState = {
   foilings: [CARD_FOILINGS.Gold],
   searchQuery: 'ninja',
   sortOrder: SORT_ORDER.SET_ASC,
+  cost: { operator: COMPARISON_OPERATORS.GTE, value: 2 },
+  pitch: { operator: COMPARISON_OPERATORS.EQ, value: 1 },
+  attack: { operator: COMPARISON_OPERATORS.GT, value: 3 },
+  defense: { operator: COMPARISON_OPERATORS.LTE, value: 4 },
 };
 
 describe('Feature: Loading persisted filters from local storage', () => {
