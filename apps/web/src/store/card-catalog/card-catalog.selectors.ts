@@ -3,7 +3,7 @@ import type { Card, Printing, CardSetT } from '@codex/core';
 import { SET_ORDER } from '@codex/core';
 import type { RootState } from '@/store';
 import { selectFilters } from '@/store/filters/filters.selectors';
-import { SORT_ORDER, SortOrderT } from '@/store/filters/filters.slice';
+import { SORT_ORDER, type SortOrderT } from '@/store/filters/filters.slice';
 
 export type GridSlot = {
   type: 'card';
