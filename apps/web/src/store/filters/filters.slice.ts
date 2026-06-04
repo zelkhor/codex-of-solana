@@ -10,6 +10,14 @@ import {
   type CardTypeT,
 } from '@codex/core';
 
+export const SORT_ORDER = {
+  SET_ASC: 'set-asc',
+  SET_DESC: 'set-desc',
+  NAME_ASC: 'name-asc',
+  NAME_DESC: 'name-desc',
+};
+export type SortOrderT = (typeof SORT_ORDER)[keyof typeof SORT_ORDER];
+
 export interface FiltersState {
   classes: CardClassT[];
   talents: CardTalentT[];
@@ -20,6 +28,7 @@ export interface FiltersState {
   rarities: CardRarityT[];
   foilings: CardFoilingT[];
   searchQuery: string;
+  sortOrder: SortOrderT;
 }
 
 export const initialFiltersState: FiltersState = {
@@ -32,6 +41,7 @@ export const initialFiltersState: FiltersState = {
   rarities: [],
   foilings: [],
   searchQuery: '',
+  sortOrder: SORT_ORDER.SET_ASC,
 };
 
 export const filtersSlice = createSlice({
@@ -65,6 +75,9 @@ export const filtersSlice = createSlice({
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
     },
+    setSortOrder(state, action: PayloadAction<SortOrderT>) {
+      state.sortOrder = action.payload;
+    },
     resetFilters() {
       return initialFiltersState;
     },
@@ -81,5 +94,6 @@ export const {
   setRarities,
   setFoilings,
   setSearchQuery,
+  setSortOrder,
   resetFilters,
 } = filtersSlice.actions;

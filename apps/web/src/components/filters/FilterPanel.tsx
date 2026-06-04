@@ -9,7 +9,9 @@ import {
   setSets,
   setRarities,
   setFoilings,
+  setSortOrder,
   resetFilters,
+  type SortOrderT,
 } from '@/store/filters/filters.slice';
 import { selectFilters } from '@/store/filters/filters.selectors';
 import {
@@ -20,7 +22,6 @@ import {
   CARD_KEYWORDS,
   CARD_RARITIES,
   CARD_FOILINGS,
-  CARD_SETS,
   type CardClassT,
   type CardTalentT,
   type CardTypeT,
@@ -29,30 +30,50 @@ import {
   type CardRarityT,
   type CardFoilingT,
   type CardSetT,
+  SET_ORDER,
 } from '@codex/core';
 import { SearchInput } from '@/components/filters/SearchInput';
 import { AccordionSection } from '@/components/ui/AccordionSection';
 import { MultiSelect } from '@/components/ui/MultiSelect';
+import { RotateCcw, ChevronDown, X } from 'lucide-react';
 
-export const FilterPanel = () => {
+interface FilterPanelProps {
+  onClose?: () => void;
+}
+
+export const FilterPanel = ({ onClose }: FilterPanelProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const f = useSelector(selectFilters);
 
   return (
     <div className="p-6 space-y-5">
-      <div className="flex items-center justify-between pr-15">
+      <div className="flex items-center gap-3">
+        <div className="flex-1">
+          <SearchInput />
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="cursor-pointer shrink-0 p-2 rounded-full bg-zinc-100 dark:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
+            aria-label="Close filters"
+          >
+            <X size={20} />
+          </button>
+        )}
+      </div>
+
+      <div className="flex items-center justify-between">
         <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Filters</h2>
         <button
           onClick={() => dispatch(resetFilters())}
-          className="cursor-pointer text-sm text-zinc-500 dark:text-zinc-400 underline"
+          className="cursor-pointer flex items-center gap-1 text-sm text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
         >
+          <RotateCcw size={14} />
           Reset all
         </button>
       </div>
 
-      <SearchInput />
-
-      <AccordionSection label="Class" badge={f.classes.length}>
+      <AccordionSection defaultOpen label="Class" badge={f.classes.length}>
         <MultiSelect
           options={Object.values(CARD_CLASSES)}
           selected={f.classes}
@@ -60,7 +81,7 @@ export const FilterPanel = () => {
         />
       </AccordionSection>
 
-      <AccordionSection label="Talent" badge={f.talents.length}>
+      <AccordionSection defaultOpen label="Talent" badge={f.talents.length}>
         <MultiSelect
           options={Object.values(CARD_TALENTS)}
           selected={f.talents}
@@ -68,7 +89,7 @@ export const FilterPanel = () => {
         />
       </AccordionSection>
 
-      <AccordionSection label="Type" badge={f.types.length}>
+      <AccordionSection defaultOpen label="Type" badge={f.types.length}>
         <MultiSelect
           options={Object.values(CARD_TYPES)}
           selected={f.types}
@@ -76,7 +97,7 @@ export const FilterPanel = () => {
         />
       </AccordionSection>
 
-      <AccordionSection label="Subtype" badge={f.subtypes.length}>
+      <AccordionSection defaultOpen label="Subtype" badge={f.subtypes.length}>
         <MultiSelect
           options={Object.values(CARD_SUBTYPES)}
           selected={f.subtypes}
@@ -84,7 +105,7 @@ export const FilterPanel = () => {
         />
       </AccordionSection>
 
-      <AccordionSection label="Keywords" badge={f.keywords.length}>
+      <AccordionSection defaultOpen label="Keywords" badge={f.keywords.length}>
         <MultiSelect
           options={Object.values(CARD_KEYWORDS)}
           selected={f.keywords}
@@ -92,7 +113,7 @@ export const FilterPanel = () => {
         />
       </AccordionSection>
 
-      <AccordionSection label="Rarity" badge={f.rarities.length}>
+      <AccordionSection defaultOpen label="Rarity" badge={f.rarities.length}>
         <MultiSelect
           options={Object.values(CARD_RARITIES)}
           selected={f.rarities}
@@ -100,7 +121,7 @@ export const FilterPanel = () => {
         />
       </AccordionSection>
 
-      <AccordionSection label="Foiling" badge={f.foilings.length}>
+      <AccordionSection defaultOpen label="Foiling" badge={f.foilings.length}>
         <MultiSelect
           options={Object.values(CARD_FOILINGS)}
           selected={f.foilings}
@@ -108,13 +129,35 @@ export const FilterPanel = () => {
         />
       </AccordionSection>
 
-      <AccordionSection label="Set" badge={f.sets.length}>
+      <AccordionSection defaultOpen label="Set" badge={f.sets.length}>
         <MultiSelect
-          options={Object.values(CARD_SETS)}
+          options={SET_ORDER}
           selected={f.sets}
           onChange={(values) => dispatch(setSets(values as CardSetT[]))}
         />
       </AccordionSection>
+
+      <div className="flex items-center justify-between">
+        <h2 className="font-semibold text-base text-zinc-900 dark:text-zinc-100">Sort</h2>
+        <div className="relative">
+          <select
+            value={f.searchQuery.trim() ? 'relevance' : f.sortOrder}
+            disabled={!!f.searchQuery.trim()}
+            onChange={(e) => dispatch(setSortOrder(e.target.value as SortOrderT))}
+            className="cursor-pointer appearance-none text-sm bg-zinc-100 dark:bg-zinc-700 rounded-md pl-3 pr-7 py-1 text-zinc-700 dark:text-zinc-300 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {f.searchQuery.trim() && <option value="relevance">By relevance</option>}
+            <option value="set-asc">Set release ↑</option>
+            <option value="set-desc">Set release ↓</option>
+            <option value="name-asc">Name A → Z</option>
+            <option value="name-desc">Name Z → A</option>
+          </select>
+          <ChevronDown
+            size={13}
+            className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400"
+          />
+        </div>
+      </div>
     </div>
   );
 };

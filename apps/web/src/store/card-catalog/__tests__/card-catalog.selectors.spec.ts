@@ -13,22 +13,22 @@ import {
 } from '@codex/core';
 import { selectVisiblePrintings } from '../card-catalog.selectors';
 import { stateBuilder } from '@/store/__tests__/state.builder';
+import { SORT_ORDER } from '@/store/filters/filters.slice';
 
 // ─── Printing shortcuts ───────────────────────────────────────────────────────
 
-const wtrPrinting = printingBuilder({
-  identifier: 'WTR001',
-  print: 'WTR001',
-  set: CARD_SETS.WelcomeToRathe,
-  rarity: CARD_RARITIES.Common,
-}).build();
-
-const promoPrinting = printingBuilder({
-  identifier: 'LGS001',
-  print: 'LGS001-Rainbow',
-  set: CARD_SETS.Promos,
-  rarity: CARD_RARITIES.Common,
-}).build();
+const wtrPrinting = printingBuilder()
+  .withIdentifier('WTR001')
+  .withPrint('WTR001')
+  .withSet(CARD_SETS.WelcomeToRathe)
+  .withRarity(CARD_RARITIES.Common)
+  .build();
+const promoPrinting = printingBuilder()
+  .withIdentifier('LGS001')
+  .withPrint('LGS001-Rainbow')
+  .withSet(CARD_SETS.Promos)
+  .withRarity(CARD_RARITIES.Common)
+  .build();
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
@@ -303,6 +303,68 @@ describe('Feature: Grid slot sorting', () => {
 
     expect(slots[0].card.cardIdentifier).toBe('promo-card');
     expect(slots[1].card.cardIdentifier).toBe('wtr-card');
+  });
+
+  test('Rule: sorts later sets first when sort order is set DESC', () => {
+    const welcomeToRathePrinting = cardBuilder()
+      .withCardIdentifier('alpha-rampage-red')
+      .withPrintings([printingBuilder().withSet(CARD_SETS.WelcomeToRathe).build()])
+      .build();
+
+    const arcaneRisingPrinting = cardBuilder()
+      .withCardIdentifier('absorb-in-aether-red')
+      .withPrintings([printingBuilder().withSet(CARD_SETS.ArcaneRising).build()])
+      .build();
+
+    const cards = selectVisiblePrintings(
+      stateBuilder()
+        .withAllCards([welcomeToRathePrinting, arcaneRisingPrinting])
+        .withSortOrder(SORT_ORDER.SET_DESC)
+        .build(),
+    );
+
+    expect(cards[0].card.cardIdentifier).toBe('absorb-in-aether-red');
+    expect(cards[1].card.cardIdentifier).toBe('alpha-rampage-red');
+  });
+
+  test('Rule: sorts cards alphabetically A to Z when sort order is name ASC', () => {
+    const cardA = cardBuilder()
+      .withCardIdentifier('card-a')
+      .withName('Zebra')
+      .withPrintings([wtrPrinting])
+      .build();
+    const cardB = cardBuilder()
+      .withCardIdentifier('card-b')
+      .withName('Apple')
+      .withPrintings([wtrPrinting])
+      .build();
+
+    const slots = selectVisiblePrintings(
+      stateBuilder().withAllCards([cardA, cardB]).withSortOrder(SORT_ORDER.NAME_ASC).build(),
+    );
+
+    expect(slots[0].card.name).toBe('Apple');
+    expect(slots[1].card.name).toBe('Zebra');
+  });
+
+  test('Rule: sorts cards alphabetically Z to A when sort order is name DESC', () => {
+    const cardA = cardBuilder()
+      .withCardIdentifier('card-a')
+      .withName('Apple')
+      .withPrintings([wtrPrinting])
+      .build();
+    const cardB = cardBuilder()
+      .withCardIdentifier('card-b')
+      .withName('Zebra')
+      .withPrintings([wtrPrinting])
+      .build();
+
+    const slots = selectVisiblePrintings(
+      stateBuilder().withAllCards([cardA, cardB]).withSortOrder(SORT_ORDER.NAME_DESC).build(),
+    );
+
+    expect(slots[0].card.name).toBe('Zebra');
+    expect(slots[1].card.name).toBe('Apple');
   });
 
   test('Rule: sorts slots by identifier within the same set', () => {

@@ -11,6 +11,7 @@ import {
   CARD_TALENTS,
   CARD_TYPES,
 } from '@codex/core';
+import { SORT_ORDER } from '../filters.slice';
 
 const fullState: FiltersState = {
   classes: [CARD_CLASSES.Ninja],
@@ -22,6 +23,7 @@ const fullState: FiltersState = {
   rarities: [CARD_RARITIES.Promo],
   foilings: [CARD_FOILINGS.Gold],
   searchQuery: 'ninja',
+  sortOrder: SORT_ORDER.SET_ASC,
 };
 
 describe('Feature: Loading persisted filters from local storage', () => {

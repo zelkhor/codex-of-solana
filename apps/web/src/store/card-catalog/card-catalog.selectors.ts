@@ -3,6 +3,7 @@ import type { Card, Printing, CardSetT } from '@codex/core';
 import { SET_ORDER } from '@codex/core';
 import type { RootState } from '@/store';
 import { selectFilters } from '@/store/filters/filters.selectors';
+import { SORT_ORDER, SortOrderT } from '@/store/filters/filters.slice';
 
 export type GridSlot = {
   type: 'card';
@@ -63,7 +64,7 @@ export const selectVisiblePrintings = createSelector(
         ),
     );
 
-    return f.searchQuery.trim() ? slots : sortSlots(slots);
+    return f.searchQuery.trim() ? slots : sortSlots(slots, f.sortOrder);
   },
 );
 
@@ -81,9 +82,20 @@ const setIdx = (setName: CardSetT): number => {
   return idx === -1 ? Infinity : idx;
 };
 
-const sortSlots = (slots: GridSlot[]): GridSlot[] =>
+const sortSlots = (slots: GridSlot[], order: SortOrderT): GridSlot[] =>
   [...slots].sort((a, b) => {
-    const idxDiff = setIdx(a.printing.set) - setIdx(b.printing.set);
-    if (idxDiff !== 0) return idxDiff;
-    return a.printing.identifier.localeCompare(b.printing.identifier);
+    switch (order) {
+      case SORT_ORDER.SET_DESC: {
+        const diff = setIdx(b.printing.set) - setIdx(a.printing.set);
+        return diff !== 0 ? diff : b.printing.identifier.localeCompare(a.printing.identifier);
+      }
+      case SORT_ORDER.NAME_ASC:
+        return a.card.name.localeCompare(b.card.name);
+      case SORT_ORDER.NAME_DESC:
+        return b.card.name.localeCompare(a.card.name);
+      default: {
+        const diff = setIdx(a.printing.set) - setIdx(b.printing.set);
+        return diff !== 0 ? diff : a.printing.identifier.localeCompare(b.printing.identifier);
+      }
+    }
   });

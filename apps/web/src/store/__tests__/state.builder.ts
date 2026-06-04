@@ -10,6 +10,7 @@ import type {
   CardRarityT,
   CardFoilingT,
 } from '@codex/core';
+import type { SortOrderT } from '@/store/filters/filters.slice';
 import { rootReducer } from '@/store';
 import type { RootState } from '@/store';
 
@@ -26,6 +27,7 @@ const withSets = createAction<CardSetT[]>('withSets');
 const withRarities = createAction<CardRarityT[]>('withRarities');
 const withFoilings = createAction<CardFoilingT[]>('withFoilings');
 const withSearchQuery = createAction<string>('withSearchQuery');
+const withSortOrder = createAction<SortOrderT>('withSortOrder');
 
 const reducer = createReducer(initialState, (builder) => {
   builder
@@ -63,6 +65,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(withSearchQuery, (state, { payload }) => {
       state.filters.searchQuery = payload;
+    })
+    .addCase(withSortOrder, (state, { payload }) => {
+      state.filters.sortOrder = payload;
     });
 });
 
@@ -84,6 +89,7 @@ export const stateBuilder = (state = initialState) => {
     withRarities: reduce(withRarities),
     withFoilings: reduce(withFoilings),
     withSearchQuery: reduce(withSearchQuery),
+    withSortOrder: reduce(withSortOrder),
     build: (): RootState => state,
   };
 };
