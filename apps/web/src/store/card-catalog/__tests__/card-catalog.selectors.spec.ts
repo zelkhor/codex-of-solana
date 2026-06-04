@@ -83,10 +83,7 @@ describe('Feature: Card-level filtering', () => {
 
   test('Rule: excludes cards that do not match the subtype filter', () => {
     const subtype = Object.values(CARD_SUBTYPES)[0];
-    const matching = cardBuilder()
-      .withCardIdentifier('a')
-      .withSubtypes([subtype])
-      .build();
+    const matching = cardBuilder().withCardIdentifier('a').withSubtypes([subtype]).build();
     const excluded = cardBuilder().withCardIdentifier('b').withSubtypes([]).build();
     const slots = selectVisiblePrintings(
       stateBuilder().withAllCards([matching, excluded]).withSubtypes([subtype]).build(),

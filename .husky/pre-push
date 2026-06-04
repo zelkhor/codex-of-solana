@@ -1,0 +1,20 @@
+#!/bin/sh
+
+while read local_ref local_sha remote_ref remote_sha; do
+  if echo "$remote_ref" | grep -q "refs/heads/main"; then
+    echo "► Pushing to main — running checks..."
+
+    echo "  [1/3] Linting..."
+    pnpm lint || { echo "✗ Lint failed. Push aborted."; exit 1; }
+
+    echo "  [2/3] Building..."
+    pnpm build || { echo "✗ Build failed. Push aborted."; exit 1; }
+
+    echo "  [3/3] Tests..."
+    pnpm test || { echo "✗ Tests failed. Push aborted."; exit 1; }
+
+    echo "✓ All checks passed — pushing to main"
+  fi
+done
+
+exit 0

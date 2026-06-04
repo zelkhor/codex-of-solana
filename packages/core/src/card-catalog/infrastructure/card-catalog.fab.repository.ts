@@ -3,7 +3,7 @@ import type { ICardCatalogRepository } from '../application/card-catalog.reposit
 import { CardCatalogLoadError } from '../domain/card-catalog.errors';
 import { CARD_PRINTING_OVERRIDES } from './card-catalog.overrides';
 import { err, ok, type Result } from '../../shared/result';
-import { Card, CARD_FOILINGS, Printing } from '../domain/card';
+import { CARD_FOILINGS, type Printing, type Card } from '../domain/card';
 
 type SourceCard = (typeof fabCards)[number];
 type SourcePrinting = SourceCard['printings'][number];

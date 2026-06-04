@@ -73,7 +73,9 @@ export const CardListingView = () => {
               <p className="text-destructive">Failed to load cards. Please try again</p>
             </div>
           )}
-          {status === ASYNC_STATUS.Succeeded && visiblePrintings.length === 0 && <NoFilterResults />}
+          {status === ASYNC_STATUS.Succeeded && visiblePrintings.length === 0 && (
+            <NoFilterResults />
+          )}
           {status === ASYNC_STATUS.Succeeded && visiblePrintings.length > 0 && (
             <CardGrid slots={visiblePrintings} onCardClick={handleCardClick} />
           )}
@@ -91,10 +93,14 @@ export const CardListingView = () => {
               title="Filters (⌘K)"
               className="relative flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-zinc-800 shadow-lg border border-black/8 dark:border-white/10 hover:bg-neutral-50 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
             >
-              <span className={`absolute transition-all duration-200 ${filterOpen ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'}`}>
+              <span
+                className={`absolute transition-all duration-200 ${filterOpen ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'}`}
+              >
                 <SlidersHorizontal size={18} />
               </span>
-              <span className={`absolute transition-all duration-200 ${filterOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'}`}>
+              <span
+                className={`absolute transition-all duration-200 ${filterOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'}`}
+              >
                 <X size={18} />
               </span>
             </button>
@@ -102,7 +108,11 @@ export const CardListingView = () => {
         </main>
       </div>
 
-      <FilterDrawer isOpen={filterOpen} onClose={() => setFilterOpen(false)} triggerRef={filterButtonRef} />
+      <FilterDrawer
+        isOpen={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        triggerRef={filterButtonRef}
+      />
 
       {activeCard && (
         <CardDetailModal
