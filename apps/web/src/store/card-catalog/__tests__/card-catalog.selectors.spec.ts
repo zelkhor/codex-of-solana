@@ -8,6 +8,7 @@ import {
   CARD_CLASSES,
   CARD_TALENTS,
   CARD_TYPES,
+  CARD_SUBTYPES,
   CARD_KEYWORDS,
 } from '@codex/core';
 import { selectVisiblePrintings } from '../card-catalog.selectors';
@@ -75,6 +76,20 @@ describe('Feature: Card-level filtering', () => {
       .build();
     const slots = selectVisiblePrintings(
       stateBuilder().withAllCards([matching, excluded]).withTypes([CARD_TYPES.Action]).build(),
+    );
+    expect(slots).toHaveLength(1);
+    expect(slots[0].card.cardIdentifier).toBe('a');
+  });
+
+  test('Rule: excludes cards that do not match the subtype filter', () => {
+    const subtype = Object.values(CARD_SUBTYPES)[0];
+    const matching = cardBuilder()
+      .withCardIdentifier('a')
+      .withSubtypes([subtype])
+      .build();
+    const excluded = cardBuilder().withCardIdentifier('b').withSubtypes([]).build();
+    const slots = selectVisiblePrintings(
+      stateBuilder().withAllCards([matching, excluded]).withSubtypes([subtype]).build(),
     );
     expect(slots).toHaveLength(1);
     expect(slots[0].card.cardIdentifier).toBe('a');

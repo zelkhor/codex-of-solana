@@ -36,6 +36,7 @@ export const selectVisiblePrintings = createSelector(
       if (!matchesMultiFilter(card.classes, f.classes)) return false;
       if (!matchesMultiFilter(card.talents, f.talents)) return false;
       if (!matchesMultiFilter(card.types, f.types)) return false;
+      if (!matchesMultiFilter(card.subtypes, f.subtypes)) return false;
       return matchesMultiFilter(card.keywords, f.keywords);
     });
 

@@ -9,6 +9,7 @@ export const selectHasActiveFilters = createSelector(
     f.classes.length > 0 ||
     f.talents.length > 0 ||
     f.types.length > 0 ||
+    f.subtypes.length > 0 ||
     f.keywords.length > 0 ||
     f.sets.length > 0 ||
     f.rarities.length > 0 ||

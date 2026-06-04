@@ -7,6 +7,7 @@ import {
   CARD_KEYWORDS,
   CARD_RARITIES,
   CARD_SETS,
+  CARD_SUBTYPES,
   CARD_TALENTS,
   CARD_TYPES,
 } from '@codex/core';
@@ -21,6 +22,7 @@ describe('Feature: Filter selectors', () => {
       ['class', (b: StateBuilder) => b.withClasses([CARD_CLASSES.Generic])],
       ['talent', (b: StateBuilder) => b.withTalents([CARD_TALENTS.Shadow])],
       ['type', (b: StateBuilder) => b.withTypes([CARD_TYPES.Action])],
+      ['subtype', (b: StateBuilder) => b.withSubtypes([Object.values(CARD_SUBTYPES)[0]])],
       ['keyword', (b: StateBuilder) => b.withKeywords([CARD_KEYWORDS.Dominate])],
       ['set', (b: StateBuilder) => b.withSets([CARD_SETS.WelcomeToRathe])],
       ['rarity', (b: StateBuilder) => b.withRarities([CARD_RARITIES.Common])],

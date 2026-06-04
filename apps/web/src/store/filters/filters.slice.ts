@@ -5,6 +5,7 @@ import {
   type CardKeywordT,
   type CardRarityT,
   type CardSetT,
+  type CardSubtypeT,
   type CardTalentT,
   type CardTypeT,
 } from '@codex/core';
@@ -13,6 +14,7 @@ export interface FiltersState {
   classes: CardClassT[];
   talents: CardTalentT[];
   types: CardTypeT[];
+  subtypes: CardSubtypeT[];
   keywords: CardKeywordT[];
   sets: CardSetT[];
   rarities: CardRarityT[];
@@ -24,6 +26,7 @@ const initialState: FiltersState = {
   classes: [],
   talents: [],
   types: [],
+  subtypes: [],
   keywords: [],
   sets: [],
   rarities: [],
@@ -43,6 +46,9 @@ export const filtersSlice = createSlice({
     },
     setTypes(state, action: PayloadAction<CardTypeT[]>) {
       state.types = action.payload;
+    },
+    setSubtypes(state, action: PayloadAction<CardSubtypeT[]>) {
+      state.subtypes = action.payload;
     },
     setKeywords(state, action: PayloadAction<CardKeywordT[]>) {
       state.keywords = action.payload;
@@ -69,6 +75,7 @@ export const {
   setClasses,
   setTalents,
   setTypes,
+  setSubtypes,
   setKeywords,
   setSets,
   setRarities,

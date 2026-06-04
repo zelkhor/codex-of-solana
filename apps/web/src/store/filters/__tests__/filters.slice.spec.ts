@@ -7,6 +7,7 @@ import {
   CARD_KEYWORDS,
   CARD_RARITIES,
   CARD_SETS,
+  CARD_SUBTYPES,
   CARD_TALENTS,
   CARD_TYPES,
 } from '@codex/core';
@@ -31,6 +32,11 @@ describe('Feature: Filtering cards', () => {
   test('Rule: I should be able to filter cards by type', () => {
     fixture.whenAddingTypeFilter([CARD_TYPES.Action]);
     fixture.thenFiltersShouldBe({ types: [CARD_TYPES.Action] });
+  });
+
+  test('Rule: I should be able to filter cards by subtype', () => {
+    fixture.whenAddingSubtypeFilter([Object.values(CARD_SUBTYPES)[0]]);
+    fixture.thenFiltersShouldBe({ subtypes: [Object.values(CARD_SUBTYPES)[0]] });
   });
 
   test('Rule: I should be able to filter cards by keyword', () => {

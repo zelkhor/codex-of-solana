@@ -4,6 +4,7 @@ import type {
   CardClassT,
   CardTalentT,
   CardTypeT,
+  CardSubtypeT,
   CardKeywordT,
   CardSetT,
   CardRarityT,
@@ -19,6 +20,7 @@ const withSearchResults = createAction<Card[]>('withSearchResults');
 const withClasses = createAction<CardClassT[]>('withClasses');
 const withTalents = createAction<CardTalentT[]>('withTalents');
 const withTypes = createAction<CardTypeT[]>('withTypes');
+const withSubtypes = createAction<CardSubtypeT[]>('withSubtypes');
 const withKeywords = createAction<CardKeywordT[]>('withKeywords');
 const withSets = createAction<CardSetT[]>('withSets');
 const withRarities = createAction<CardRarityT[]>('withRarities');
@@ -43,6 +45,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(withTypes, (state, { payload }) => {
       state.filters.types = payload;
+    })
+    .addCase(withSubtypes, (state, { payload }) => {
+      state.filters.subtypes = payload;
     })
     .addCase(withKeywords, (state, { payload }) => {
       state.filters.keywords = payload;
@@ -73,6 +78,7 @@ export const stateBuilder = (state = initialState) => {
     withClasses: reduce(withClasses),
     withTalents: reduce(withTalents),
     withTypes: reduce(withTypes),
+    withSubtypes: reduce(withSubtypes),
     withKeywords: reduce(withKeywords),
     withSets: reduce(withSets),
     withRarities: reduce(withRarities),

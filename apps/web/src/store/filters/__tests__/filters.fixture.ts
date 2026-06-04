@@ -6,6 +6,7 @@ import {
   setClasses,
   setTalents,
   setTypes,
+  setSubtypes,
   setKeywords,
   setSets,
   setRarities,
@@ -21,6 +22,7 @@ import type {
   CardKeywordT,
   CardRarityT,
   CardSetT,
+  CardSubtypeT,
   CardTalentT,
   CardTypeT,
 } from '@codex/core';
@@ -49,6 +51,11 @@ export const createFiltersFixture = createFixture((stateBuilder) => {
   const whenAddingTypeFilter = (types: CardTypeT[]) => {
     initStore();
     store.dispatch(setTypes(types));
+  };
+
+  const whenAddingSubtypeFilter = (subtypes: CardSubtypeT[]) => {
+    initStore();
+    store.dispatch(setSubtypes(subtypes));
   };
 
   const whenAddingKeywordFilter = (keywords: CardKeywordT[]) => {
@@ -89,6 +96,7 @@ export const createFiltersFixture = createFixture((stateBuilder) => {
     whenAddingClassFilter,
     whenAddingTalentFilter,
     whenAddingTypeFilter,
+    whenAddingSubtypeFilter,
     whenAddingKeywordFilter,
     whenAddingSetFilter,
     whenAddingRarityFilter,

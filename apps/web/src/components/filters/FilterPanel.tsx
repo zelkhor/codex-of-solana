@@ -4,6 +4,7 @@ import {
   setClasses,
   setTalents,
   setTypes,
+  setSubtypes,
   setKeywords,
   setSets,
   setRarities,
@@ -15,6 +16,7 @@ import {
   CARD_CLASSES,
   CARD_TALENTS,
   CARD_TYPES,
+  CARD_SUBTYPES,
   CARD_KEYWORDS,
   CARD_RARITIES,
   CARD_FOILINGS,
@@ -22,6 +24,7 @@ import {
   type CardClassT,
   type CardTalentT,
   type CardTypeT,
+  type CardSubtypeT,
   type CardKeywordT,
   type CardRarityT,
   type CardFoilingT,
@@ -70,6 +73,14 @@ export const FilterPanel = () => {
           options={Object.values(CARD_TYPES)}
           selected={f.types}
           onChange={(values) => dispatch(setTypes(values as CardTypeT[]))}
+        />
+      </AccordionSection>
+
+      <AccordionSection label="Subtype" badge={f.subtypes.length}>
+        <MultiSelect
+          options={Object.values(CARD_SUBTYPES)}
+          selected={f.subtypes}
+          onChange={(values) => dispatch(setSubtypes(values as CardSubtypeT[]))}
         />
       </AccordionSection>
 
