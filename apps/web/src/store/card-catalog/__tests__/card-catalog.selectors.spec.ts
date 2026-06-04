@@ -11,7 +11,7 @@ import {
   CARD_SUBTYPES,
   CARD_KEYWORDS,
 } from '@codex/core';
-import { selectVisibleCards, selectCardPrintings } from '../card-catalog.selectors';
+import { selectVisibleCards, selectCardWithActivePrinting } from '../card-catalog.selectors';
 import { stateBuilder } from '@/store/__tests__/state.builder';
 import { COMPARISON_OPERATORS, SORT_ORDER } from '@/store/filters/filters.slice';
 
@@ -453,9 +453,11 @@ describe('Feature: Sorting', () => {
         printingBuilder({ set: CARD_SETS.Promos, identifier: 'LGS001', print: 'LGS001' }).build(),
       ])
       .build();
-    const cards = selectVisibleCards(stateBuilder().withAllCards([promoCard, wtrCard]).build());
-    expect(cards[0].cardIdentifier).toBe('wtr-card');
-    expect(cards[1].cardIdentifier).toBe('promo-card');
+    const result = selectCardWithActivePrinting(
+      stateBuilder().withAllCards([promoCard, wtrCard]).build(),
+    );
+    expect(result[0].card.cardIdentifier).toBe('wtr-card');
+    expect(result[1].card.cardIdentifier).toBe('promo-card');
   });
 
   test('Rule: Preserves search relevance order instead of sorting by set when a query is active', () => {
@@ -476,12 +478,12 @@ describe('Feature: Sorting', () => {
       ])
       .build();
 
-    const cards = selectVisibleCards(
+    const result = selectCardWithActivePrinting(
       stateBuilder().withSearchResults([promoCard, wtrCard]).withSearchQuery('some query').build(),
     );
 
-    expect(cards[0].cardIdentifier).toBe('promo-card');
-    expect(cards[1].cardIdentifier).toBe('wtr-card');
+    expect(result[0].card.cardIdentifier).toBe('promo-card');
+    expect(result[1].card.cardIdentifier).toBe('wtr-card');
   });
 
   test('Rule: sorts later sets first when sort order is set DESC', () => {
@@ -495,15 +497,15 @@ describe('Feature: Sorting', () => {
       .withPrintings([printingBuilder().withSet(CARD_SETS.ArcaneRising).build()])
       .build();
 
-    const cards = selectVisibleCards(
+    const result = selectCardWithActivePrinting(
       stateBuilder()
         .withAllCards([welcomeToRathePrinting, arcaneRisingPrinting])
         .withSortOrder(SORT_ORDER.SET_DESC)
         .build(),
     );
 
-    expect(cards[0].cardIdentifier).toBe('absorb-in-aether-red');
-    expect(cards[1].cardIdentifier).toBe('alpha-rampage-red');
+    expect(result[0].card.cardIdentifier).toBe('absorb-in-aether-red');
+    expect(result[1].card.cardIdentifier).toBe('alpha-rampage-red');
   });
 
   test('Rule: Sorts cards alphabetically A to Z when sort order is name ASC', () => {
@@ -518,12 +520,12 @@ describe('Feature: Sorting', () => {
       .withPrintings([wtrPrinting])
       .build();
 
-    const cards = selectVisibleCards(
+    const result = selectCardWithActivePrinting(
       stateBuilder().withAllCards([cardA, cardB]).withSortOrder(SORT_ORDER.NAME_ASC).build(),
     );
 
-    expect(cards[0].name).toBe('Apple');
-    expect(cards[1].name).toBe('Zebra');
+    expect(result[0].card.name).toBe('Apple');
+    expect(result[1].card.name).toBe('Zebra');
   });
 
   test('Rule: Sorts cards alphabetically Z to A when sort order is name DESC', () => {
@@ -538,12 +540,12 @@ describe('Feature: Sorting', () => {
       .withPrintings([wtrPrinting])
       .build();
 
-    const cards = selectVisibleCards(
+    const result = selectCardWithActivePrinting(
       stateBuilder().withAllCards([cardA, cardB]).withSortOrder(SORT_ORDER.NAME_DESC).build(),
     );
 
-    expect(cards[0].name).toBe('Zebra');
-    expect(cards[1].name).toBe('Apple');
+    expect(result[0].card.name).toBe('Zebra');
+    expect(result[1].card.name).toBe('Apple');
   });
 
   test('Rule: Sorts printings within the same card by identifier', () => {
@@ -577,7 +579,7 @@ describe('Feature: Card printings grid ordering', () => {
       .build();
     const other = cardBuilder().withCardIdentifier('other').withPrintings([wtrPrinting]).build();
 
-    const result = selectCardPrintings(
+    const result = selectCardWithActivePrinting(
       stateBuilder().withAllCards([ira, other]).withSortOrder(SORT_ORDER.SET_ASC).build(),
     );
 

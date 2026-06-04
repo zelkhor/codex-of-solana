@@ -7,19 +7,14 @@ import {
   COMPARISON_OPERATORS,
   SORT_ORDER,
   type NumericFilterT,
-  type SortOrderT,
 } from '@/store/filters/filters.slice';
 
 const selectAllCards = (state: RootState) => state.cardCatalog.allCards;
+
 const selectSearchResults = (state: RootState) => state.cardCatalog.searchResults;
 
 export const selectCardById = (cardIdentifier: string) => (state: RootState) =>
   selectAllCards(state).find((c) => c.cardIdentifier === cardIdentifier);
-
-export const selectPrintingByCode = (printingCode: string) => (state: RootState) =>
-  selectAllCards(state)
-    .flatMap((c) => c.printings)
-    .find((p) => p.print === printingCode);
 
 export const selectPrintingByCardAndCode =
   (cardIdentifier: string, printingCode: string) => (state: RootState) => {
@@ -30,51 +25,46 @@ export const selectPrintingByCardAndCode =
 export const selectVisibleCards = createSelector(
   selectSearchResults,
   selectFilters,
-  (cards, f): Card[] => {
-    const filteredCards = cards.filter((card) => {
-      if (!matchesMultiFilter(card.classes, f.classes)) return false;
-      if (!matchesMultiFilter(card.talents, f.talents)) return false;
-      if (!matchesMultiFilter(card.types, f.types)) return false;
-      if (!matchesMultiFilter(card.subtypes, f.subtypes)) return false;
-      if (!matchesMultiFilter(card.keywords, f.keywords)) return false;
-      if (!matchesNumericFilter(card.cost, f.cost)) return false;
-      if (!matchesNumericFilter(card.pitch, f.pitch)) return false;
-      if (!matchesNumericFilter(card.attack, f.attack)) return false;
-      return matchesNumericFilter(card.defense, f.defense);
-    });
-
+  (cards, filters): Card[] => {
     const matchesPrintingFilters = (p: Printing): boolean => {
-      if (f.sets.length > 0 && !f.sets.includes(p.set)) return false;
-      if (f.rarities.length > 0 && !f.rarities.includes(p.rarity)) return false;
-      if (f.foilings.length > 0 && (!p.foiling || !f.foilings.includes(p.foiling))) return false;
+      if (filters.sets.length > 0 && !filters.sets.includes(p.set)) return false;
+      if (filters.rarities.length > 0 && !filters.rarities.includes(p.rarity)) return false;
+      if (filters.foilings.length > 0 && (!p.foiling || !filters.foilings.includes(p.foiling)))
+        return false;
       return true;
     };
 
-    const visibleCards = filteredCards
-      .map((card) => ({
-        ...card,
-        printings: card.printings
-          .filter((p) => !p.print.includes('-Back'))
-          .filter(
-            (p) =>
-              matchesPrintingFilters(p) ||
-              (!f.groupPrintings && p.backPrinting && matchesPrintingFilters(p.backPrinting)),
-          )
-          .sort((a, b) => {
-            const diff = setIdx(a.set) - setIdx(b.set);
-            return diff !== 0 ? diff : a.identifier.localeCompare(b.identifier);
-          }),
-      }))
-      .filter((card) => card.printings.length > 0)
-      .map((card) => ({
-        ...card,
-        printings: f.groupPrintings
-          ? [pickGroupedPrinting(card.printings, f.foilings, f.rarities)]
-          : card.printings,
-      }))
-      .filter((card) => card.printings.length > 0);
+    return cards
+      .filter((card) => {
+        if (!matchesMultiFilter(card.classes, filters.classes)) return false;
+        if (!matchesMultiFilter(card.talents, filters.talents)) return false;
+        if (!matchesMultiFilter(card.types, filters.types)) return false;
+        if (!matchesMultiFilter(card.subtypes, filters.subtypes)) return false;
+        if (!matchesMultiFilter(card.keywords, filters.keywords)) return false;
+        if (!matchesNumericFilter(card.cost, filters.cost)) return false;
+        if (!matchesNumericFilter(card.pitch, filters.pitch)) return false;
+        if (!matchesNumericFilter(card.attack, filters.attack)) return false;
+        return matchesNumericFilter(card.defense, filters.defense);
+      })
+      .map((card) => {
+        const printingOrBackFaceMatchesFilters = (p: Printing): boolean =>
+          matchesPrintingFilters(p) ||
+          (!filters.groupPrintings && !!p.backPrinting && matchesPrintingFilters(p.backPrinting));
 
-    return f.searchQuery.trim() ? visibleCards : sortCards(visibleCards, f.sortOrder);
+        const filteredPrintings = card.printings
+          .filter(isFrontPrinting)
+          .filter(printingOrBackFaceMatchesFilters)
+          .sort(compareBySetThenIdentifier);
+
+        return {
+          ...card,
+          printings:
+            filters.groupPrintings && filteredPrintings.length > 0
+              ? [pickGroupedPrinting(filteredPrintings, filters.foilings, filters.rarities)]
+              : filteredPrintings,
+        };
+      })
+      .filter((card) => card.printings.length > 0);
   },
 );
 
@@ -84,10 +74,10 @@ export type CardWithActivePrinting = {
   backPrinting?: Printing;
 };
 
-export const selectCardPrintings = createSelector(
+export const selectCardWithActivePrinting = createSelector(
   selectVisibleCards,
   selectFilters,
-  (cards, f): CardWithActivePrinting[] => {
+  (cards, filters): CardWithActivePrinting[] => {
     const result = cards.flatMap((card) =>
       card.printings.map((printing) => ({
         card,
@@ -96,52 +86,30 @@ export const selectCardPrintings = createSelector(
       })),
     );
 
-    if (
-      !f.searchQuery.trim() &&
-      (f.sortOrder === SORT_ORDER.SET_ASC || f.sortOrder === SORT_ORDER.SET_DESC)
-    ) {
-      const dir = f.sortOrder === SORT_ORDER.SET_ASC ? 1 : -1;
-      result.sort((a, b) => {
-        const diff = setIdx(a.printing.set) - setIdx(b.printing.set);
-        return diff !== 0 ? diff * dir : a.printing.identifier.localeCompare(b.printing.identifier);
-      });
+    if (filters.searchQuery.trim()) return result;
+
+    switch (filters.sortOrder) {
+      case SORT_ORDER.SET_ASC:
+      case SORT_ORDER.SET_DESC: {
+        const dir = filters.sortOrder === SORT_ORDER.SET_ASC ? 1 : -1;
+        result.sort((a, b) => compareBySetThenIdentifier(a.printing, b.printing) * dir);
+        break;
+      }
+      case SORT_ORDER.NAME_ASC:
+      case SORT_ORDER.NAME_DESC: {
+        const dir = filters.sortOrder === SORT_ORDER.NAME_ASC ? 1 : -1;
+        result.sort((a, b) => a.card.name.localeCompare(b.card.name) * dir);
+        break;
+      }
     }
 
     return result;
   },
 );
 
-// ── Grouping ─────────────────────────────────────────────────────────────────
-
-const foilingIdx = (foiling: CardFoilingT): number => {
-  const idx = FOILING_ORDER.indexOf(foiling);
-  return idx === -1 ? Infinity : idx;
-};
-
-const rarityIdx = (rarity: CardRarityT): number => {
-  const idx = RARITY_ORDER.indexOf(rarity);
-  return idx === -1 ? Infinity : idx;
-};
-
-const pickGroupedPrinting = (
-  printings: Printing[],
-  foilings: CardFoilingT[],
-  rarities: CardRarityT[],
-): Printing =>
-  [...printings].sort((a, b) => {
-    if (foilings.length > 0) {
-      const diff = foilingIdx(a.foiling) - foilingIdx(b.foiling);
-      if (diff !== 0) return diff;
-    }
-    if (rarities.length > 0) {
-      const diff = rarityIdx(a.rarity) - rarityIdx(b.rarity);
-      if (diff !== 0) return diff;
-    }
-    const setDiff = setIdx(a.set) - setIdx(b.set);
-    return setDiff !== 0 ? setDiff : a.identifier.localeCompare(b.identifier);
-  })[0];
-
 // ── Filter helpers ───────────────────────────────────────────────────────────
+
+const isFrontPrinting = (p: Printing): boolean => !p.print.includes('-Back');
 
 const matchesMultiFilter = (values: string[], filter: string[]): boolean => {
   if (filter.length === 0) return true;
@@ -174,24 +142,36 @@ const setIdx = (setName: CardSetT): number => {
   return idx === -1 ? Infinity : idx;
 };
 
-const sortCards = (cards: Card[], order: SortOrderT): Card[] =>
-  [...cards].sort((a, b) => {
-    switch (order) {
-      case SORT_ORDER.SET_DESC: {
-        const diff = setIdx(b.printings[0].set) - setIdx(a.printings[0].set);
-        return diff !== 0
-          ? diff
-          : b.printings[0].identifier.localeCompare(a.printings[0].identifier);
-      }
-      case SORT_ORDER.NAME_ASC:
-        return a.name.localeCompare(b.name);
-      case SORT_ORDER.NAME_DESC:
-        return b.name.localeCompare(a.name);
-      default: {
-        const diff = setIdx(a.printings[0].set) - setIdx(b.printings[0].set);
-        return diff !== 0
-          ? diff
-          : a.printings[0].identifier.localeCompare(b.printings[0].identifier);
-      }
+const compareBySetThenIdentifier = (a: Printing, b: Printing): number => {
+  const diff = setIdx(a.set) - setIdx(b.set);
+  return diff !== 0 ? diff : a.identifier.localeCompare(b.identifier);
+};
+
+// ── Grouping ─────────────────────────────────────────────────────────────────
+
+const foilingIdx = (foiling: CardFoilingT): number => {
+  const idx = FOILING_ORDER.indexOf(foiling);
+  return idx === -1 ? Infinity : idx;
+};
+
+const rarityIdx = (rarity: CardRarityT): number => {
+  const idx = RARITY_ORDER.indexOf(rarity);
+  return idx === -1 ? Infinity : idx;
+};
+
+const pickGroupedPrinting = (
+  printings: Printing[],
+  foilings: CardFoilingT[],
+  rarities: CardRarityT[],
+): Printing =>
+  [...printings].sort((a, b) => {
+    if (foilings.length > 0) {
+      const diff = foilingIdx(a.foiling) - foilingIdx(b.foiling);
+      if (diff !== 0) return diff;
     }
-  });
+    if (rarities.length > 0) {
+      const diff = rarityIdx(a.rarity) - rarityIdx(b.rarity);
+      if (diff !== 0) return diff;
+    }
+    return compareBySetThenIdentifier(a, b);
+  })[0];
