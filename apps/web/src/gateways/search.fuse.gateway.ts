@@ -13,6 +13,7 @@ export class FuseSearchGateway implements ISearchGateway {
         { name: 'classes', weight: 0.05 },
         { name: 'talents', weight: 0.05 },
         { name: 'types', weight: 0.025 },
+        { name: 'subtypes', weight: 0.025 },
         { name: 'keywords', weight: 0.025 },
       ],
       threshold: 0.2,

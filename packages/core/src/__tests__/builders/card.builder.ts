@@ -6,6 +6,7 @@ import {
   CARD_RARITIES,
   CARD_SETS,
   CARD_TYPES,
+  CARD_SUBTYPES,
 } from '../../card-catalog/domain/card';
 import { printingBuilder } from './printing.builder';
 
@@ -42,7 +43,7 @@ export const cardBuilder = ({
   classes = [CARD_CLASSES.Generic],
   talents = [],
   types = [CARD_TYPES.Action],
-  subtypes = [],
+  subtypes = [CARD_SUBTYPES.Arrow],
   keywords = [],
   rarity = CARD_RARITIES.Common,
   rarities = [CARD_RARITIES.Common],

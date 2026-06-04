@@ -279,6 +279,32 @@ describe('Feature: Grid slot sorting', () => {
     expect(slots[1].card.cardIdentifier).toBe('promo-card');
   });
 
+  test('Rule: preserves search relevance order instead of sorting by set when a query is active', () => {
+    const wtrCard = cardBuilder()
+      .withCardIdentifier('wtr-card')
+      .withPrintings([
+        printingBuilder({
+          set: CARD_SETS.WelcomeToRathe,
+          identifier: 'WTR001',
+          print: 'WTR001',
+        }).build(),
+      ])
+      .build();
+    const promoCard = cardBuilder()
+      .withCardIdentifier('promo-card')
+      .withPrintings([
+        printingBuilder({ set: CARD_SETS.Promos, identifier: 'LGS001', print: 'LGS001' }).build(),
+      ])
+      .build();
+
+    const slots = selectVisiblePrintings(
+      stateBuilder().withSearchResults([promoCard, wtrCard]).withSearchQuery('some query').build(),
+    );
+
+    expect(slots[0].card.cardIdentifier).toBe('promo-card');
+    expect(slots[1].card.cardIdentifier).toBe('wtr-card');
+  });
+
   test('Rule: sorts slots by identifier within the same set', () => {
     const printingA = printingBuilder({
       set: CARD_SETS.WelcomeToRathe,

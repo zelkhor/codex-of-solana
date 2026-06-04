@@ -63,7 +63,7 @@ export const selectVisiblePrintings = createSelector(
         ),
     );
 
-    return sortSlots(slots);
+    return f.searchQuery.trim() ? slots : sortSlots(slots);
   },
 );
 
