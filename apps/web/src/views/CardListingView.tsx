@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal, X } from 'lucide-react';
 import type { AppDispatch, RootState } from '@/store';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
 import { selectVisiblePrintings } from '@/store/card-catalog/card-catalog.selectors';
@@ -29,6 +29,7 @@ export const CardListingView = () => {
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
   const printingCount = visiblePrintings.length;
 
   useEffect(() => {
@@ -85,17 +86,23 @@ export const CardListingView = () => {
               </span>
             )}
             <button
+              ref={filterButtonRef}
               onClick={() => setFilterOpen((v) => !v)}
               title="Filters (⌘K)"
-              className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-zinc-800 shadow-lg border border-black/8 dark:border-white/10 hover:bg-neutral-50 dark:hover:bg-zinc-700 transition-colors"
+              className="relative flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-zinc-800 shadow-lg border border-black/8 dark:border-white/10 hover:bg-neutral-50 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
             >
-              <SlidersHorizontal size={18} />
+              <span className={`absolute transition-all duration-200 ${filterOpen ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'}`}>
+                <SlidersHorizontal size={18} />
+              </span>
+              <span className={`absolute transition-all duration-200 ${filterOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'}`}>
+                <X size={18} />
+              </span>
             </button>
           </div>
         </main>
       </div>
 
-      <FilterDrawer isOpen={filterOpen} onClose={() => setFilterOpen(false)} />
+      <FilterDrawer isOpen={filterOpen} onClose={() => setFilterOpen(false)} triggerRef={filterButtonRef} />
 
       {activeCard && (
         <CardDetailModal
