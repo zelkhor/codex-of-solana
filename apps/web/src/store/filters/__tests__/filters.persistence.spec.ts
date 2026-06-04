@@ -22,6 +22,7 @@ const fullState: FiltersState = {
   sets: [CARD_SETS.WelcomeToRathe],
   rarities: [CARD_RARITIES.Promo],
   foilings: [CARD_FOILINGS.Gold],
+  artists: ['Micah Epstein'],
   searchQuery: 'ninja',
   sortOrder: SORT_ORDER.SET_ASC,
   cost: { operator: COMPARISON_OPERATORS.GTE, value: 2 },

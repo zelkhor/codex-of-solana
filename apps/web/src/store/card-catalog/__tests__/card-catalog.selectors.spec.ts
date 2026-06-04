@@ -265,6 +265,57 @@ describe('Feature: Printing-level filtering', () => {
   });
 });
 
+describe('Feature: Artist filtering', () => {
+  test('Rule: Includes only printings from the selected artist', () => {
+    const micahPrinting = printingBuilder()
+      .withIdentifier('WTR001')
+      .withPrint('WTR001')
+      .withSet(CARD_SETS.WelcomeToRathe)
+      .withArtists(['Micah Epstein'])
+      .build();
+    const otherPrinting = printingBuilder()
+      .withIdentifier('WTR002')
+      .withPrint('WTR002')
+      .withSet(CARD_SETS.WelcomeToRathe)
+      .withArtists(['Svetlin Velinov'])
+      .build();
+    const card = cardBuilder().withPrintings([micahPrinting, otherPrinting]).build();
+    const cards = selectVisibleCards(
+      stateBuilder().withAllCards([card]).withArtists(['Micah Epstein']).build(),
+    );
+    expect(cards[0].printings).toHaveLength(1);
+    expect(cards[0].printings[0].print).toBe('WTR001');
+  });
+
+  test('Rule: Excludes all printings when the artist filter does not match any', () => {
+    const card = cardBuilder()
+      .withPrintings([printingBuilder().withArtists(['Micah Epstein']).build()])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder().withAllCards([card]).withArtists(['Svetlin Velinov']).build(),
+    );
+    expect(cards).toHaveLength(0);
+  });
+
+  test('Rule: Includes printings matching any of the selected artists', () => {
+    const cardA = cardBuilder()
+      .withCardIdentifier('a')
+      .withPrintings([printingBuilder().withArtists(['Micah Epstein']).build()])
+      .build();
+    const cardB = cardBuilder()
+      .withCardIdentifier('b')
+      .withPrintings([printingBuilder().withArtists(['Svetlin Velinov']).build()])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([cardA, cardB])
+        .withArtists(['Micah Epstein', 'Svetlin Velinov'])
+        .build(),
+    );
+    expect(cards).toHaveLength(2);
+  });
+});
+
 describe('Feature: Double-sided card pairing', () => {
   test('Rule: Back printings (-Back) are not returned as their own entries', () => {
     const front = printingBuilder({

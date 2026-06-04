@@ -27,6 +27,7 @@ describe('Feature: Filter selectors', () => {
       ['set', (b: StateBuilder) => b.withSets([CARD_SETS.WelcomeToRathe])],
       ['rarity', (b: StateBuilder) => b.withRarities([CARD_RARITIES.Common])],
       ['foiling', (b: StateBuilder) => b.withFoilings([CARD_FOILINGS.Rainbow])],
+      ['artist', (b: StateBuilder) => b.withArtists(['Micah Epstein'])],
       ['search query', (b: StateBuilder) => b.withSearchQuery('ninja')],
     ])('Rule: returns true when a %s filter is active', (_, setup) => {
       expect(selectHasActiveFilters(setup(stateBuilder()).build())).toBe(true);

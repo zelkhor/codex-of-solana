@@ -13,6 +13,10 @@ const selectAllCards = (state: RootState) => state.cardCatalog.allCards;
 
 const selectSearchResults = (state: RootState) => state.cardCatalog.searchResults;
 
+export const selectAllArtists = createSelector(selectAllCards, (cards): string[] =>
+  [...new Set(cards.flatMap((c) => c.printings.flatMap((p) => p.artists)))].sort(),
+);
+
 export const selectCardById = (cardIdentifier: string) => (state: RootState) =>
   selectAllCards(state).find((c) => c.cardIdentifier === cardIdentifier);
 
@@ -31,6 +35,7 @@ export const selectVisibleCards = createSelector(
       if (filters.rarities.length > 0 && !filters.rarities.includes(p.rarity)) return false;
       if (filters.foilings.length > 0 && (!p.foiling || !filters.foilings.includes(p.foiling)))
         return false;
+      if (!matchesMultiFilter(p.artists, filters.artists)) return false;
       return true;
     };
 

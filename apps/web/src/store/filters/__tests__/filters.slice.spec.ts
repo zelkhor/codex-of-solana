@@ -59,6 +59,11 @@ describe('Feature: Filtering cards', () => {
     fixture.thenFiltersShouldBe({ foilings: [CARD_FOILINGS.Rainbow] });
   });
 
+  test('Rule: I should be able to filter cards by artist', () => {
+    fixture.whenAddingArtistFilter(['Micah Epstein']);
+    fixture.thenFiltersShouldBe({ artists: ['Micah Epstein'] });
+  });
+
   test('Rule: I should be able to reset all active filters at once', () => {
     fixture.givenActiveFilters((b) =>
       b.withClasses([CARD_CLASSES.Generic]).withFoilings([CARD_FOILINGS.Rainbow]),

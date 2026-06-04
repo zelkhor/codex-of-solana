@@ -43,6 +43,7 @@ export interface FiltersState {
   sets: CardSetT[];
   rarities: CardRarityT[];
   foilings: CardFoilingT[];
+  artists: string[];
   searchQuery: string;
   sortOrder: SortOrderT;
   cost: NumericFilterT;
@@ -61,6 +62,7 @@ export const initialFiltersState: FiltersState = {
   sets: [],
   rarities: [],
   foilings: [],
+  artists: [],
   searchQuery: '',
   sortOrder: SORT_ORDER.SET_ASC,
   cost: emptyNumericFilter,
@@ -98,6 +100,9 @@ export const filtersSlice = createSlice({
     setFoilings(state, action: PayloadAction<CardFoilingT[]>) {
       state.foilings = action.payload;
     },
+    setArtists(state, action: PayloadAction<string[]>) {
+      state.artists = action.payload;
+    },
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
     },
@@ -134,6 +139,7 @@ export const {
   setSets,
   setRarities,
   setFoilings,
+  setArtists,
   setSearchQuery,
   setSortOrder,
   setCostFilter,

@@ -11,6 +11,7 @@ import {
   setSets,
   setRarities,
   setFoilings,
+  setArtists,
   resetFilters,
   type FiltersState,
 } from '../filters.slice';
@@ -78,6 +79,11 @@ export const createFiltersFixture = createFixture((stateBuilder) => {
     store.dispatch(setFoilings(foilings));
   };
 
+  const whenAddingArtistFilter = (artists: string[]) => {
+    initStore();
+    store.dispatch(setArtists(artists));
+  };
+
   const whenResettingFilters = () => {
     initStore();
     store.dispatch(resetFilters());
@@ -101,6 +107,7 @@ export const createFiltersFixture = createFixture((stateBuilder) => {
     whenAddingSetFilter,
     whenAddingRarityFilter,
     whenAddingFoilingFilter,
+    whenAddingArtistFilter,
     whenResettingFilters,
     thenFiltersShouldBe,
     thenHasActiveFiltersShouldBe,

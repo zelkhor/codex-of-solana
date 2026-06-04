@@ -26,6 +26,7 @@ const withKeywords = createAction<CardKeywordT[]>('withKeywords');
 const withSets = createAction<CardSetT[]>('withSets');
 const withRarities = createAction<CardRarityT[]>('withRarities');
 const withFoilings = createAction<CardFoilingT[]>('withFoilings');
+const withArtists = createAction<string[]>('withArtists');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');
 const withGroupPrintings = createAction<boolean>('withGroupPrintings');
@@ -68,6 +69,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withFoilings, (state, { payload }) => {
       state.filters.foilings = payload;
     })
+    .addCase(withArtists, (state, { payload }) => {
+      state.filters.artists = payload;
+    })
     .addCase(withSearchQuery, (state, { payload }) => {
       state.filters.searchQuery = payload;
     })
@@ -108,6 +112,7 @@ export const stateBuilder = (state = initialState) => {
     withSets: reduce(withSets),
     withRarities: reduce(withRarities),
     withFoilings: reduce(withFoilings),
+    withArtists: reduce(withArtists),
     withSearchQuery: reduce(withSearchQuery),
     withSortOrder: reduce(withSortOrder),
     withGroupPrintings: reduce(withGroupPrintings),

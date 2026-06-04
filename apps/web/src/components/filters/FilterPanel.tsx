@@ -9,6 +9,7 @@ import {
   setSets,
   setRarities,
   setFoilings,
+  setArtists,
   setSortOrder,
   setCostFilter,
   setPitchFilter,
@@ -18,6 +19,7 @@ import {
   resetFilters,
   type SortOrderT,
   type NumericFilterT,
+  SORT_ORDER,
 } from '@/store/filters/filters.slice';
 import { selectFilters } from '@/store/filters/filters.selectors';
 import {
@@ -40,6 +42,7 @@ import {
 } from '@codex/core';
 import { SearchInput } from '@/components/filters/SearchInput';
 import { MultiSelect } from '@/components/ui/MultiSelect';
+import { selectAllArtists } from '@/store/card-catalog/card-catalog.selectors';
 import { NumericFilterInput } from '@/components/ui/NumericFilterInput';
 import { RotateCcw, X } from 'lucide-react';
 import { Toggle } from '@/components/ui/Toggle.tsx';
@@ -61,6 +64,7 @@ const FilterRow = ({ label, children }: { label: string; children: React.ReactNo
 export const FilterPanel = ({ onClose }: FilterPanelProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const f = useSelector(selectFilters);
+  const allArtists = useSelector(selectAllArtists);
 
   return (
     <div className="p-6 space-y-4">
@@ -155,6 +159,14 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
             placeholder="e.g. Regular, Cold Foil, Rainbow Foil, ..."
           />
         </FilterRow>
+        <FilterRow label="Artist">
+          <MultiSelect
+            options={allArtists}
+            selected={f.artists}
+            onChange={(values) => dispatch(setArtists(values))}
+            placeholder="Search artists…"
+          />
+        </FilterRow>
         <FilterRow label="Cost">
           <NumericFilterInput
             value={f.cost}
@@ -194,10 +206,10 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
             className="flex-1"
             options={[
               ...(f.searchQuery.trim() ? [{ value: 'relevance', label: 'By relevance' }] : []),
-              { value: 'set-asc', label: 'Set release ↑' },
-              { value: 'set-desc', label: 'Set release ↓' },
-              { value: 'name-asc', label: 'Name A → Z' },
-              { value: 'name-desc', label: 'Name Z → A' },
+              { value: SORT_ORDER.SET_ASC, label: 'Set release ↑' },
+              { value: SORT_ORDER.SET_DESC, label: 'Set release ↓' },
+              { value: SORT_ORDER.NAME_ASC, label: 'Name A → Z' },
+              { value: SORT_ORDER.NAME_DESC, label: 'Name Z → A' },
             ]}
           />
         </div>
