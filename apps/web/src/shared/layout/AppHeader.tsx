@@ -1,6 +1,8 @@
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { NavLink } from 'react-router';
-import { Sun, Moon } from 'lucide-react';
+
+import { Moon, Sun } from 'lucide-react';
+
 import { useClickOutside } from '@/shared/hooks/useClickOutside.ts';
 import { useTheme } from '@/shared/hooks/useTheme.ts';
 

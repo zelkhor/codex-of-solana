@@ -1,7 +1,8 @@
-import type { Card, Result } from '@codex/core';
-import type { AppError } from '@codex/core';
-import type { ICardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.gateway.ts';
+import type { AppError, Card, Result } from '@codex/core';
+
 import type { HttpClient } from '@/shared/gateways/http-client.ts';
+
+import type { ICardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.gateway.ts';
 
 export class CardCatalogApiGateway implements ICardCatalogGateway {
   constructor(private readonly http: HttpClient) {}

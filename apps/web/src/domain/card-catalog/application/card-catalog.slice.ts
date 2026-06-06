@@ -1,6 +1,9 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import type { Card } from '@codex/core';
+
 import { ASYNC_STATUS, type AsyncStatusT } from '@/shared/types/async-status.ts';
+
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
 
 export interface CardCatalogState {

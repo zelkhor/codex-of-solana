@@ -1,7 +1,6 @@
-import { CardCatalogFabRepository, IMAGE_BASE } from '../card-catalog.fab.repository';
-import { CARD_PRINTING_OVERRIDES } from '../card-catalog.overrides';
-import { expectOk } from '../../../__tests__/helpers/result.helpers';
+import { cardBuilder } from '../../../__tests__/builders/card.builder';
 import { printingBuilder } from '../../../__tests__/builders/printing.builder';
+import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import {
   CARD_CLASSES,
   CARD_EDITIONS,
@@ -10,7 +9,8 @@ import {
   CARD_SETS,
   CARD_TYPES,
 } from '../../domain/card';
-import { cardBuilder } from '../../../__tests__/builders/card.builder';
+import { CardCatalogFabRepository, IMAGE_BASE } from '../card-catalog.fab.repository';
+import { CARD_PRINTING_OVERRIDES } from '../card-catalog.overrides';
 
 describe('Feature: CardCatalogFabRepository', () => {
   let repository: CardCatalogFabRepository;

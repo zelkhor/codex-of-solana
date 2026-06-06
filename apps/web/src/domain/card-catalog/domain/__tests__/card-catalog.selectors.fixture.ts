@@ -1,9 +1,12 @@
-import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
-import type { Card, Printing } from '@codex/core';
 import { expect } from 'vitest';
+
+import type { Card, Printing } from '@codex/core';
+
+import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
+
 import { selectAllArtists } from '@/domain/card-catalog/domain/select-all-artists.selector.ts';
-import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
 import { selectCardById } from '@/domain/card-catalog/domain/select-card-by-id.selector.ts';
+import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
 import { selectPrintingByCardAndCode } from '@/domain/card-catalog/domain/select-printing-by-card-and-code.selector.ts';
 
 export const createCardCatalogSelectorsFixture = createFixture((stateBuilderProvider) => {

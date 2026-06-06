@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { type TiltEffect, foilingToEffect } from '@/features/cards/ui/card.helpers.ts';
+
 import type { Printing } from '@codex/core';
+
+import { type TiltEffect, foilingToEffect } from '@/features/cards/ui/card.helpers.ts';
 
 export interface CardDetailViewModel {
   activePrinting: Printing;

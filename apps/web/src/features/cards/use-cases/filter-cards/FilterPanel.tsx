@@ -1,30 +1,34 @@
 import type React from 'react';
+
+import { RotateCcw, X } from 'lucide-react';
+
 import {
   CARD_CLASSES,
-  CARD_TALENTS,
-  CARD_TYPES,
-  CARD_SUBTYPES,
+  CARD_FOILINGS,
   CARD_KEYWORDS,
   CARD_RARITIES,
-  CARD_FOILINGS,
-  SET_GROUPS,
+  CARD_SUBTYPES,
+  CARD_TALENTS,
+  CARD_TYPES,
   type CardClassT,
-  type CardTalentT,
-  type CardTypeT,
-  type CardSubtypeT,
+  type CardFoilingT,
   type CardKeywordT,
   type CardRarityT,
-  type CardFoilingT,
   type CardSetT,
+  type CardSubtypeT,
+  type CardTalentT,
+  type CardTypeT,
+  SET_GROUPS,
 } from '@codex/core';
-import { SearchInput } from '@/features/cards/use-cases/filter-cards/SearchInput.tsx';
+
+import { type NumericComparisonT } from '@/shared/types/comparison-operator.ts';
 import { MultiSelect } from '@/shared/ui/MultiSelect.tsx';
 import { NumericFilterInput } from '@/shared/ui/NumericFilterInput.tsx';
-import { RotateCcw, X } from 'lucide-react';
-import { Toggle } from '@/shared/ui/Toggle.tsx';
 import { Select } from '@/shared/ui/Select.tsx';
-import { useFilterPanelViewModel } from '@/features/cards/use-cases/filter-cards/filter-panel.view-model.ts';
-import { type NumericComparisonT } from '@/shared/types/comparison-operator.ts';
+import { Toggle } from '@/shared/ui/Toggle.tsx';
+
+import { SearchInput } from './SearchInput.tsx';
+import { useFilterPanelViewModel } from './filter-panel.view-model.ts';
 
 interface FilterPanelProps {
   onClose?: () => void;

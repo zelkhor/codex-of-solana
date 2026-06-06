@@ -1,4 +1,5 @@
-import { describe, test, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 import {
   CARD_CLASSES,
   CARD_FOILINGS,
@@ -9,14 +10,16 @@ import {
   CARD_TALENTS,
   CARD_TYPES,
 } from '@codex/core';
+
+import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
+import { SORT_ORDER } from '@/shared/types/sort-order.ts';
+
+import { type FiltersState } from '@/domain/filter/application/filters.slice.ts';
 import {
   FILTERS_STORAGE_KEY,
   loadFilters,
   saveFilters,
 } from '@/domain/filter/infrastructure/filters.storage.ts';
-import { SORT_ORDER } from '@/shared/types/sort-order.ts';
-import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
-import { type FiltersState } from '@/domain/filter/domain/filters.slice.ts';
 
 const fullState: FiltersState = {
   classes: [CARD_CLASSES.Ninja],

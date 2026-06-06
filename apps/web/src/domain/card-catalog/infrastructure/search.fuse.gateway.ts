@@ -1,5 +1,7 @@
 import Fuse from 'fuse.js';
+
 import type { Card } from '@codex/core';
+
 import type { ISearchGateway } from '@/domain/card-catalog/infrastructure/search.gateway.ts';
 
 export class FuseSearchGateway implements ISearchGateway {

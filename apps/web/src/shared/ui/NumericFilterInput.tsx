@@ -1,10 +1,11 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Select } from '@/shared/ui/Select.tsx';
+
 import {
   COMPARISON_OPERATORS,
   type ComparisonOperatorT,
   type NumericComparisonT,
 } from '@/shared/types/comparison-operator.ts';
+import { Select } from '@/shared/ui/Select.tsx';
 
 interface NumericFilterInputProps {
   value: NumericComparisonT;

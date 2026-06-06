@@ -1,4 +1,5 @@
 import { useId } from 'react';
+
 import { Switch } from '@/shared/ui/Switch.tsx';
 
 interface ToggleProps {

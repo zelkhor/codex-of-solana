@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { useKeydown } from '@/shared/hooks/useKeydown.ts';
 import type { RefObject } from 'react';
-import { FilterPanel } from '@/features/cards/use-cases/filter-cards/FilterPanel.tsx';
+import { useEffect, useRef } from 'react';
+
+import { useKeydown } from '@/shared/hooks/useKeydown.ts';
+
+import { FilterPanel } from './FilterPanel.tsx';
 
 interface FilterDrawerProps {
   isOpen: boolean;

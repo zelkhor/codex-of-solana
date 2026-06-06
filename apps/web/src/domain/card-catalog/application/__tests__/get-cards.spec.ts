@@ -1,6 +1,9 @@
-import { describe, test, beforeEach } from 'vitest';
+import { beforeEach, describe, test } from 'vitest';
+
 import { cardBuilder } from '@codex/core';
+
 import { ASYNC_STATUS } from '@/shared/types/async-status.ts';
+
 import {
   type CardCatalogFixture,
   createCardCatalogFixture,

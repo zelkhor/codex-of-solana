@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
-import { GetAllCardsUseCase, CardCatalogFabRepository } from '@codex/core';
+
+import { CardCatalogFabRepository, GetAllCardsUseCase } from '@codex/core';
+
 import { CardsController } from './cards.controller';
 
 @Module({

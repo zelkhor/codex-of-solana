@@ -1,8 +1,8 @@
-import { GetAllCardsUseCase } from '../get-all-cards.usecase';
-import { CardCatalogInMemoryRepository } from '../../infrastructure/card-catalog.inmemory.repository';
-import type { CardCatalogLoadError } from '../../domain/card-catalog.errors';
 import type { Result } from '../../../shared/result';
 import type { Card } from '../../domain/card';
+import type { CardCatalogLoadError } from '../../domain/card-catalog.errors';
+import { CardCatalogInMemoryRepository } from '../../infrastructure/card-catalog.inmemory.repository';
+import { GetAllCardsUseCase } from '../get-all-cards.usecase';
 
 export const createCardCatalogFixture = () => {
   const repository = new CardCatalogInMemoryRepository();

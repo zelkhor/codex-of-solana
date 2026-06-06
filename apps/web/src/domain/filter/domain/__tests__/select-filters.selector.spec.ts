@@ -1,9 +1,12 @@
-import { describe, test, beforeEach } from 'vitest';
-import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+import { beforeEach, describe, test } from 'vitest';
+
 import { CARD_CLASSES, CARD_RARITIES } from '@codex/core';
+
+import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+
 import {
-  createFiltersSelectorsFixture,
   type FiltersSelectorsFixture,
+  createFiltersSelectorsFixture,
 } from '@/domain/filter/domain/__tests__/filters.selectors.fixture.ts';
 
 describe('Feature: Getting filters', () => {

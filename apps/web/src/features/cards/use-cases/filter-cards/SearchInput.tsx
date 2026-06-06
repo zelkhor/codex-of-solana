@@ -1,5 +1,6 @@
 import { Search, X } from 'lucide-react';
-import { useSearchInputViewModel } from '@/features/cards/use-cases/filter-cards/search-input.view-model.ts';
+
+import { useSearchInputViewModel } from './search-input.view-model.ts';
 
 export const SearchInput = () => {
   const vm = useSearchInputViewModel();

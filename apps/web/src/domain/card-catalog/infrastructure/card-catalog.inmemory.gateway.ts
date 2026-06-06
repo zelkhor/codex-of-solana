@@ -1,5 +1,6 @@
 import type { Card, Result } from '@codex/core';
-import { ok, err, AppError } from '@codex/core';
+import { AppError, err, ok } from '@codex/core';
+
 import type { ICardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.gateway.ts';
 
 export class InMemoryCardCatalogGateway implements ICardCatalogGateway {

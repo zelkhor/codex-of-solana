@@ -1,5 +1,7 @@
-import { describe, test, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
+
 import { CARD_SUBTYPES, cardBuilder } from '@codex/core';
+
 import { FuseSearchGateway } from '@/domain/card-catalog/infrastructure/search.fuse.gateway.ts';
 
 describe('Feature: Fuzzy card search', () => {

@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import type { ThunkDependencies } from '@/shared/store/types.ts';
-import { rootReducer } from '@/shared/store/root-reducer.ts';
 
-export { rootReducer };
-export type { RootState } from '@/shared/store/root-reducer.ts';
-export type { ThunkDependencies };
-export type { AppThunk } from '@/shared/store/app-thunk.ts';
+import { rootReducer } from '@/shared/store/root-reducer.ts';
+import type { ThunkDependencies } from '@/shared/store/types.ts';
+
 export { createAppAsyncThunk } from '@/shared/store/app-thunk.ts';
+export type { AppThunk } from '@/shared/store/app-thunk.ts';
+export type { RootState } from '@/shared/store/root-reducer.ts';
+export { rootReducer };
+export type { ThunkDependencies };
 
 export const createStore = (
   dependencies: ThunkDependencies,

@@ -1,6 +1,9 @@
-import { describe, test, beforeEach } from 'vitest';
+import { beforeEach, describe, test } from 'vitest';
+
 import { cardBuilder, printingBuilder } from '@codex/core';
+
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+
 import {
   type CardCatalogSelectorsFixture,
   createCardCatalogSelectorsFixture,

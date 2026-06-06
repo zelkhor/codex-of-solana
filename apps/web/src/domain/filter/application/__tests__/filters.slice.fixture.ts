@@ -1,7 +1,5 @@
 import { expect } from 'vitest';
-import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
-import { createTestStore, type AppTestStore } from '@/shared/store/__tests__/create-test-store.ts';
-import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
+
 import type {
   CardClassT,
   CardFoilingT,
@@ -12,6 +10,11 @@ import type {
   CardTalentT,
   CardTypeT,
 } from '@codex/core';
+
+import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
+import { type AppTestStore, createTestStore } from '@/shared/store/__tests__/create-test-store.ts';
+import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
+
 import {
   type FiltersState,
   resetFilters,
@@ -24,7 +27,7 @@ import {
   setSubtypes,
   setTalents,
   setTypes,
-} from '@/domain/filter/domain/filters.slice.ts';
+} from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 import { selectHasActiveFilters } from '@/domain/filter/domain/select-has-active-filters.selector.ts';
 

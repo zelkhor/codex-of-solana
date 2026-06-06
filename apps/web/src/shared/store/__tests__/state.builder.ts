@@ -1,19 +1,21 @@
-import { createAction, createReducer, type ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { type ActionCreatorWithPayload, createAction, createReducer } from '@reduxjs/toolkit';
+
 import type {
   Card,
   CardClassT,
+  CardFoilingT,
+  CardKeywordT,
+  CardRarityT,
+  CardSetT,
+  CardSubtypeT,
   CardTalentT,
   CardTypeT,
-  CardSubtypeT,
-  CardKeywordT,
-  CardSetT,
-  CardRarityT,
-  CardFoilingT,
 } from '@codex/core';
-import { rootReducer } from '@/shared/store';
+
 import type { RootState } from '@/shared/store';
-import type { SortOrderT } from '@/shared/types/sort-order.ts';
+import { rootReducer } from '@/shared/store';
 import type { NumericComparisonT } from '@/shared/types/comparison-operator.ts';
+import type { SortOrderT } from '@/shared/types/sort-order.ts';
 
 const initialState: RootState = rootReducer(undefined, { type: '@@INIT' });
 

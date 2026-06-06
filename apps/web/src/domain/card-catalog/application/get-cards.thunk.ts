@@ -1,4 +1,5 @@
 import type { Card } from '@codex/core';
+
 import { createAppAsyncThunk } from '@/shared/store/app-thunk.ts';
 
 export const getCards = createAppAsyncThunk<{ allCards: Card[]; searchResults: Card[] }, void>(

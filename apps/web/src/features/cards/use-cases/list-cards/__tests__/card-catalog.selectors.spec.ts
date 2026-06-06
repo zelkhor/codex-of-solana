@@ -1,23 +1,26 @@
-import { describe, test, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
+
 import {
-  cardBuilder,
-  printingBuilder,
-  CARD_SETS,
-  CARD_RARITIES,
-  CARD_FOILINGS,
   CARD_CLASSES,
+  CARD_FOILINGS,
+  CARD_KEYWORDS,
+  CARD_RARITIES,
+  CARD_SETS,
+  CARD_SUBTYPES,
   CARD_TALENTS,
   CARD_TYPES,
-  CARD_SUBTYPES,
-  CARD_KEYWORDS,
+  cardBuilder,
+  printingBuilder,
 } from '@codex/core';
+
 import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
+import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
+import { SORT_ORDER } from '@/shared/types/sort-order.ts';
+
 import {
   selectCardWithActivePrinting,
   selectVisibleCards,
 } from '@/features/cards/use-cases/list-cards/list-card.selectors.ts';
-import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
-import { SORT_ORDER } from '@/shared/types/sort-order.ts';
 
 // ─── Printing shortcuts ───────────────────────────────────────────────────────
 

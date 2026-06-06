@@ -1,5 +1,7 @@
-import { useState, useRef, useId, type ReactNode } from 'react';
+import { type ReactNode, useId, useRef, useState } from 'react';
+
 import { cn } from '@/shared/lib/utils.ts';
+
 import { type TiltEffect } from '@/features/cards/ui/card.helpers.ts';
 
 interface TiltCardProps {

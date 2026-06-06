@@ -1,9 +1,12 @@
-import type { Card } from '@codex/core';
 import { expect } from 'vitest';
-import { InMemoryCardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.inmemory.gateway.ts';
-import { createTestStore, type AppTestStore } from '@/shared/store/__tests__/create-test-store.ts';
+
+import type { Card } from '@codex/core';
+
+import { type AppTestStore, createTestStore } from '@/shared/store/__tests__/create-test-store.ts';
+
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
 import { searchCards } from '@/domain/card-catalog/application/search-cards.thunk.ts';
+import { InMemoryCardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.inmemory.gateway.ts';
 
 export const createCardCatalogFixture = () => {
   let store: AppTestStore;

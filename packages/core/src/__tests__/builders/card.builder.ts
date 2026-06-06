@@ -1,12 +1,12 @@
 import {
-  type Card,
-  type Printing,
   CARD_CLASSES,
   CARD_PITCHES,
   CARD_RARITIES,
   CARD_SETS,
-  CARD_TYPES,
   CARD_SUBTYPES,
+  CARD_TYPES,
+  type Card,
+  type Printing,
 } from '../../card-catalog/domain/card';
 import { printingBuilder } from './printing.builder';
 

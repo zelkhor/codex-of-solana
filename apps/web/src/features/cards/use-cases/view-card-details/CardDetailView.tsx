@@ -1,5 +1,5 @@
-import { CardDetail } from '@/features/cards/use-cases/view-card-details/CardDetail.tsx';
-import { useCardDetailViewViewModel } from '@/features/cards/use-cases/view-card-details/card-detail-view.view-model.ts';
+import { CardDetail } from './CardDetail.tsx';
+import { useCardDetailViewViewModel } from './card-detail-view.view-model.ts';
 
 export const CardDetailView = () => {
   const vm = useCardDetailViewViewModel();

@@ -1,10 +1,11 @@
 import type { CardRarityT } from '@codex/core';
 import { CARD_RARITIES } from '@codex/core';
+
 import attackImg from '@/shared/assets/attack.png';
 import defenseImg from '@/shared/assets/defense.png';
-import pitchImg from '@/shared/assets/pitch.png';
-import lifeImg from '@/shared/assets/life.png';
 import intellectImg from '@/shared/assets/intellect.png';
+import lifeImg from '@/shared/assets/life.png';
+import pitchImg from '@/shared/assets/pitch.png';
 
 const statIconClass = 'w-4 h-4 object-contain';
 

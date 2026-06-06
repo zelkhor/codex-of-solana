@@ -1,13 +1,16 @@
 import { createSelector } from '@reduxjs/toolkit';
-import type { Card, Printing, CardSetT, CardFoilingT, CardRarityT } from '@codex/core';
-import { SET_ORDER, FOILING_ORDER, RARITY_ORDER } from '@codex/core';
-import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
-import { selectSearchResults } from '@/domain/card-catalog/domain/select-search-results.selector.ts';
-import { SORT_ORDER } from '@/shared/types/sort-order.ts';
+
+import type { Card, CardFoilingT, CardRarityT, CardSetT, Printing } from '@codex/core';
+import { FOILING_ORDER, RARITY_ORDER, SET_ORDER } from '@codex/core';
+
 import {
   COMPARISON_OPERATORS,
   type NumericComparisonT,
 } from '@/shared/types/comparison-operator.ts';
+import { SORT_ORDER } from '@/shared/types/sort-order.ts';
+
+import { selectSearchResults } from '@/domain/card-catalog/domain/select-search-results.selector.ts';
+import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 
 export const selectVisibleCards = createSelector(
   selectSearchResults,

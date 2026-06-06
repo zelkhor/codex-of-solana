@@ -1,8 +1,10 @@
-import { describe, test, beforeEach } from 'vitest';
+import { beforeEach, describe, test } from 'vitest';
+
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+
 import {
-  createFiltersSelectorsFixture,
   type FiltersSelectorsFixture,
+  createFiltersSelectorsFixture,
 } from '@/domain/filter/domain/__tests__/filters.selectors.fixture.ts';
 
 describe('Feature: Reading the current search query', () => {

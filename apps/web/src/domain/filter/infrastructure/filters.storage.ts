@@ -1,4 +1,7 @@
-import { type FiltersState, initialFiltersState } from '@/domain/filter/domain/filters.slice.ts';
+import {
+  type FiltersState,
+  initialFiltersState,
+} from '@/domain/filter/application/filters.slice.ts';
 
 export const FILTERS_STORAGE_KEY = 'codex:filters';
 

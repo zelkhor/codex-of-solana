@@ -1,9 +1,12 @@
-import { describe, test, beforeEach } from 'vitest';
+import { beforeEach, describe, test } from 'vitest';
+
 import { cardBuilder } from '@codex/core';
+
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+
 import {
-  createCardCatalogSelectorsFixture,
   type CardCatalogSelectorsFixture,
+  createCardCatalogSelectorsFixture,
 } from '@/domain/card-catalog/domain/__tests__/card-catalog.selectors.fixture.ts';
 
 describe('Feature: Looking up a card by identifier', () => {

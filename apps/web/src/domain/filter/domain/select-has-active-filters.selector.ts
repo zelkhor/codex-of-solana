@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 
 export const selectHasActiveFilters = createSelector(

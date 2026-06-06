@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import {
   type CardClassT,
   type CardFoilingT,
@@ -9,6 +10,7 @@ import {
   type CardTalentT,
   type CardTypeT,
 } from '@codex/core';
+
 import {
   COMPARISON_OPERATORS,
   type NumericComparisonT,

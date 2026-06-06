@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams, useLocation } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
+
 import type { Card, Printing } from '@codex/core';
+
 import { selectCardById } from '@/domain/card-catalog/domain/select-card-by-id.selector.ts';
 import { selectPrintingByCardAndCode } from '@/domain/card-catalog/domain/select-printing-by-card-and-code.selector.ts';
 

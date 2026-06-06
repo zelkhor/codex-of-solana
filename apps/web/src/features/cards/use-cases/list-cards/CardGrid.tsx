@@ -1,8 +1,11 @@
 import { useRef } from 'react';
+
 import { useVirtualizer } from '@tanstack/react-virtual';
+
 import type { Card, Printing } from '@codex/core';
-import type { CardWithActivePrinting } from '@/features/cards/use-cases/list-cards/list-card.selectors.ts';
-import { CardGridItem } from '@/features/cards/use-cases/list-cards/CardGridItem.tsx';
+
+import { CardGridItem } from './CardGridItem.tsx';
+import type { CardWithActivePrinting } from './list-card.selectors.ts';
 
 interface CardGridProps {
   cardPrintings: CardWithActivePrinting[];

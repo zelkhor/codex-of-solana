@@ -1,8 +1,12 @@
 import { type RefObject } from 'react';
+
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useKeydown } from '@/shared/hooks/useKeydown.ts';
+
 import type { Card, Printing } from '@codex/core';
-import { CardDetail } from '@/features/cards/use-cases/view-card-details/CardDetail.tsx';
+
+import { useKeydown } from '@/shared/hooks/useKeydown.ts';
+
+import { CardDetail } from './CardDetail.tsx';
 
 interface CardDetailModalProps {
   card: Card;

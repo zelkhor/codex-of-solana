@@ -1,4 +1,4 @@
-import { useNoFilterResultsViewModel } from '@/features/cards/use-cases/list-cards/no-filter-results.view-model.ts';
+import { useNoFilterResultsViewModel } from './no-filter-results.view-model.ts';
 
 export const NoFilterResults = () => {
   const vm = useNoFilterResultsViewModel();

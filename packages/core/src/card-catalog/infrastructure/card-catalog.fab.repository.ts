@@ -1,9 +1,10 @@
 import { cards as fabCards } from '@flesh-and-blood/cards';
+
+import { type Result, err, ok } from '../../shared/result';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
+import { CARD_FOILINGS, type Card, type Printing } from '../domain/card';
 import { CardCatalogLoadError } from '../domain/card-catalog.errors';
 import { CARD_PRINTING_OVERRIDES } from './card-catalog.overrides';
-import { err, ok, type Result } from '../../shared/result';
-import { CARD_FOILINGS, type Printing, type Card } from '../domain/card';
 
 type SourceCard = (typeof fabCards)[number];
 type SourcePrinting = SourceCard['printings'][number];

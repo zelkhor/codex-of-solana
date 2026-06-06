@@ -1,9 +1,11 @@
-import { describe, test, expect, beforeAll, afterEach, afterAll } from 'vitest';
-import { http, HttpResponse } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
-import { ok } from '@codex/core';
-import { cardBuilder } from '@codex/core';
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
+
+import { cardBuilder, ok } from '@codex/core';
+
 import { HttpClient } from '@/shared/gateways/http-client.ts';
+
 import { CardCatalogApiGateway } from '@/domain/card-catalog/infrastructure/card-catalog.api.gateway.ts';
 
 const server = setupServer();

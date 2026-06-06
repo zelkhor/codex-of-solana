@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { BrowserRouter, Route, Routes } from 'react-router';
+
 import { CardListingView } from '@/features/cards/pages/CardListingView.tsx';
 import { CardDetailView } from '@/features/cards/use-cases/view-card-details/CardDetailView.tsx';
 

@@ -1,6 +1,8 @@
 import { useDispatch } from 'react-redux';
+
 import type { AppDispatch } from '@/shared/store';
-import { resetFilters } from '@/domain/filter/domain/filters.slice.ts';
+
+import { resetFilters } from '@/domain/filter/application/filters.slice.ts';
 
 export interface NoFilterResultsViewModel {
   reset: () => void;

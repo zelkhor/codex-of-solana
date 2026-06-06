@@ -1,5 +1,6 @@
 import { type RefObject, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+
 import cardBackImg from '@/shared/assets/flesh-back.png';
 
 interface CardFlipAnimationProps {

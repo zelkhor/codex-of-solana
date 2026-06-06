@@ -1,13 +1,13 @@
 import {
-  Release,
-  Rarity,
-  Foiling,
-  ReleaseEdition,
   Class,
+  Foiling,
+  Keyword,
+  Rarity,
+  Release,
+  ReleaseEdition,
+  Subtype,
   Talent,
   Type,
-  Keyword,
-  Subtype,
 } from '@flesh-and-blood/types';
 
 export const CARD_SETS = Release;

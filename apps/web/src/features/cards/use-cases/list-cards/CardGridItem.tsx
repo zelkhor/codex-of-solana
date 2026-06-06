@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import type { Card, Printing } from '@codex/core';
+
 import { FlipHorizontal2 } from 'lucide-react';
+
+import type { Card, Printing } from '@codex/core';
+
 import { CardBack } from '@/features/cards/ui/CardBack.tsx';
 import { FoilingBadge } from '@/features/cards/ui/FoilingBadge.tsx';
 import { TiltCard } from '@/features/cards/ui/TiltCard.tsx';
-import { useCardGridItemViewModel } from '@/features/cards/use-cases/list-cards/card-grid-item.view-model.ts';
+
+import { useCardGridItemViewModel } from './card-grid-item.view-model.ts';
 
 interface CardGridItemProps {
   card: Card;

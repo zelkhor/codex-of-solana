@@ -1,6 +1,8 @@
 import type { Card } from '@codex/core';
+
 import type { AppThunk } from '@/shared/store/app-thunk.ts';
-import { setSearchResults } from '@/domain/card-catalog/domain/card-catalog.slice.ts';
+
+import { setSearchResults } from '@/domain/card-catalog/application/card-catalog.slice.ts';
 
 export const searchCards =
   (query: string): AppThunk =>

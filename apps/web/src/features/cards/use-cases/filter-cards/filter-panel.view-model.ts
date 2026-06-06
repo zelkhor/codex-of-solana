@@ -1,38 +1,41 @@
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch } from '@/shared/store';
-import {
-  setClasses,
-  setTalents,
-  setTypes,
-  setSubtypes,
-  setKeywords,
-  setSets,
-  setRarities,
-  setFoilings,
-  setArtists,
-  setSortOrder,
-  setCostFilter,
-  setPitchFilter,
-  setAttackFilter,
-  setDefenseFilter,
-  setGroupPrintings,
-  resetFilters,
-  type FiltersState,
-} from '@/domain/filter/domain/filters.slice.ts';
-import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
+
 import type {
   CardClassT,
-  CardTalentT,
-  CardTypeT,
-  CardSubtypeT,
+  CardFoilingT,
   CardKeywordT,
   CardRarityT,
-  CardFoilingT,
   CardSetT,
+  CardSubtypeT,
+  CardTalentT,
+  CardTypeT,
 } from '@codex/core';
-import { SORT_ORDER, type SortOrderT } from '@/shared/types/sort-order.ts';
-import { selectAllArtists } from '@/domain/card-catalog/domain/select-all-artists.selector.ts';
+
+import type { AppDispatch } from '@/shared/store';
 import { type NumericComparisonT } from '@/shared/types/comparison-operator.ts';
+import { SORT_ORDER, type SortOrderT } from '@/shared/types/sort-order.ts';
+
+import { selectAllArtists } from '@/domain/card-catalog/domain/select-all-artists.selector.ts';
+import {
+  type FiltersState,
+  resetFilters,
+  setArtists,
+  setAttackFilter,
+  setClasses,
+  setCostFilter,
+  setDefenseFilter,
+  setFoilings,
+  setGroupPrintings,
+  setKeywords,
+  setPitchFilter,
+  setRarities,
+  setSets,
+  setSortOrder,
+  setSubtypes,
+  setTalents,
+  setTypes,
+} from '@/domain/filter/application/filters.slice.ts';
+import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 
 export interface FilterPanelViewModel {
   filters: FiltersState;

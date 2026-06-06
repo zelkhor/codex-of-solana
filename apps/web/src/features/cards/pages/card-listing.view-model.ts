@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+
 import type { Card, Printing } from '@codex/core';
+
 import type { RootState } from '@/shared/store';
-import {
-  selectCardWithActivePrinting,
-  type CardWithActivePrinting,
-} from '@/features/cards/use-cases/list-cards/list-card.selectors.ts';
+
 import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
+
+import {
+  type CardWithActivePrinting,
+  selectCardWithActivePrinting,
+} from '@/features/cards/use-cases/list-cards/list-card.selectors.ts';
 
 interface ActiveCard {
   card: Card;

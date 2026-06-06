@@ -1,5 +1,5 @@
-import { describe, test, beforeEach } from 'vitest';
-import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+import { beforeEach, describe, test } from 'vitest';
+
 import {
   CARD_CLASSES,
   CARD_FOILINGS,
@@ -10,10 +10,13 @@ import {
   CARD_TALENTS,
   CARD_TYPES,
 } from '@codex/core';
+
 import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
+import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+
 import {
-  createFiltersSelectorsFixture,
   type FiltersSelectorsFixture,
+  createFiltersSelectorsFixture,
 } from '@/domain/filter/domain/__tests__/filters.selectors.fixture.ts';
 
 describe('Feature: Detecting whether any filter is active', () => {

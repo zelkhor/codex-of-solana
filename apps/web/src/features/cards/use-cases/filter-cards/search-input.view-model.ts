@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch } from '@/shared/store';
-import { setSearchQuery } from '@/domain/filter/domain/filters.slice.ts';
-import { selectSearchQuery } from '@/domain/filter/domain/select-search-query.selector.ts';
+
 import { useDebounced } from '@/shared/hooks/useDebounced.ts';
+import type { AppDispatch } from '@/shared/store';
+
 import { searchCards } from '@/domain/card-catalog/application/search-cards.thunk.ts';
+import { setSearchQuery } from '@/domain/filter/application/filters.slice.ts';
+import { selectSearchQuery } from '@/domain/filter/domain/select-search-query.selector.ts';
 
 export interface SearchInputViewModel {
   value: string;

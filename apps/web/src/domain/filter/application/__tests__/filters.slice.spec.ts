@@ -1,5 +1,5 @@
-import { describe, test, beforeEach } from 'vitest';
-import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+import { beforeEach, describe, test } from 'vitest';
+
 import {
   CARD_CLASSES,
   CARD_FOILINGS,
@@ -10,11 +10,14 @@ import {
   CARD_TALENTS,
   CARD_TYPES,
 } from '@codex/core';
+
+import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+
 import {
-  createFiltersSliceFixture,
   type FiltersSliceFixture,
-} from '@/domain/filter/domain/__tests__/filters.slice.fixture.ts';
-import { initialFiltersState } from '@/domain/filter/domain/filters.slice.ts';
+  createFiltersSliceFixture,
+} from '@/domain/filter/application/__tests__/filters.slice.fixture.ts';
+import { initialFiltersState } from '@/domain/filter/application/filters.slice.ts';
 
 describe('Feature: Filtering cards', () => {
   let fixture: FiltersSliceFixture;

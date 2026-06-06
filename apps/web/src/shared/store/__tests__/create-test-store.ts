@@ -1,7 +1,9 @@
-import { configureStore, isAsyncThunkAction } from '@reduxjs/toolkit';
 import type { Middleware, UnknownAction } from '@reduxjs/toolkit';
-import { rootReducer } from '@/shared/store';
+import { configureStore, isAsyncThunkAction } from '@reduxjs/toolkit';
+
 import type { RootState, ThunkDependencies } from '@/shared/store';
+import { rootReducer } from '@/shared/store';
+
 import { InMemoryCardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.inmemory.gateway.ts';
 import { InMemorySearchGateway } from '@/domain/card-catalog/infrastructure/search.inmemory.gateway.ts';
 

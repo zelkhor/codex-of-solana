@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import { selectAllCards } from '@/domain/card-catalog/domain/select-all-cards.selector.ts';
 
 export const selectAllArtists = createSelector(selectAllCards, (cards): string[] =>

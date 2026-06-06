@@ -1,4 +1,5 @@
 import { useId, useRef } from 'react';
+
 import type { CardFoilingT } from '@codex/core';
 import { CARD_FOILINGS } from '@codex/core';
 

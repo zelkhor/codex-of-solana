@@ -1,19 +1,24 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { type RefObject, useEffect, useRef, useState } from 'react';
+
+import { ChevronDown, FlipHorizontal2 } from 'lucide-react';
+
 import type { Card, Printing } from '@codex/core';
-import { FlipHorizontal2, ChevronDown } from 'lucide-react';
-import { TiltCard } from '@/features/cards/ui/TiltCard.tsx';
+
 import { ExpandableText } from '@/shared/ui/ExpandableText.tsx';
+
+import { CardBack } from '@/features/cards/ui/CardBack.tsx';
 import {
-  CostIcon,
   AttackIcon,
+  CostIcon,
   DefenseIcon,
-  LifeIcon,
   IntellectIcon,
+  LifeIcon,
   RarityIcon,
 } from '@/features/cards/ui/CardIcons.tsx';
 import { FoilingBadge } from '@/features/cards/ui/FoilingBadge.tsx';
-import { CardBack } from '@/features/cards/ui/CardBack.tsx';
-import { useCardDetailViewModel } from '@/features/cards/use-cases/view-card-details/card-detail.view-model.ts';
+import { TiltCard } from '@/features/cards/ui/TiltCard.tsx';
+
+import { useCardDetailViewModel } from './card-detail.view-model.ts';
 
 interface CardDetailProps {
   card: Card;
