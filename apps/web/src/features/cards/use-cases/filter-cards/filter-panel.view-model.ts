@@ -13,6 +13,7 @@ import type {
 
 import type { AppDispatch } from '@/shared/store';
 import { type NumericComparisonT } from '@/shared/types/comparison-operator.ts';
+import { type FilterModeT } from '@/shared/types/filter-mode.ts';
 import { SORT_ORDER, type SortOrderT } from '@/shared/types/sort-order.ts';
 
 import { selectAllArtists } from '@/domain/card-catalog/domain/select-all-artists.selector.ts';
@@ -21,24 +22,26 @@ import {
   resetFilters,
   setArtists,
   setAttackFilter,
+  setClassFilterMode,
   setClasses,
   setCostFilter,
   setDefenseFilter,
-  setExcludeCardsWithTalent,
   setFoilings,
   setGroupPrintings,
+  setKeywordFilterMode,
   setKeywords,
   setPitchFilter,
   setRarities,
   setSets,
   setSortOrder,
+  setSubtypeFilterMode,
   setSubtypes,
+  setTalentFilterMode,
   setTalents,
+  setTypeFilterMode,
   setTypes,
 } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
-
-export const TALENT_NONE_OPTION = 'None';
 
 export interface FilterPanelViewModel {
   filters: FiltersState;
@@ -47,11 +50,15 @@ export interface FilterPanelViewModel {
   isSortDisabled: boolean;
   sortOrderOptions: { value: string; label: string }[];
   setClasses: (v: CardClassT[]) => void;
-  selectedTalents: string[];
-  setTalentsFilter: (v: string[]) => void;
+  setClassFilterMode: (v: FilterModeT) => void;
+  setTalents: (v: CardTalentT[]) => void;
+  setTalentFilterMode: (v: FilterModeT) => void;
   setTypes: (v: CardTypeT[]) => void;
+  setTypeFilterMode: (v: FilterModeT) => void;
   setSubtypes: (v: CardSubtypeT[]) => void;
+  setSubtypeFilterMode: (v: FilterModeT) => void;
   setKeywords: (v: CardKeywordT[]) => void;
+  setKeywordFilterMode: (v: FilterModeT) => void;
   setSets: (v: CardSetT[]) => void;
   setRarities: (v: CardRarityT[]) => void;
   setFoilings: (v: CardFoilingT[]) => void;
@@ -80,16 +87,6 @@ export const useFilterPanelViewModel = (): FilterPanelViewModel => {
     { value: SORT_ORDER.NAME_DESC, label: 'Name Z → A' },
   ];
 
-  const selectedTalents = filters.excludeCardsWithTalent ? [TALENT_NONE_OPTION] : filters.talents;
-
-  const setTalentsFilter = (values: string[]) => {
-    if (values.includes(TALENT_NONE_OPTION) && !filters.excludeCardsWithTalent) {
-      dispatch(setExcludeCardsWithTalent(true));
-      return;
-    }
-    dispatch(setTalents(values.filter((v) => v !== TALENT_NONE_OPTION) as CardTalentT[]));
-  };
-
   return {
     filters,
     allArtists,
@@ -97,11 +94,15 @@ export const useFilterPanelViewModel = (): FilterPanelViewModel => {
     isSortDisabled: hasSearchQuery,
     sortOrderOptions,
     setClasses: (v) => dispatch(setClasses(v)),
-    selectedTalents: selectedTalents,
-    setTalentsFilter,
+    setClassFilterMode: (v) => dispatch(setClassFilterMode(v)),
+    setTalents: (v) => dispatch(setTalents(v)),
+    setTalentFilterMode: (v) => dispatch(setTalentFilterMode(v)),
     setTypes: (v) => dispatch(setTypes(v)),
+    setTypeFilterMode: (v) => dispatch(setTypeFilterMode(v)),
     setSubtypes: (v) => dispatch(setSubtypes(v)),
+    setSubtypeFilterMode: (v) => dispatch(setSubtypeFilterMode(v)),
     setKeywords: (v) => dispatch(setKeywords(v)),
+    setKeywordFilterMode: (v) => dispatch(setKeywordFilterMode(v)),
     setSets: (v) => dispatch(setSets(v)),
     setRarities: (v) => dispatch(setRarities(v)),
     setFoilings: (v) => dispatch(setFoilings(v)),

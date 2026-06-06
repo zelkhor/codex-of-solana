@@ -15,6 +15,7 @@ import type {
 import type { RootState } from '@/shared/store';
 import { rootReducer } from '@/shared/store';
 import type { NumericComparisonT } from '@/shared/types/comparison-operator.ts';
+import type { FilterModeT } from '@/shared/types/filter-mode.ts';
 import type { SortOrderT } from '@/shared/types/sort-order.ts';
 
 const initialState: RootState = rootReducer(undefined, { type: '@@INIT' });
@@ -22,10 +23,14 @@ const initialState: RootState = rootReducer(undefined, { type: '@@INIT' });
 const withAllCards = createAction<Card[]>('withAllCards');
 const withSearchResults = createAction<Card[]>('withSearchResults');
 const withClasses = createAction<CardClassT[]>('withClasses');
+const withClassFilterMode = createAction<FilterModeT>('withClassFilterMode');
 const withTalents = createAction<CardTalentT[]>('withTalents');
 const withTypes = createAction<CardTypeT[]>('withTypes');
+const withTypeFilterMode = createAction<FilterModeT>('withTypeFilterMode');
 const withSubtypes = createAction<CardSubtypeT[]>('withSubtypes');
+const withSubtypeFilterMode = createAction<FilterModeT>('withSubtypeFilterMode');
 const withKeywords = createAction<CardKeywordT[]>('withKeywords');
+const withKeywordFilterMode = createAction<FilterModeT>('withKeywordFilterMode');
 const withSets = createAction<CardSetT[]>('withSets');
 const withRarities = createAction<CardRarityT[]>('withRarities');
 const withFoilings = createAction<CardFoilingT[]>('withFoilings');
@@ -33,7 +38,7 @@ const withArtists = createAction<string[]>('withArtists');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');
 const withGroupPrintings = createAction<boolean>('withGroupPrintings');
-const withExcludeCardsWithTalent = createAction<boolean>('withExcludeCardsWithTalent');
+const withTalentFilterMode = createAction<FilterModeT>('withTalentFilterMode');
 const withCostFilter = createAction<NumericComparisonT>('withCostFilter');
 const withPitchFilter = createAction<NumericComparisonT>('withPitchFilter');
 const withAttackFilter = createAction<NumericComparisonT>('withAttackFilter');
@@ -52,17 +57,29 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withClasses, (state, { payload }) => {
       state.filters.classes = payload;
     })
+    .addCase(withClassFilterMode, (state, { payload }) => {
+      state.filters.classFilterMode = payload;
+    })
     .addCase(withTalents, (state, { payload }) => {
       state.filters.talents = payload;
     })
     .addCase(withTypes, (state, { payload }) => {
       state.filters.types = payload;
     })
+    .addCase(withTypeFilterMode, (state, { payload }) => {
+      state.filters.typeFilterMode = payload;
+    })
     .addCase(withSubtypes, (state, { payload }) => {
       state.filters.subtypes = payload;
     })
+    .addCase(withSubtypeFilterMode, (state, { payload }) => {
+      state.filters.subtypeFilterMode = payload;
+    })
     .addCase(withKeywords, (state, { payload }) => {
       state.filters.keywords = payload;
+    })
+    .addCase(withKeywordFilterMode, (state, { payload }) => {
+      state.filters.keywordFilterMode = payload;
     })
     .addCase(withSets, (state, { payload }) => {
       state.filters.sets = payload;
@@ -85,8 +102,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withGroupPrintings, (state, { payload }) => {
       state.filters.groupPrintings = payload;
     })
-    .addCase(withExcludeCardsWithTalent, (state, { payload }) => {
-      state.filters.excludeCardsWithTalent = payload;
+    .addCase(withTalentFilterMode, (state, { payload }) => {
+      state.filters.talentFilterMode = payload;
     })
     .addCase(withCostFilter, (state, { payload }) => {
       state.filters.cost = payload;
@@ -112,10 +129,14 @@ export const stateBuilder = (state = initialState) => {
     withAllCards: reduce(withAllCards),
     withSearchResults: reduce(withSearchResults),
     withClasses: reduce(withClasses),
+    withClassFilterMode: reduce(withClassFilterMode),
     withTalents: reduce(withTalents),
     withTypes: reduce(withTypes),
+    withTypeFilterMode: reduce(withTypeFilterMode),
     withSubtypes: reduce(withSubtypes),
+    withSubtypeFilterMode: reduce(withSubtypeFilterMode),
     withKeywords: reduce(withKeywords),
+    withKeywordFilterMode: reduce(withKeywordFilterMode),
     withSets: reduce(withSets),
     withRarities: reduce(withRarities),
     withFoilings: reduce(withFoilings),
@@ -123,7 +144,7 @@ export const stateBuilder = (state = initialState) => {
     withSearchQuery: reduce(withSearchQuery),
     withSortOrder: reduce(withSortOrder),
     withGroupPrintings: reduce(withGroupPrintings),
-    withExcludeCardsWithTalent: reduce(withExcludeCardsWithTalent),
+    withTalentFilterMode: reduce(withTalentFilterMode),
     withCostFilter: reduce(withCostFilter),
     withPitchFilter: reduce(withPitchFilter),
     withAttackFilter: reduce(withAttackFilter),

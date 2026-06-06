@@ -15,6 +15,7 @@ import {
 
 import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
+import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 import { SORT_ORDER } from '@/shared/types/sort-order.ts';
 
 import {
@@ -76,17 +77,116 @@ describe('Feature: Selecting which card should be visible based on filters and s
     expect(cards[0].cardIdentifier).toBe('a');
   });
 
-  test('Rule: Excludes cards with any talent when the "none" talent option is selected', () => {
+  test('Rule: In exact mode with no talents selected, only cards with no talents are shown', () => {
     const noTalent = cardBuilder().withCardIdentifier('a').withTalents([]).build();
     const withTalent = cardBuilder()
       .withCardIdentifier('b')
       .withTalents([CARD_TALENTS.Draconic])
       .build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([noTalent, withTalent]).withExcludeCardsWithTalent(true).build(),
+      stateBuilder()
+        .withAllCards([noTalent, withTalent])
+        .withTalentFilterMode(FILTER_MODES.EXACT)
+        .build(),
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, multi-talent cards are excluded when only one of their talents is selected', () => {
+    const lightning = cardBuilder()
+      .withCardIdentifier('a')
+      .withTalents([CARD_TALENTS.Lightning])
+      .build();
+    const earthLightning = cardBuilder()
+      .withCardIdentifier('b')
+      .withTalents([CARD_TALENTS.Earth, CARD_TALENTS.Lightning])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([lightning, earthLightning])
+        .withTalents([CARD_TALENTS.Lightning])
+        .withTalentFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, a card matches when its talents exactly equal all selected talents', () => {
+    const lightning = cardBuilder()
+      .withCardIdentifier('a')
+      .withTalents([CARD_TALENTS.Lightning])
+      .build();
+    const earthLightning = cardBuilder()
+      .withCardIdentifier('b')
+      .withTalents([CARD_TALENTS.Earth, CARD_TALENTS.Lightning])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([lightning, earthLightning])
+        .withTalents([CARD_TALENTS.Earth, CARD_TALENTS.Lightning])
+        .withTalentFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('b');
+  });
+
+  test('Rule: In exact mode with no classes selected, only cards with no classes are shown', () => {
+    const noClass = cardBuilder().withCardIdentifier('a').withClasses([]).build();
+    const withClass = cardBuilder()
+      .withCardIdentifier('b')
+      .withClasses([CARD_CLASSES.Generic])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([noClass, withClass])
+        .withClassFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, multi-class cards are excluded when only one of their classes is selected', () => {
+    const generic = cardBuilder()
+      .withCardIdentifier('a')
+      .withClasses([CARD_CLASSES.Generic])
+      .build();
+    const genericNinja = cardBuilder()
+      .withCardIdentifier('b')
+      .withClasses([CARD_CLASSES.Generic, CARD_CLASSES.Ninja])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([generic, genericNinja])
+        .withClasses([CARD_CLASSES.Generic])
+        .withClassFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, a card matches when its classes exactly equal all selected classes', () => {
+    const generic = cardBuilder()
+      .withCardIdentifier('a')
+      .withClasses([CARD_CLASSES.Generic])
+      .build();
+    const genericNinja = cardBuilder()
+      .withCardIdentifier('b')
+      .withClasses([CARD_CLASSES.Generic, CARD_CLASSES.Ninja])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([generic, genericNinja])
+        .withClasses([CARD_CLASSES.Generic, CARD_CLASSES.Ninja])
+        .withClassFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('b');
   });
 
   test('Rule: Excludes cards that do not match the type filter', () => {
@@ -102,6 +202,53 @@ describe('Feature: Selecting which card should be visible based on filters and s
     expect(cards[0].cardIdentifier).toBe('a');
   });
 
+  test('Rule: In exact mode with no types selected, only cards with no types are shown', () => {
+    const noType = cardBuilder().withCardIdentifier('a').withTypes([]).build();
+    const withType = cardBuilder().withCardIdentifier('b').withTypes([CARD_TYPES.Action]).build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([noType, withType])
+        .withTypeFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, multi-type cards are excluded when only one of their types is selected', () => {
+    const action = cardBuilder().withCardIdentifier('a').withTypes([CARD_TYPES.Action]).build();
+    const actionAttack = cardBuilder()
+      .withCardIdentifier('b')
+      .withTypes([CARD_TYPES.Action, CARD_TYPES.AttackReaction])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([action, actionAttack])
+        .withTypes([CARD_TYPES.Action])
+        .withTypeFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, a card matches when its types exactly equal all selected types', () => {
+    const action = cardBuilder().withCardIdentifier('a').withTypes([CARD_TYPES.Action]).build();
+    const actionAttack = cardBuilder()
+      .withCardIdentifier('b')
+      .withTypes([CARD_TYPES.Action, CARD_TYPES.AttackReaction])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([action, actionAttack])
+        .withTypes([CARD_TYPES.Action, CARD_TYPES.AttackReaction])
+        .withTypeFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('b');
+  });
+
   test('Rule: Excludes cards that do not match the subtype filter', () => {
     const subtype = Object.values(CARD_SUBTYPES)[0];
     const matching = cardBuilder().withCardIdentifier('a').withSubtypes([subtype]).build();
@@ -111,6 +258,56 @@ describe('Feature: Selecting which card should be visible based on filters and s
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode with no subtypes selected, only cards with no subtypes are shown', () => {
+    const noSubtype = cardBuilder().withCardIdentifier('a').withSubtypes([]).build();
+    const withSubtype = cardBuilder()
+      .withCardIdentifier('b')
+      .withSubtypes([CARD_SUBTYPES.Arrow])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([noSubtype, withSubtype])
+        .withSubtypeFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, multi-subtype cards are excluded when only one of their subtypes is selected', () => {
+    const arrow = cardBuilder().withCardIdentifier('a').withSubtypes([CARD_SUBTYPES.Arrow]).build();
+    const arrowItem = cardBuilder()
+      .withCardIdentifier('b')
+      .withSubtypes([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Item])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([arrow, arrowItem])
+        .withSubtypes([CARD_SUBTYPES.Arrow])
+        .withSubtypeFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, a card matches when its subtypes exactly equal all selected subtypes', () => {
+    const arrow = cardBuilder().withCardIdentifier('a').withSubtypes([CARD_SUBTYPES.Arrow]).build();
+    const arrowItem = cardBuilder()
+      .withCardIdentifier('b')
+      .withSubtypes([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Item])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([arrow, arrowItem])
+        .withSubtypes([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Item])
+        .withSubtypeFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('b');
   });
 
   test('Rule: Excludes cards that do not match the keyword filter', () => {
@@ -127,6 +324,62 @@ describe('Feature: Selecting which card should be visible based on filters and s
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode with no keywords selected, only cards with no keywords are shown', () => {
+    const noKeyword = cardBuilder().withCardIdentifier('a').withKeywords([]).build();
+    const withKeyword = cardBuilder()
+      .withCardIdentifier('b')
+      .withKeywords([CARD_KEYWORDS.Dominate])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([noKeyword, withKeyword])
+        .withKeywordFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, multi-keyword cards are excluded when only one of their keywords is selected', () => {
+    const dominate = cardBuilder()
+      .withCardIdentifier('a')
+      .withKeywords([CARD_KEYWORDS.Dominate])
+      .build();
+    const dominateGoAgain = cardBuilder()
+      .withCardIdentifier('b')
+      .withKeywords([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([dominate, dominateGoAgain])
+        .withKeywords([CARD_KEYWORDS.Dominate])
+        .withKeywordFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: In exact mode, a card matches when its keywords exactly equal all selected keywords', () => {
+    const dominate = cardBuilder()
+      .withCardIdentifier('a')
+      .withKeywords([CARD_KEYWORDS.Dominate])
+      .build();
+    const dominateGoAgain = cardBuilder()
+      .withCardIdentifier('b')
+      .withKeywords([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder()
+        .withAllCards([dominate, dominateGoAgain])
+        .withKeywords([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain])
+        .withKeywordFilterMode(FILTER_MODES.EXACT)
+        .build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('b');
   });
 });
 

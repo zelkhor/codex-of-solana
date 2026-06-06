@@ -16,25 +16,42 @@ import {
   type CardRarityT,
   type CardSetT,
   type CardSubtypeT,
+  type CardTalentT,
   type CardTypeT,
   SET_GROUPS,
 } from '@codex/core';
 
+import { cn } from '@/shared/lib/utils.ts';
 import { type NumericComparisonT } from '@/shared/types/comparison-operator.ts';
+import { FILTER_MODES, type FilterModeT } from '@/shared/types/filter-mode.ts';
+import { ModeToggle } from '@/shared/ui/ModeToggle.tsx';
 import { MultiSelect } from '@/shared/ui/MultiSelect.tsx';
 import { NumericFilterInput } from '@/shared/ui/NumericFilterInput.tsx';
 import { Select } from '@/shared/ui/Select.tsx';
 import { Toggle } from '@/shared/ui/Toggle.tsx';
 
 import { SearchInput } from './SearchInput.tsx';
-import { TALENT_NONE_OPTION, useFilterPanelViewModel } from './filter-panel.view-model.ts';
+import { useFilterPanelViewModel } from './filter-panel.view-model.ts';
+
+const FILTER_MODE_OPTIONS: { value: FilterModeT; label: string }[] = [
+  { value: FILTER_MODES.ANY, label: 'Any' },
+  { value: FILTER_MODES.EXACT, label: 'Exact' },
+];
 
 interface FilterPanelProps {
   onClose?: () => void;
 }
 
-const FilterRow = ({ label, children }: { label: string; children: React.ReactNode }) => (
-  <div className="flex items-start gap-3">
+const FilterRow = ({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div className={cn(`flex items-start gap-3`, className)}>
     <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 shrink-0 w-20 pt-2">
       {label}
     </span>
@@ -75,46 +92,91 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
 
       <div className="space-y-3">
         <FilterRow label="Class">
-          <MultiSelect
-            options={Object.values(CARD_CLASSES)}
-            selected={vm.filters.classes}
-            onChange={(values) => vm.setClasses(values as CardClassT[])}
-            placeholder="e.g. Assassin, Brute, Warrior, ..."
-          />
+          <div className="space-y-1.5">
+            <div className="pt-2">
+              <ModeToggle
+                options={FILTER_MODE_OPTIONS}
+                value={vm.filters.classFilterMode}
+                onChange={vm.setClassFilterMode}
+              />
+            </div>
+            <MultiSelect
+              options={Object.values(CARD_CLASSES)}
+              selected={vm.filters.classes}
+              onChange={(values) => vm.setClasses(values as CardClassT[])}
+              placeholder="e.g. Assassin, Brute, Warrior, ..."
+            />
+          </div>
         </FilterRow>
         <FilterRow label="Talent">
-          <MultiSelect
-            options={[TALENT_NONE_OPTION, ...Object.values(CARD_TALENTS)]}
-            selected={vm.selectedTalents}
-            onChange={vm.setTalentsFilter}
-            placeholder="e.g. Earth, Draconic, Mystic, ..."
-          />
+          <div className="space-y-1.5">
+            <div className="pt-2">
+              <ModeToggle
+                options={FILTER_MODE_OPTIONS}
+                value={vm.filters.talentFilterMode}
+                onChange={vm.setTalentFilterMode}
+              />
+            </div>
+            <MultiSelect
+              options={Object.values(CARD_TALENTS)}
+              selected={vm.filters.talents}
+              onChange={(values) => vm.setTalents(values as CardTalentT[])}
+              placeholder="e.g. Earth, Draconic, Mystic, ..."
+            />
+          </div>
         </FilterRow>
         <FilterRow label="Type">
-          <MultiSelect
-            options={Object.values(CARD_TYPES)}
-            selected={vm.filters.types}
-            onChange={(values) => vm.setTypes(values as CardTypeT[])}
-            placeholder="e.g. Action, Hero, Weapon, ..."
-          />
+          <div className="space-y-1.5">
+            <div className="pt-2">
+              <ModeToggle
+                options={FILTER_MODE_OPTIONS}
+                value={vm.filters.typeFilterMode}
+                onChange={vm.setTypeFilterMode}
+              />
+            </div>
+            <MultiSelect
+              options={Object.values(CARD_TYPES)}
+              selected={vm.filters.types}
+              onChange={(values) => vm.setTypes(values as CardTypeT[])}
+              placeholder="e.g. Action, Hero, Weapon, ..."
+            />
+          </div>
         </FilterRow>
         <FilterRow label="Subtype">
-          <MultiSelect
-            options={Object.values(CARD_SUBTYPES)}
-            selected={vm.filters.subtypes}
-            onChange={(values) => vm.setSubtypes(values as CardSubtypeT[])}
-            placeholder="e.g. Arrow, Item, Trap, ..."
-          />
+          <div className="space-y-1.5">
+            <div className="pt-2">
+              <ModeToggle
+                options={FILTER_MODE_OPTIONS}
+                value={vm.filters.subtypeFilterMode}
+                onChange={vm.setSubtypeFilterMode}
+              />
+            </div>
+            <MultiSelect
+              options={Object.values(CARD_SUBTYPES)}
+              selected={vm.filters.subtypes}
+              onChange={(values) => vm.setSubtypes(values as CardSubtypeT[])}
+              placeholder="e.g. Arrow, Item, Trap, ..."
+            />
+          </div>
         </FilterRow>
         <FilterRow label="Keywords">
-          <MultiSelect
-            options={Object.values(CARD_KEYWORDS)}
-            selected={vm.filters.keywords}
-            onChange={(values) => vm.setKeywords(values as CardKeywordT[])}
-            placeholder="e.g. Dominate, Go again, ..."
-          />
+          <div className="space-y-1.5">
+            <div className="pt-2">
+              <ModeToggle
+                options={FILTER_MODE_OPTIONS}
+                value={vm.filters.keywordFilterMode}
+                onChange={vm.setKeywordFilterMode}
+              />
+            </div>
+            <MultiSelect
+              options={Object.values(CARD_KEYWORDS)}
+              selected={vm.filters.keywords}
+              onChange={(values) => vm.setKeywords(values as CardKeywordT[])}
+              placeholder="e.g. Dominate, Go again, ..."
+            />
+          </div>
         </FilterRow>
-        <FilterRow label="Set">
+        <FilterRow label="Set" className="pt-4">
           <MultiSelect
             groups={SET_GROUPS.map((g) => ({ label: g.group, options: g.sets }))}
             selected={vm.filters.sets}

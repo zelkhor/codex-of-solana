@@ -4,7 +4,7 @@ import { CARD_SUBTYPES, cardBuilder } from '@codex/core';
 
 import { FuseSearchGateway } from '@/domain/card-catalog/infrastructure/search.fuse.gateway.ts';
 
-describe('Feature: Fuzzy card search', () => {
+describe('Integration: FuseSearchGateway', () => {
   let gateway: FuseSearchGateway;
 
   beforeEach(() => {

@@ -32,8 +32,10 @@ export const FOILING_ORDER: CardFoilingT[] = [
 export const CARD_EDITIONS = ReleaseEdition;
 export type CardEditionT = `${ReleaseEdition}`;
 
-export const CARD_CLASSES = Class;
-export type CardClassT = `${Class}`;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { NotClassed: _notClassed, ...CARD_CLASSES_MAP } = Class;
+export const CARD_CLASSES = CARD_CLASSES_MAP;
+export type CardClassT = (typeof CARD_CLASSES)[keyof typeof CARD_CLASSES];
 
 export const CARD_TALENTS = Talent;
 export type CardTalentT = `${Talent}`;

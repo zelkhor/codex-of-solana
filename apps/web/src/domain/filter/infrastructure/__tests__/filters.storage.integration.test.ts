@@ -13,6 +13,7 @@ import {
 
 import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
+import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 import { SORT_ORDER } from '@/shared/types/sort-order.ts';
 
 import {
@@ -23,11 +24,15 @@ import {
 
 const fullState = stateBuilder()
   .withClasses([CARD_CLASSES.Ninja])
+  .withClassFilterMode(FILTER_MODES.ANY)
   .withTalents([CARD_TALENTS.Draconic])
-  .withExcludeCardsWithTalent(false)
+  .withTalentFilterMode(FILTER_MODES.ANY)
   .withTypes([CARD_TYPES.Action])
+  .withTypeFilterMode(FILTER_MODES.ANY)
   .withSubtypes([CARD_SUBTYPES.Attack])
+  .withSubtypeFilterMode(FILTER_MODES.ANY)
   .withKeywords([CARD_KEYWORDS.Amp])
+  .withKeywordFilterMode(FILTER_MODES.ANY)
   .withSets([CARD_SETS.WelcomeToRathe])
   .withRarities([CARD_RARITIES.Promo])
   .withFoilings([CARD_FOILINGS.Gold])
@@ -41,7 +46,7 @@ const fullState = stateBuilder()
   .withGroupPrintings(true)
   .build().filters;
 
-describe('Feature: Loading persisted filters from local storage', () => {
+describe('Integration: Loading persisted filters from local storage', () => {
   beforeEach(() => localStorage.clear());
 
   test('Rule: returns undefined when nothing is stored', () => {
@@ -60,7 +65,7 @@ describe('Feature: Loading persisted filters from local storage', () => {
   });
 });
 
-describe('Feature: Saving filters to local storage', () => {
+describe('Integration: Saving filters to local storage', () => {
   beforeEach(() => localStorage.clear());
 
   test('Rule: writes the correct JSON string to localStorage', () => {

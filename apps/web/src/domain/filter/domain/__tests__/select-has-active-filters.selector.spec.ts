@@ -13,6 +13,7 @@ import {
 
 import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 
 import {
   type FiltersSelectorsFixture,
@@ -32,11 +33,15 @@ describe('Feature: Detecting whether any filter is active', () => {
 
   test.each([
     ['class', (b: StateBuilder) => b.withClasses([CARD_CLASSES.Generic])],
+    ['class exact mode', (b: StateBuilder) => b.withClassFilterMode(FILTER_MODES.EXACT)],
     ['talent', (b: StateBuilder) => b.withTalents([CARD_TALENTS.Shadow])],
-    ['"none" talent', (b: StateBuilder) => b.withExcludeCardsWithTalent(true)],
+    ['talent exact mode', (b: StateBuilder) => b.withTalentFilterMode(FILTER_MODES.EXACT)],
     ['type', (b: StateBuilder) => b.withTypes([CARD_TYPES.Action])],
+    ['type exact mode', (b: StateBuilder) => b.withTypeFilterMode(FILTER_MODES.EXACT)],
     ['subtype', (b: StateBuilder) => b.withSubtypes([Object.values(CARD_SUBTYPES)[0]])],
+    ['subtype exact mode', (b: StateBuilder) => b.withSubtypeFilterMode(FILTER_MODES.EXACT)],
     ['keyword', (b: StateBuilder) => b.withKeywords([CARD_KEYWORDS.Dominate])],
+    ['keyword exact mode', (b: StateBuilder) => b.withKeywordFilterMode(FILTER_MODES.EXACT)],
     ['set', (b: StateBuilder) => b.withSets([CARD_SETS.WelcomeToRathe])],
     ['rarity', (b: StateBuilder) => b.withRarities([CARD_RARITIES.Common])],
     ['foiling', (b: StateBuilder) => b.withFoilings([CARD_FOILINGS.Rainbow])],

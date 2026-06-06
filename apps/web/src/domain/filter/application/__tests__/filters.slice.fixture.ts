@@ -14,19 +14,24 @@ import type {
 import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
 import { type AppTestStore, createTestStore } from '@/shared/store/__tests__/create-test-store.ts';
 import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
+import type { FilterModeT } from '@/shared/types/filter-mode.ts';
 
 import {
   type FiltersState,
   resetFilters,
   setArtists,
+  setClassFilterMode,
   setClasses,
-  setExcludeCardsWithTalent,
   setFoilings,
+  setKeywordFilterMode,
   setKeywords,
   setRarities,
   setSets,
+  setSubtypeFilterMode,
   setSubtypes,
+  setTalentFilterMode,
   setTalents,
+  setTypeFilterMode,
   setTypes,
 } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
@@ -48,14 +53,19 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setClasses(classes));
   };
 
+  const whenSettingClassFilterMode = (mode: FilterModeT) => {
+    initStore();
+    store.dispatch(setClassFilterMode(mode));
+  };
+
   const whenAddingTalentFilter = (talents: CardTalentT[]) => {
     initStore();
     store.dispatch(setTalents(talents));
   };
 
-  const whenSettingExcludeCardsWithTalent = (exclude: boolean) => {
+  const whenSettingTalentFilterMode = (mode: FilterModeT) => {
     initStore();
-    store.dispatch(setExcludeCardsWithTalent(exclude));
+    store.dispatch(setTalentFilterMode(mode));
   };
 
   const whenAddingTypeFilter = (types: CardTypeT[]) => {
@@ -63,14 +73,29 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setTypes(types));
   };
 
+  const whenSettingTypeFilterMode = (mode: FilterModeT) => {
+    initStore();
+    store.dispatch(setTypeFilterMode(mode));
+  };
+
   const whenAddingSubtypeFilter = (subtypes: CardSubtypeT[]) => {
     initStore();
     store.dispatch(setSubtypes(subtypes));
   };
 
+  const whenSettingSubtypeFilterMode = (mode: FilterModeT) => {
+    initStore();
+    store.dispatch(setSubtypeFilterMode(mode));
+  };
+
   const whenAddingKeywordFilter = (keywords: CardKeywordT[]) => {
     initStore();
     store.dispatch(setKeywords(keywords));
+  };
+
+  const whenSettingKeywordFilterMode = (mode: FilterModeT) => {
+    initStore();
+    store.dispatch(setKeywordFilterMode(mode));
   };
 
   const whenAddingSetFilter = (sets: CardSetT[]) => {
@@ -109,11 +134,15 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
   return {
     givenActiveFilters,
     whenAddingClassFilter,
+    whenSettingClassFilterMode,
     whenAddingTalentFilter,
-    whenSettingExcludeCardsWithTalent,
+    whenSettingTalentFilterMode,
     whenAddingTypeFilter,
+    whenSettingTypeFilterMode,
     whenAddingSubtypeFilter,
+    whenSettingSubtypeFilterMode,
     whenAddingKeywordFilter,
+    whenSettingKeywordFilterMode,
     whenAddingSetFilter,
     whenAddingRarityFilter,
     whenAddingFoilingFilter,

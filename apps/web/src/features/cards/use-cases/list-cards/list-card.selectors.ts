@@ -7,6 +7,7 @@ import {
   COMPARISON_OPERATORS,
   type NumericComparisonT,
 } from '@/shared/types/comparison-operator.ts';
+import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 import { SORT_ORDER } from '@/shared/types/sort-order.ts';
 
 import { selectSearchResults } from '@/domain/card-catalog/domain/select-search-results.selector.ts';
@@ -27,13 +28,15 @@ export const selectVisibleCards = createSelector(
 
     return cards
       .filter((card) => {
-        if (!matchesMultiFilter(card.classes, filters.classes)) return false;
-        if (filters.excludeCardsWithTalent && card.talents.length > 0) return false;
-        if (!filters.excludeCardsWithTalent && !matchesMultiFilter(card.talents, filters.talents))
+        if (!matchesFilterWithMode(card.classes, filters.classes, filters.classFilterMode))
           return false;
-        if (!matchesMultiFilter(card.types, filters.types)) return false;
-        if (!matchesMultiFilter(card.subtypes, filters.subtypes)) return false;
-        if (!matchesMultiFilter(card.keywords, filters.keywords)) return false;
+        if (!matchesFilterWithMode(card.talents, filters.talents, filters.talentFilterMode))
+          return false;
+        if (!matchesFilterWithMode(card.types, filters.types, filters.typeFilterMode)) return false;
+        if (!matchesFilterWithMode(card.subtypes, filters.subtypes, filters.subtypeFilterMode))
+          return false;
+        if (!matchesFilterWithMode(card.keywords, filters.keywords, filters.keywordFilterMode))
+          return false;
         if (!matchesNumericFilter(card.cost, filters.cost)) return false;
         if (!matchesNumericFilter(card.pitch, filters.pitch)) return false;
         if (!matchesNumericFilter(card.attack, filters.attack)) return false;
@@ -107,6 +110,16 @@ const isFrontPrinting = (p: Printing): boolean => !p.print.includes('-Back');
 const matchesMultiFilter = (values: string[], filter: string[]): boolean => {
   if (filter.length === 0) return true;
   return filter.some((f) => values.includes(f));
+};
+
+const matchesExactFilter = (values: string[], filter: string[]): boolean => {
+  if (values.length !== filter.length) return false;
+  return filter.every((f) => values.includes(f));
+};
+
+const matchesFilterWithMode = (values: string[], filter: string[], mode: string): boolean => {
+  if (mode === FILTER_MODES.EXACT) return matchesExactFilter(values, filter);
+  return matchesMultiFilter(values, filter);
 };
 
 const matchesNumericFilter = (cardValue: number | null, filter: NumericComparisonT): boolean => {

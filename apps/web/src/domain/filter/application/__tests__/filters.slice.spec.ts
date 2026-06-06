@@ -12,6 +12,7 @@ import {
 } from '@codex/core';
 
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 
 import {
   type FiltersSliceFixture,
@@ -31,29 +32,31 @@ describe('Feature: Filtering cards', () => {
     fixture.thenFiltersShouldBe({ classes: [CARD_CLASSES.Generic, CARD_CLASSES.Ninja] });
   });
 
+  test('Rule: I should be able to switch the class filter to exact matching mode', () => {
+    fixture.whenSettingClassFilterMode(FILTER_MODES.EXACT);
+    fixture.thenFiltersShouldBe({ classFilterMode: FILTER_MODES.EXACT });
+  });
+
+  test('Rule: I should be able to switch the class filter back to any-match mode', () => {
+    fixture.givenActiveFilters((b) => b.withClassFilterMode(FILTER_MODES.EXACT));
+    fixture.whenSettingClassFilterMode(FILTER_MODES.ANY);
+    fixture.thenFiltersShouldBe({ classFilterMode: FILTER_MODES.ANY });
+  });
+
   test('Rule: I should be able to filter cards by talent', () => {
     fixture.whenAddingTalentFilter([CARD_TALENTS.Shadow, CARD_TALENTS.Draconic]);
     fixture.thenFiltersShouldBe({ talents: [CARD_TALENTS.Shadow, CARD_TALENTS.Draconic] });
   });
 
-  test('Rule: I should be able to exclude cards that have a talent', () => {
-    fixture.whenSettingExcludeCardsWithTalent(true);
-    fixture.thenFiltersShouldBe({ excludeCardsWithTalent: true });
+  test('Rule: I should be able to switch the talent filter to exact matching mode', () => {
+    fixture.whenSettingTalentFilterMode(FILTER_MODES.EXACT);
+    fixture.thenFiltersShouldBe({ talentFilterMode: FILTER_MODES.EXACT });
   });
 
-  test('Rule: Excluding cards with talent clears any active talent filter', () => {
-    fixture.givenActiveFilters((b) => b.withTalents([CARD_TALENTS.Shadow]));
-    fixture.whenSettingExcludeCardsWithTalent(true);
-    fixture.thenFiltersShouldBe({ excludeCardsWithTalent: true, talents: [] });
-  });
-
-  test('Rule: Selecting a talent turns off the exclude-cards-with-talent option', () => {
-    fixture.givenActiveFilters((b) => b.withExcludeCardsWithTalent(true));
-    fixture.whenAddingTalentFilter([CARD_TALENTS.Draconic]);
-    fixture.thenFiltersShouldBe({
-      excludeCardsWithTalent: false,
-      talents: [CARD_TALENTS.Draconic],
-    });
+  test('Rule: I should be able to switch the talent filter back to any-match mode', () => {
+    fixture.givenActiveFilters((b) => b.withTalentFilterMode(FILTER_MODES.EXACT));
+    fixture.whenSettingTalentFilterMode(FILTER_MODES.ANY);
+    fixture.thenFiltersShouldBe({ talentFilterMode: FILTER_MODES.ANY });
   });
 
   test('Rule: I should be able to filter cards by type', () => {
@@ -61,14 +64,47 @@ describe('Feature: Filtering cards', () => {
     fixture.thenFiltersShouldBe({ types: [CARD_TYPES.Action, CARD_TYPES.DefenseReaction] });
   });
 
+  test('Rule: I should be able to switch the type filter to exact matching mode', () => {
+    fixture.whenSettingTypeFilterMode(FILTER_MODES.EXACT);
+    fixture.thenFiltersShouldBe({ typeFilterMode: FILTER_MODES.EXACT });
+  });
+
+  test('Rule: I should be able to switch the type filter back to any-match mode', () => {
+    fixture.givenActiveFilters((b) => b.withTypeFilterMode(FILTER_MODES.EXACT));
+    fixture.whenSettingTypeFilterMode(FILTER_MODES.ANY);
+    fixture.thenFiltersShouldBe({ typeFilterMode: FILTER_MODES.ANY });
+  });
+
   test('Rule: I should be able to filter cards by subtype', () => {
     fixture.whenAddingSubtypeFilter([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Chi]);
     fixture.thenFiltersShouldBe({ subtypes: [CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Chi] });
   });
 
+  test('Rule: I should be able to switch the subtype filter to exact matching mode', () => {
+    fixture.whenSettingSubtypeFilterMode(FILTER_MODES.EXACT);
+    fixture.thenFiltersShouldBe({ subtypeFilterMode: FILTER_MODES.EXACT });
+  });
+
+  test('Rule: I should be able to switch the subtype filter back to any-match mode', () => {
+    fixture.givenActiveFilters((b) => b.withSubtypeFilterMode(FILTER_MODES.EXACT));
+    fixture.whenSettingSubtypeFilterMode(FILTER_MODES.ANY);
+    fixture.thenFiltersShouldBe({ subtypeFilterMode: FILTER_MODES.ANY });
+  });
+
   test('Rule: I should be able to filter cards by keyword', () => {
     fixture.whenAddingKeywordFilter([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain]);
     fixture.thenFiltersShouldBe({ keywords: [CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain] });
+  });
+
+  test('Rule: I should be able to switch the keyword filter to exact matching mode', () => {
+    fixture.whenSettingKeywordFilterMode(FILTER_MODES.EXACT);
+    fixture.thenFiltersShouldBe({ keywordFilterMode: FILTER_MODES.EXACT });
+  });
+
+  test('Rule: I should be able to switch the keyword filter back to any-match mode', () => {
+    fixture.givenActiveFilters((b) => b.withKeywordFilterMode(FILTER_MODES.EXACT));
+    fixture.whenSettingKeywordFilterMode(FILTER_MODES.ANY);
+    fixture.thenFiltersShouldBe({ keywordFilterMode: FILTER_MODES.ANY });
   });
 
   test('Rule: I should be able to filter cards by set', () => {

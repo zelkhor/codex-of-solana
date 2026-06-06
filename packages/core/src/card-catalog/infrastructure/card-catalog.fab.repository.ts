@@ -57,7 +57,7 @@ const mapToCardDto = (card: SourceCard, printingImageIndex: Map<string, SourcePr
   cardIdentifier: card.cardIdentifier,
   name: card.name,
   pitch: (card.pitch ?? null) as Card['pitch'],
-  classes: card.classes as Card['classes'],
+  classes: card.classes.filter((c) => c !== 'NotClassed') as Card['classes'],
   talents: (card.talents ?? []) as Card['talents'],
   types: card.types as Card['types'],
   subtypes: card.subtypes,

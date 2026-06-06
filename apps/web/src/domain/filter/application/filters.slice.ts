@@ -15,17 +15,22 @@ import {
   COMPARISON_OPERATORS,
   type NumericComparisonT,
 } from '@/shared/types/comparison-operator.ts';
+import { FILTER_MODES, type FilterModeT } from '@/shared/types/filter-mode.ts';
 import { SORT_ORDER, type SortOrderT } from '@/shared/types/sort-order.ts';
 
 const emptyNumericFilter: NumericComparisonT = { operator: COMPARISON_OPERATORS.GTE, value: null };
 
 export interface FiltersState {
   classes: CardClassT[];
+  classFilterMode: FilterModeT;
   talents: CardTalentT[];
-  excludeCardsWithTalent: boolean;
+  talentFilterMode: FilterModeT;
   types: CardTypeT[];
+  typeFilterMode: FilterModeT;
   subtypes: CardSubtypeT[];
+  subtypeFilterMode: FilterModeT;
   keywords: CardKeywordT[];
+  keywordFilterMode: FilterModeT;
   sets: CardSetT[];
   rarities: CardRarityT[];
   foilings: CardFoilingT[];
@@ -41,11 +46,15 @@ export interface FiltersState {
 
 export const initialFiltersState: FiltersState = {
   classes: [],
+  classFilterMode: FILTER_MODES.ANY,
   talents: [],
-  excludeCardsWithTalent: false,
+  talentFilterMode: FILTER_MODES.ANY,
   types: [],
+  typeFilterMode: FILTER_MODES.ANY,
   subtypes: [],
+  subtypeFilterMode: FILTER_MODES.ANY,
   keywords: [],
+  keywordFilterMode: FILTER_MODES.ANY,
   sets: [],
   rarities: [],
   foilings: [],
@@ -66,22 +75,32 @@ export const filtersSlice = createSlice({
     setClasses(state, action: PayloadAction<CardClassT[]>) {
       state.classes = action.payload;
     },
+    setClassFilterMode(state, action: PayloadAction<FilterModeT>) {
+      state.classFilterMode = action.payload;
+    },
     setTalents(state, action: PayloadAction<CardTalentT[]>) {
       state.talents = action.payload;
-      state.excludeCardsWithTalent = false;
     },
-    setExcludeCardsWithTalent(state, action: PayloadAction<boolean>) {
-      state.excludeCardsWithTalent = action.payload;
-      if (action.payload) state.talents = [];
+    setTalentFilterMode(state, action: PayloadAction<FilterModeT>) {
+      state.talentFilterMode = action.payload;
     },
     setTypes(state, action: PayloadAction<CardTypeT[]>) {
       state.types = action.payload;
     },
+    setTypeFilterMode(state, action: PayloadAction<FilterModeT>) {
+      state.typeFilterMode = action.payload;
+    },
     setSubtypes(state, action: PayloadAction<CardSubtypeT[]>) {
       state.subtypes = action.payload;
     },
+    setSubtypeFilterMode(state, action: PayloadAction<FilterModeT>) {
+      state.subtypeFilterMode = action.payload;
+    },
     setKeywords(state, action: PayloadAction<CardKeywordT[]>) {
       state.keywords = action.payload;
+    },
+    setKeywordFilterMode(state, action: PayloadAction<FilterModeT>) {
+      state.keywordFilterMode = action.payload;
     },
     setSets(state, action: PayloadAction<CardSetT[]>) {
       state.sets = action.payload;
@@ -124,11 +143,15 @@ export const filtersSlice = createSlice({
 
 export const {
   setClasses,
+  setClassFilterMode,
   setTalents,
-  setExcludeCardsWithTalent,
+  setTalentFilterMode,
   setTypes,
+  setTypeFilterMode,
   setSubtypes,
+  setSubtypeFilterMode,
   setKeywords,
+  setKeywordFilterMode,
   setSets,
   setRarities,
   setFoilings,
