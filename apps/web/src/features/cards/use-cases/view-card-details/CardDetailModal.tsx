@@ -29,7 +29,7 @@ export const CardDetailModal = ({
   cardImageContainerRef,
   cardImageVisible,
 }: CardDetailModalProps) => {
-  useKeydown('Escape', onClose);
+  useKeydown('Escape', onClose, true, true);
   useKeydown('ArrowLeft', onPrev ?? (() => {}), !!onPrev);
   useKeydown('ArrowRight', onNext ?? (() => {}), !!onNext);
 

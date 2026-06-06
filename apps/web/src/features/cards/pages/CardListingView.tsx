@@ -26,7 +26,6 @@ export const CardListingView = () => {
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
-  const filterButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (vm.status === ASYNC_STATUS.IDLE) void dispatch(getCards());
@@ -75,7 +74,6 @@ export const CardListingView = () => {
               </span>
             )}
             <button
-              ref={filterButtonRef}
               onClick={() => setFilterOpen((v) => !v)}
               title="Filters (⌘K)"
               className="relative flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-zinc-800 shadow-lg border border-black/8 dark:border-white/10 hover:bg-neutral-50 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
@@ -94,11 +92,7 @@ export const CardListingView = () => {
           </div>
         </main>
 
-        <FilterDrawer
-          isOpen={filterOpen}
-          onClose={() => setFilterOpen(false)}
-          triggerRef={filterButtonRef}
-        />
+        <FilterDrawer isOpen={filterOpen} onClose={() => setFilterOpen(false)} />
       </div>
 
       {vm.activeCard && (
