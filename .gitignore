@@ -1,7 +1,8 @@
 # Dependencies
 node_modules/
 .pnpm-store/
-.claude
+CLAUDE.local.md
+.claude/settings.local.json
 .superpowers/
 
 # Build outputs
