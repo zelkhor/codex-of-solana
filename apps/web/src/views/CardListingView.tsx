@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useKeydown } from '@/hooks/useKeydown';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SlidersHorizontal, X } from 'lucide-react';
-import type { AppDispatch, RootState } from '@/store';
+import type { AppDispatch } from '@/store';
 import { fetchAllCards } from '@/store/card-catalog/card-catalog.thunks';
-import {
-  selectCardWithActivePrinting,
-  selectAllCardsMap,
-} from '@/store/card-catalog/card-catalog.selectors';
 import { ASYNC_STATUS } from '@/store/async-status';
 import { CardGrid } from '@/components/card/card-grid/CardGrid';
 import { CardGridSkeleton } from '@/components/card/CardGridSkeleton';
@@ -17,29 +13,19 @@ import { AppHeader } from '@/components/layout/AppHeader';
 import { FilterDrawer } from '@/components/layout/FilterDrawer';
 import { CardDetailModal } from '@/components/card/card-detail/CardDetailModal.tsx';
 import type { Card, Printing } from '@codex/core';
-
-interface ActiveCard {
-  card: Card;
-  printing: Printing;
-  imageUrl: string;
-  sourceRect: DOMRect;
-}
+import { useCardListingViewModel } from '@/views/card-listing.view-model';
 
 export const CardListingView = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const visibleCards = useSelector(selectCardWithActivePrinting);
-  const allCardsMap = useSelector(selectAllCardsMap);
-  const status = useSelector((s: RootState) => s.cardCatalog.status);
+  const vm = useCardListingViewModel();
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
-  const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
-  const cardCount = visibleCards.length;
 
   useEffect(() => {
-    if (status === ASYNC_STATUS.Idle) void dispatch(fetchAllCards());
-  }, [dispatch, status]);
+    if (vm.status === ASYNC_STATUS.Idle) void dispatch(fetchAllCards());
+  }, [dispatch, vm.status]);
 
   useKeydown('k', (e) => {
     if (e.metaKey || e.ctrlKey) {
@@ -49,18 +35,12 @@ export const CardListingView = () => {
   });
 
   const handleCardClick = (card: Card, printing: Printing, rect: DOMRect) => {
-    const fullCard = allCardsMap.get(card.cardIdentifier) ?? card;
-    setActiveCard({
-      card: fullCard,
-      printing,
-      imageUrl: printing.image,
-      sourceRect: rect,
-    });
+    vm.openCard(card, printing, rect);
     setAnimating(true);
   };
 
   const handleClose = () => {
-    setActiveCard(null);
+    vm.closeCard();
     setAnimating(false);
   };
 
@@ -69,22 +49,24 @@ export const CardListingView = () => {
       <AppHeader />
       <div className="flex-1 overflow-hidden relative">
         <main className="relative h-full bg-[#f3f1f3] dark:bg-[#1d161e] overflow-hidden">
-          {status === ASYNC_STATUS.Loading && <CardGridSkeleton />}
-          {status === ASYNC_STATUS.Failed && (
+          {vm.status === ASYNC_STATUS.Loading && <CardGridSkeleton />}
+          {vm.status === ASYNC_STATUS.Failed && (
             <div className="flex h-full items-center justify-center">
               <p className="text-destructive">Failed to load cards. Please try again</p>
             </div>
           )}
-          {status === ASYNC_STATUS.Succeeded && visibleCards.length === 0 && <NoFilterResults />}
-          {status === ASYNC_STATUS.Succeeded && visibleCards.length > 0 && (
-            <CardGrid cardPrintings={visibleCards} onCardClick={handleCardClick} />
+          {vm.status === ASYNC_STATUS.Succeeded && vm.visibleCards.length === 0 && (
+            <NoFilterResults />
+          )}
+          {vm.status === ASYNC_STATUS.Succeeded && vm.visibleCards.length > 0 && (
+            <CardGrid cardPrintings={vm.visibleCards} onCardClick={handleCardClick} />
           )}
 
           {/* Floating filter button */}
           <div className="absolute bottom-10 right-1/2 translate-x-1/2 md:right-20 z-10 flex flex-col items-center gap-2">
-            {status === ASYNC_STATUS.Succeeded && (
+            {vm.status === ASYNC_STATUS.Succeeded && (
               <span className="text-xs text-muted-foreground bg-background/80 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
-                {cardCount.toLocaleString()} cards
+                {vm.cardCount.toLocaleString()} cards
               </span>
             )}
             <button
@@ -114,20 +96,24 @@ export const CardListingView = () => {
         />
       </div>
 
-      {activeCard && (
+      {vm.activeCard && (
         <CardDetailModal
-          card={activeCard.card}
-          printing={activeCard.printing}
+          key={`${vm.activeCard.card.cardIdentifier}-${vm.activeCard.printing.print}`}
+          card={vm.activeCard.card}
+          printing={vm.activeCard.printing}
           onClose={handleClose}
           cardImageContainerRef={cardImageContainerRef}
           cardImageVisible={!animating}
+          onPrev={vm.canNavigatePrev ? vm.navigatePrev : undefined}
+          onNext={vm.canNavigateNext ? vm.navigateNext : undefined}
+          hasNavigation={vm.hasNavigation}
         />
       )}
 
-      {activeCard && animating && (
+      {vm.activeCard && animating && (
         <CardFlipAnimation
-          imageUrl={activeCard.imageUrl}
-          sourceRect={activeCard.sourceRect}
+          imageUrl={vm.activeCard.imageUrl}
+          sourceRect={vm.activeCard.sourceRect}
           targetRef={cardImageContainerRef}
           onComplete={() => setAnimating(false)}
         />
