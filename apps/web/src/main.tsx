@@ -2,18 +2,18 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { App } from '@/App';
-import { createStore } from '@/store';
-import { loadFilters, saveFilters } from '@/store/filters/filters.persistence';
-import { CardApiGateway } from '@/gateways/card.api.gateway';
-import { FuseSearchGateway } from '@/gateways/search.fuse.gateway';
-import { HttpClient } from '@/gateways/http-client';
+import { createStore } from '@/shared/store';
+import { loadFilters, saveFilters } from '@/domain/filter/infrastructure/filters.storage.ts';
+import { CardCatalogApiGateway } from '@/domain/card-catalog/infrastructure/card-catalog.api.gateway.ts';
+import { FuseSearchGateway } from '@/domain/card-catalog/infrastructure/search.fuse.gateway.ts';
+import { HttpClient } from '@/shared/gateways/http-client';
 import './index.css';
 
 const http = new HttpClient(import.meta.env.VITE_API_URL ?? '');
 
 const store = createStore(
   {
-    cardGateway: new CardApiGateway(http),
+    cardCatalogGateway: new CardCatalogApiGateway(http),
     searchGateway: new FuseSearchGateway(),
     collectionGateway: {},
     authGateway: {},
