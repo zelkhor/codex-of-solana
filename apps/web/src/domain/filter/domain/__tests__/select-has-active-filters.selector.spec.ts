@@ -33,6 +33,7 @@ describe('Feature: Detecting whether any filter is active', () => {
   test.each([
     ['class', (b: StateBuilder) => b.withClasses([CARD_CLASSES.Generic])],
     ['talent', (b: StateBuilder) => b.withTalents([CARD_TALENTS.Shadow])],
+    ['"none" talent', (b: StateBuilder) => b.withExcludeCardsWithTalent(true)],
     ['type', (b: StateBuilder) => b.withTypes([CARD_TYPES.Action])],
     ['subtype', (b: StateBuilder) => b.withSubtypes([Object.values(CARD_SUBTYPES)[0]])],
     ['keyword', (b: StateBuilder) => b.withKeywords([CARD_KEYWORDS.Dominate])],

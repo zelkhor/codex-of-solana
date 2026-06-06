@@ -20,6 +20,7 @@ import {
   resetFilters,
   setArtists,
   setClasses,
+  setExcludeCardsWithTalent,
   setFoilings,
   setKeywords,
   setRarities,
@@ -50,6 +51,11 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
   const whenAddingTalentFilter = (talents: CardTalentT[]) => {
     initStore();
     store.dispatch(setTalents(talents));
+  };
+
+  const whenSettingExcludeCardsWithTalent = (exclude: boolean) => {
+    initStore();
+    store.dispatch(setExcludeCardsWithTalent(exclude));
   };
 
   const whenAddingTypeFilter = (types: CardTypeT[]) => {
@@ -104,6 +110,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     givenActiveFilters,
     whenAddingClassFilter,
     whenAddingTalentFilter,
+    whenSettingExcludeCardsWithTalent,
     whenAddingTypeFilter,
     whenAddingSubtypeFilter,
     whenAddingKeywordFilter,

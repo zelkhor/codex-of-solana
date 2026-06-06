@@ -30,6 +30,7 @@ const wtrPrinting = printingBuilder()
   .withSet(CARD_SETS.WelcomeToRathe)
   .withRarity(CARD_RARITIES.Common)
   .build();
+
 const promoPrinting = printingBuilder()
   .withIdentifier('LGS001')
   .withPrint('LGS001-Rainbow')
@@ -39,7 +40,7 @@ const promoPrinting = printingBuilder()
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
-describe('Feature: Card-level filtering', () => {
+describe('Feature: Selecting which card should be visible based on filters and search', () => {
   test('Rule: Returns all printings when no filters are active', () => {
     const card = cardBuilder().withPrintings([wtrPrinting, promoPrinting]).build();
     const cards = selectVisibleCards(stateBuilder().withAllCards([card]).build());
@@ -70,6 +71,19 @@ describe('Feature: Card-level filtering', () => {
     const excluded = cardBuilder().withCardIdentifier('b').withTalents([]).build();
     const cards = selectVisibleCards(
       stateBuilder().withAllCards([matching, excluded]).withTalents([CARD_TALENTS.Shadow]).build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: Excludes cards with any talent when the "none" talent option is selected', () => {
+    const noTalent = cardBuilder().withCardIdentifier('a').withTalents([]).build();
+    const withTalent = cardBuilder()
+      .withCardIdentifier('b')
+      .withTalents([CARD_TALENTS.Draconic])
+      .build();
+    const cards = selectVisibleCards(
+      stateBuilder().withAllCards([noTalent, withTalent]).withExcludeCardsWithTalent(true).build(),
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');

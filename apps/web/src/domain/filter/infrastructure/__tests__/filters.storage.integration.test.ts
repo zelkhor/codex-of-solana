@@ -11,34 +11,35 @@ import {
   CARD_TYPES,
 } from '@codex/core';
 
+import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
 import { SORT_ORDER } from '@/shared/types/sort-order.ts';
 
-import { type FiltersState } from '@/domain/filter/application/filters.slice.ts';
 import {
   FILTERS_STORAGE_KEY,
   loadFilters,
   saveFilters,
 } from '@/domain/filter/infrastructure/filters.storage.ts';
 
-const fullState: FiltersState = {
-  classes: [CARD_CLASSES.Ninja],
-  talents: [CARD_TALENTS.Draconic],
-  types: [CARD_TYPES.Action],
-  subtypes: [CARD_SUBTYPES.Attack],
-  keywords: [CARD_KEYWORDS.Amp],
-  sets: [CARD_SETS.WelcomeToRathe],
-  rarities: [CARD_RARITIES.Promo],
-  foilings: [CARD_FOILINGS.Gold],
-  artists: ['Micah Epstein'],
-  searchQuery: 'ninja',
-  sortOrder: SORT_ORDER.SET_ASC,
-  cost: { operator: COMPARISON_OPERATORS.GTE, value: 2 },
-  pitch: { operator: COMPARISON_OPERATORS.EQ, value: 1 },
-  attack: { operator: COMPARISON_OPERATORS.GT, value: 3 },
-  defense: { operator: COMPARISON_OPERATORS.LTE, value: 4 },
-  groupPrintings: true,
-};
+const fullState = stateBuilder()
+  .withClasses([CARD_CLASSES.Ninja])
+  .withTalents([CARD_TALENTS.Draconic])
+  .withExcludeCardsWithTalent(false)
+  .withTypes([CARD_TYPES.Action])
+  .withSubtypes([CARD_SUBTYPES.Attack])
+  .withKeywords([CARD_KEYWORDS.Amp])
+  .withSets([CARD_SETS.WelcomeToRathe])
+  .withRarities([CARD_RARITIES.Promo])
+  .withFoilings([CARD_FOILINGS.Gold])
+  .withArtists(['Micah Epstein'])
+  .withSearchQuery('ninja')
+  .withSortOrder(SORT_ORDER.SET_ASC)
+  .withCostFilter({ operator: COMPARISON_OPERATORS.GTE, value: 2 })
+  .withPitchFilter({ operator: COMPARISON_OPERATORS.EQ, value: 1 })
+  .withAttackFilter({ operator: COMPARISON_OPERATORS.GT, value: 3 })
+  .withDefenseFilter({ operator: COMPARISON_OPERATORS.LTE, value: 4 })
+  .withGroupPrintings(true)
+  .build().filters;
 
 describe('Feature: Loading persisted filters from local storage', () => {
   beforeEach(() => localStorage.clear());

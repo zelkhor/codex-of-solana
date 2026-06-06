@@ -36,6 +36,26 @@ describe('Feature: Filtering cards', () => {
     fixture.thenFiltersShouldBe({ talents: [CARD_TALENTS.Shadow, CARD_TALENTS.Draconic] });
   });
 
+  test('Rule: I should be able to exclude cards that have a talent', () => {
+    fixture.whenSettingExcludeCardsWithTalent(true);
+    fixture.thenFiltersShouldBe({ excludeCardsWithTalent: true });
+  });
+
+  test('Rule: Excluding cards with talent clears any active talent filter', () => {
+    fixture.givenActiveFilters((b) => b.withTalents([CARD_TALENTS.Shadow]));
+    fixture.whenSettingExcludeCardsWithTalent(true);
+    fixture.thenFiltersShouldBe({ excludeCardsWithTalent: true, talents: [] });
+  });
+
+  test('Rule: Selecting a talent turns off the exclude-cards-with-talent option', () => {
+    fixture.givenActiveFilters((b) => b.withExcludeCardsWithTalent(true));
+    fixture.whenAddingTalentFilter([CARD_TALENTS.Draconic]);
+    fixture.thenFiltersShouldBe({
+      excludeCardsWithTalent: false,
+      talents: [CARD_TALENTS.Draconic],
+    });
+  });
+
   test('Rule: I should be able to filter cards by type', () => {
     fixture.whenAddingTypeFilter([CARD_TYPES.Action, CARD_TYPES.DefenseReaction]);
     fixture.thenFiltersShouldBe({ types: [CARD_TYPES.Action, CARD_TYPES.DefenseReaction] });

@@ -22,6 +22,7 @@ const emptyNumericFilter: NumericComparisonT = { operator: COMPARISON_OPERATORS.
 export interface FiltersState {
   classes: CardClassT[];
   talents: CardTalentT[];
+  excludeCardsWithTalent: boolean;
   types: CardTypeT[];
   subtypes: CardSubtypeT[];
   keywords: CardKeywordT[];
@@ -41,6 +42,7 @@ export interface FiltersState {
 export const initialFiltersState: FiltersState = {
   classes: [],
   talents: [],
+  excludeCardsWithTalent: false,
   types: [],
   subtypes: [],
   keywords: [],
@@ -66,6 +68,11 @@ export const filtersSlice = createSlice({
     },
     setTalents(state, action: PayloadAction<CardTalentT[]>) {
       state.talents = action.payload;
+      state.excludeCardsWithTalent = false;
+    },
+    setExcludeCardsWithTalent(state, action: PayloadAction<boolean>) {
+      state.excludeCardsWithTalent = action.payload;
+      if (action.payload) state.talents = [];
     },
     setTypes(state, action: PayloadAction<CardTypeT[]>) {
       state.types = action.payload;
@@ -118,6 +125,7 @@ export const filtersSlice = createSlice({
 export const {
   setClasses,
   setTalents,
+  setExcludeCardsWithTalent,
   setTypes,
   setSubtypes,
   setKeywords,

@@ -33,6 +33,7 @@ const withArtists = createAction<string[]>('withArtists');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');
 const withGroupPrintings = createAction<boolean>('withGroupPrintings');
+const withExcludeCardsWithTalent = createAction<boolean>('withExcludeCardsWithTalent');
 const withCostFilter = createAction<NumericComparisonT>('withCostFilter');
 const withPitchFilter = createAction<NumericComparisonT>('withPitchFilter');
 const withAttackFilter = createAction<NumericComparisonT>('withAttackFilter');
@@ -84,6 +85,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withGroupPrintings, (state, { payload }) => {
       state.filters.groupPrintings = payload;
     })
+    .addCase(withExcludeCardsWithTalent, (state, { payload }) => {
+      state.filters.excludeCardsWithTalent = payload;
+    })
     .addCase(withCostFilter, (state, { payload }) => {
       state.filters.cost = payload;
     })
@@ -119,6 +123,7 @@ export const stateBuilder = (state = initialState) => {
     withSearchQuery: reduce(withSearchQuery),
     withSortOrder: reduce(withSortOrder),
     withGroupPrintings: reduce(withGroupPrintings),
+    withExcludeCardsWithTalent: reduce(withExcludeCardsWithTalent),
     withCostFilter: reduce(withCostFilter),
     withPitchFilter: reduce(withPitchFilter),
     withAttackFilter: reduce(withAttackFilter),

@@ -7,6 +7,7 @@ export const selectHasActiveFilters = createSelector(
   (f) =>
     f.classes.length > 0 ||
     f.talents.length > 0 ||
+    f.excludeCardsWithTalent ||
     f.types.length > 0 ||
     f.subtypes.length > 0 ||
     f.keywords.length > 0 ||

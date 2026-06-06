@@ -16,7 +16,6 @@ import {
   type CardRarityT,
   type CardSetT,
   type CardSubtypeT,
-  type CardTalentT,
   type CardTypeT,
   SET_GROUPS,
 } from '@codex/core';
@@ -28,7 +27,7 @@ import { Select } from '@/shared/ui/Select.tsx';
 import { Toggle } from '@/shared/ui/Toggle.tsx';
 
 import { SearchInput } from './SearchInput.tsx';
-import { useFilterPanelViewModel } from './filter-panel.view-model.ts';
+import { TALENT_NONE_OPTION, useFilterPanelViewModel } from './filter-panel.view-model.ts';
 
 interface FilterPanelProps {
   onClose?: () => void;
@@ -85,9 +84,9 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
         </FilterRow>
         <FilterRow label="Talent">
           <MultiSelect
-            options={Object.values(CARD_TALENTS)}
-            selected={vm.filters.talents}
-            onChange={(values) => vm.setTalents(values as CardTalentT[])}
+            options={[TALENT_NONE_OPTION, ...Object.values(CARD_TALENTS)]}
+            selected={vm.selectedTalents}
+            onChange={vm.setTalentsFilter}
             placeholder="e.g. Earth, Draconic, Mystic, ..."
           />
         </FilterRow>

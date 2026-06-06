@@ -28,7 +28,9 @@ export const selectVisibleCards = createSelector(
     return cards
       .filter((card) => {
         if (!matchesMultiFilter(card.classes, filters.classes)) return false;
-        if (!matchesMultiFilter(card.talents, filters.talents)) return false;
+        if (filters.excludeCardsWithTalent && card.talents.length > 0) return false;
+        if (!filters.excludeCardsWithTalent && !matchesMultiFilter(card.talents, filters.talents))
+          return false;
         if (!matchesMultiFilter(card.types, filters.types)) return false;
         if (!matchesMultiFilter(card.subtypes, filters.subtypes)) return false;
         if (!matchesMultiFilter(card.keywords, filters.keywords)) return false;

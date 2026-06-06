@@ -24,6 +24,7 @@ import {
   setClasses,
   setCostFilter,
   setDefenseFilter,
+  setExcludeCardsWithTalent,
   setFoilings,
   setGroupPrintings,
   setKeywords,
@@ -37,6 +38,8 @@ import {
 } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 
+export const TALENT_NONE_OPTION = 'None';
+
 export interface FilterPanelViewModel {
   filters: FiltersState;
   allArtists: string[];
@@ -44,7 +47,8 @@ export interface FilterPanelViewModel {
   isSortDisabled: boolean;
   sortOrderOptions: { value: string; label: string }[];
   setClasses: (v: CardClassT[]) => void;
-  setTalents: (v: CardTalentT[]) => void;
+  selectedTalents: string[];
+  setTalentsFilter: (v: string[]) => void;
   setTypes: (v: CardTypeT[]) => void;
   setSubtypes: (v: CardSubtypeT[]) => void;
   setKeywords: (v: CardKeywordT[]) => void;
@@ -76,6 +80,16 @@ export const useFilterPanelViewModel = (): FilterPanelViewModel => {
     { value: SORT_ORDER.NAME_DESC, label: 'Name Z → A' },
   ];
 
+  const selectedTalents = filters.excludeCardsWithTalent ? [TALENT_NONE_OPTION] : filters.talents;
+
+  const setTalentsFilter = (values: string[]) => {
+    if (values.includes(TALENT_NONE_OPTION) && !filters.excludeCardsWithTalent) {
+      dispatch(setExcludeCardsWithTalent(true));
+      return;
+    }
+    dispatch(setTalents(values.filter((v) => v !== TALENT_NONE_OPTION) as CardTalentT[]));
+  };
+
   return {
     filters,
     allArtists,
@@ -83,7 +97,8 @@ export const useFilterPanelViewModel = (): FilterPanelViewModel => {
     isSortDisabled: hasSearchQuery,
     sortOrderOptions,
     setClasses: (v) => dispatch(setClasses(v)),
-    setTalents: (v) => dispatch(setTalents(v)),
+    selectedTalents: selectedTalents,
+    setTalentsFilter,
     setTypes: (v) => dispatch(setTypes(v)),
     setSubtypes: (v) => dispatch(setSubtypes(v)),
     setKeywords: (v) => dispatch(setKeywords(v)),
