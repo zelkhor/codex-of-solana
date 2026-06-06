@@ -1,77 +1,21 @@
-import {
-  Class,
-  Foiling,
-  Keyword,
-  Rarity,
-  Release,
-  ReleaseEdition,
-  Subtype,
-  Talent,
-  Type,
-} from '@flesh-and-blood/types';
-
-export const CARD_SETS = Release;
-export type CardSetT = `${Release}`;
-
-export const CARD_RARITIES = Rarity;
-export type CardRarityT = `${Rarity}`;
-
-export const CARD_FOILINGS = {
-  Regular: 'Regular',
-  ...Foiling,
-} as const;
-export type CardFoilingT = (typeof CARD_FOILINGS)[keyof typeof CARD_FOILINGS];
-
-export const FOILING_ORDER: CardFoilingT[] = [
-  CARD_FOILINGS.Regular,
-  CARD_FOILINGS.Rainbow,
-  CARD_FOILINGS.Cold,
-  CARD_FOILINGS.Gold,
-];
-
-export const CARD_EDITIONS = ReleaseEdition;
-export type CardEditionT = `${ReleaseEdition}`;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { NotClassed: _notClassed, ...CARD_CLASSES_MAP } = Class;
-export const CARD_CLASSES = CARD_CLASSES_MAP;
-export type CardClassT = (typeof CARD_CLASSES)[keyof typeof CARD_CLASSES];
-
-export const CARD_TALENTS = Talent;
-export type CardTalentT = `${Talent}`;
-
-export const CARD_TYPES = Type;
-export type CardTypeT = `${Type}`;
-
-export const CARD_KEYWORDS = Keyword;
-export type CardKeywordT = `${Keyword}`;
-
-export const CARD_SUBTYPES = Subtype;
-export type CardSubtypeT = `${Subtype}`;
-
-export const CARD_PITCHES = { Red: 1, Yellow: 2, Blue: 3 } as const;
-export type CardPitchT = (typeof CARD_PITCHES)[keyof typeof CARD_PITCHES];
-
-export const RARITY_ORDER: CardRarityT[] = [
-  'Basic',
-  'Token',
-  'Common',
-  'Rare',
-  'Super Rare',
-  'Majestic',
-  'Legendary',
-  'Fabled',
-  'Marvel',
-  'Promo',
-];
+import type { ClassT } from '../../shared/game/class';
+import type { EditionT } from '../../shared/game/edition';
+import type { FoilingT } from '../../shared/game/foiling';
+import type { KeywordT } from '../../shared/game/keyword';
+import type { PitchT } from '../../shared/game/pitch';
+import type { RarityT } from '../../shared/game/rarity';
+import type { SetT } from '../../shared/game/set';
+import type { SubtypeT } from '../../shared/game/subtype';
+import type { TalentT } from '../../shared/game/talent';
+import type { TypeT } from '../../shared/game/type';
 
 export interface Printing {
   identifier: string;
   print: string;
-  set: CardSetT;
-  rarity: CardRarityT;
-  edition: CardEditionT | null;
-  foiling: CardFoilingT;
+  set: SetT;
+  rarity: RarityT;
+  edition: EditionT | null;
+  foiling: FoilingT;
   image: string;
   backPrinting: Printing | null;
   artists: string[];
@@ -80,15 +24,15 @@ export interface Printing {
 export interface Card {
   cardIdentifier: string;
   name: string;
-  pitch: CardPitchT | null;
-  classes: CardClassT[];
-  talents: CardTalentT[];
-  types: CardTypeT[];
-  subtypes: CardSubtypeT[];
-  keywords: CardKeywordT[];
-  rarity: CardRarityT;
-  rarities: CardRarityT[];
-  sets: CardSetT[];
+  pitch: PitchT | null;
+  classes: ClassT[];
+  talents: TalentT[];
+  types: TypeT[];
+  subtypes: SubtypeT[];
+  keywords: KeywordT[];
+  rarity: RarityT;
+  rarities: RarityT[];
+  sets: SetT[];
   typeText: string | null;
   cost: number | null;
   attack: number | null;

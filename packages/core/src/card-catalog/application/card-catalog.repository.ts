@@ -1,4 +1,4 @@
-import type { Result } from '../../shared/result';
+import type { Result } from '../../shared/helpers/result';
 import type { Card } from '../domain/card';
 import type { CardCatalogLoadError } from '../domain/card-catalog.errors';
 

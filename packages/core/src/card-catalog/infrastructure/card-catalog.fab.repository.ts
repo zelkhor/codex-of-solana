@@ -1,8 +1,9 @@
 import { cards as fabCards } from '@flesh-and-blood/cards';
 
-import { type Result, err, ok } from '../../shared/result';
+import { FOILINGS } from '../../shared/game/foiling';
+import { type Result, err, ok } from '../../shared/helpers/result';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
-import { CARD_FOILINGS, type Card, type Printing } from '../domain/card';
+import type { Card, Printing } from '../domain/card';
 import { CardCatalogLoadError } from '../domain/card-catalog.errors';
 import { CARD_PRINTING_OVERRIDES } from './card-catalog.overrides';
 
@@ -89,7 +90,7 @@ const mapToPrintingDto = (
     set: p.set as Printing['set'],
     rarity: p.rarity as Printing['rarity'],
     edition: (p.edition ?? null) as Printing['edition'],
-    foiling: (p.foiling ?? CARD_FOILINGS.Regular) as Printing['foiling'],
+    foiling: (p.foiling ?? FOILINGS.Regular) as Printing['foiling'],
     image: p.image ? `${IMAGE_BASE}${p.image}.webp` : '',
     artists: p.artists,
     backPrinting: backPrinting
@@ -99,7 +100,7 @@ const mapToPrintingDto = (
           set: backPrinting.set as Printing['set'],
           rarity: backPrinting.rarity as Printing['rarity'],
           edition: (backPrinting.edition ?? null) as Printing['edition'],
-          foiling: (backPrinting.foiling ?? CARD_FOILINGS.Regular) as Printing['foiling'],
+          foiling: (backPrinting.foiling ?? FOILINGS.Regular) as Printing['foiling'],
           image: backPrinting.image ? `${IMAGE_BASE}${backPrinting.image}.webp` : '',
           artists: backPrinting.artists,
           backPrinting: null,

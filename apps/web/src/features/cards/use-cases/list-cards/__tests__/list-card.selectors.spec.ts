@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'vitest';
 
 import {
-  CARD_CLASSES,
-  CARD_FOILINGS,
-  CARD_KEYWORDS,
-  CARD_RARITIES,
-  CARD_SETS,
-  CARD_SUBTYPES,
-  CARD_TALENTS,
-  CARD_TYPES,
+  CLASSES,
+  FOILINGS,
+  KEYWORDS,
+  RARITIES,
+  SETS,
+  SUBTYPES,
+  TALENTS,
+  TYPES,
   cardBuilder,
   printingBuilder,
 } from '@codex/core';
@@ -28,15 +28,15 @@ import {
 const wtrPrinting = printingBuilder()
   .withIdentifier('WTR001')
   .withPrint('WTR001')
-  .withSet(CARD_SETS.WelcomeToRathe)
-  .withRarity(CARD_RARITIES.Common)
+  .withSet(SETS.WelcomeToRathe)
+  .withRarity(RARITIES.Common)
   .build();
 
 const promoPrinting = printingBuilder()
   .withIdentifier('LGS001')
   .withPrint('LGS001-Rainbow')
-  .withSet(CARD_SETS.Promos)
-  .withRarity(CARD_RARITIES.Common)
+  .withSet(SETS.Promos)
+  .withRarity(RARITIES.Common)
   .build();
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
@@ -49,29 +49,20 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: Excludes cards that do not match the class filter', () => {
-    const matching = cardBuilder()
-      .withCardIdentifier('a')
-      .withClasses([CARD_CLASSES.Generic])
-      .build();
-    const excluded = cardBuilder()
-      .withCardIdentifier('b')
-      .withClasses([CARD_CLASSES.Warrior])
-      .build();
+    const matching = cardBuilder().withCardIdentifier('a').withClasses([CLASSES.Generic]).build();
+    const excluded = cardBuilder().withCardIdentifier('b').withClasses([CLASSES.Warrior]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([matching, excluded]).withClasses([CARD_CLASSES.Generic]).build(),
+      stateBuilder().withAllCards([matching, excluded]).withClasses([CLASSES.Generic]).build(),
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');
   });
 
   test('Rule: Excludes cards that do not match the talent filter', () => {
-    const matching = cardBuilder()
-      .withCardIdentifier('a')
-      .withTalents([CARD_TALENTS.Shadow])
-      .build();
+    const matching = cardBuilder().withCardIdentifier('a').withTalents([TALENTS.Shadow]).build();
     const excluded = cardBuilder().withCardIdentifier('b').withTalents([]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([matching, excluded]).withTalents([CARD_TALENTS.Shadow]).build(),
+      stateBuilder().withAllCards([matching, excluded]).withTalents([TALENTS.Shadow]).build(),
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');
@@ -81,7 +72,7 @@ describe('Feature: Selecting which card should be visible based on filters and s
     const noTalent = cardBuilder().withCardIdentifier('a').withTalents([]).build();
     const withTalent = cardBuilder()
       .withCardIdentifier('b')
-      .withTalents([CARD_TALENTS.Draconic])
+      .withTalents([TALENTS.Draconic])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
@@ -96,16 +87,16 @@ describe('Feature: Selecting which card should be visible based on filters and s
   test('Rule: In exact mode, multi-talent cards are excluded when only one of their talents is selected', () => {
     const lightning = cardBuilder()
       .withCardIdentifier('a')
-      .withTalents([CARD_TALENTS.Lightning])
+      .withTalents([TALENTS.Lightning])
       .build();
     const earthLightning = cardBuilder()
       .withCardIdentifier('b')
-      .withTalents([CARD_TALENTS.Earth, CARD_TALENTS.Lightning])
+      .withTalents([TALENTS.Earth, TALENTS.Lightning])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([lightning, earthLightning])
-        .withTalents([CARD_TALENTS.Lightning])
+        .withTalents([TALENTS.Lightning])
         .withTalentFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -116,16 +107,16 @@ describe('Feature: Selecting which card should be visible based on filters and s
   test('Rule: In exact mode, a card matches when its talents exactly equal all selected talents', () => {
     const lightning = cardBuilder()
       .withCardIdentifier('a')
-      .withTalents([CARD_TALENTS.Lightning])
+      .withTalents([TALENTS.Lightning])
       .build();
     const earthLightning = cardBuilder()
       .withCardIdentifier('b')
-      .withTalents([CARD_TALENTS.Earth, CARD_TALENTS.Lightning])
+      .withTalents([TALENTS.Earth, TALENTS.Lightning])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([lightning, earthLightning])
-        .withTalents([CARD_TALENTS.Earth, CARD_TALENTS.Lightning])
+        .withTalents([TALENTS.Earth, TALENTS.Lightning])
         .withTalentFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -135,10 +126,7 @@ describe('Feature: Selecting which card should be visible based on filters and s
 
   test('Rule: In exact mode with no classes selected, only cards with no classes are shown', () => {
     const noClass = cardBuilder().withCardIdentifier('a').withClasses([]).build();
-    const withClass = cardBuilder()
-      .withCardIdentifier('b')
-      .withClasses([CARD_CLASSES.Generic])
-      .build();
+    const withClass = cardBuilder().withCardIdentifier('b').withClasses([CLASSES.Generic]).build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([noClass, withClass])
@@ -150,18 +138,15 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: In exact mode, multi-class cards are excluded when only one of their classes is selected', () => {
-    const generic = cardBuilder()
-      .withCardIdentifier('a')
-      .withClasses([CARD_CLASSES.Generic])
-      .build();
+    const generic = cardBuilder().withCardIdentifier('a').withClasses([CLASSES.Generic]).build();
     const genericNinja = cardBuilder()
       .withCardIdentifier('b')
-      .withClasses([CARD_CLASSES.Generic, CARD_CLASSES.Ninja])
+      .withClasses([CLASSES.Generic, CLASSES.Ninja])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([generic, genericNinja])
-        .withClasses([CARD_CLASSES.Generic])
+        .withClasses([CLASSES.Generic])
         .withClassFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -170,18 +155,15 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: In exact mode, a card matches when its classes exactly equal all selected classes', () => {
-    const generic = cardBuilder()
-      .withCardIdentifier('a')
-      .withClasses([CARD_CLASSES.Generic])
-      .build();
+    const generic = cardBuilder().withCardIdentifier('a').withClasses([CLASSES.Generic]).build();
     const genericNinja = cardBuilder()
       .withCardIdentifier('b')
-      .withClasses([CARD_CLASSES.Generic, CARD_CLASSES.Ninja])
+      .withClasses([CLASSES.Generic, CLASSES.Ninja])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([generic, genericNinja])
-        .withClasses([CARD_CLASSES.Generic, CARD_CLASSES.Ninja])
+        .withClasses([CLASSES.Generic, CLASSES.Ninja])
         .withClassFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -190,13 +172,10 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: Excludes cards that do not match the type filter', () => {
-    const matching = cardBuilder().withCardIdentifier('a').withTypes([CARD_TYPES.Action]).build();
-    const excluded = cardBuilder()
-      .withCardIdentifier('b')
-      .withTypes([CARD_TYPES.Equipment])
-      .build();
+    const matching = cardBuilder().withCardIdentifier('a').withTypes([TYPES.Action]).build();
+    const excluded = cardBuilder().withCardIdentifier('b').withTypes([TYPES.Equipment]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([matching, excluded]).withTypes([CARD_TYPES.Action]).build(),
+      stateBuilder().withAllCards([matching, excluded]).withTypes([TYPES.Action]).build(),
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');
@@ -204,7 +183,7 @@ describe('Feature: Selecting which card should be visible based on filters and s
 
   test('Rule: In exact mode with no types selected, only cards with no types are shown', () => {
     const noType = cardBuilder().withCardIdentifier('a').withTypes([]).build();
-    const withType = cardBuilder().withCardIdentifier('b').withTypes([CARD_TYPES.Action]).build();
+    const withType = cardBuilder().withCardIdentifier('b').withTypes([TYPES.Action]).build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([noType, withType])
@@ -216,15 +195,15 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: In exact mode, multi-type cards are excluded when only one of their types is selected', () => {
-    const action = cardBuilder().withCardIdentifier('a').withTypes([CARD_TYPES.Action]).build();
+    const action = cardBuilder().withCardIdentifier('a').withTypes([TYPES.Action]).build();
     const actionAttack = cardBuilder()
       .withCardIdentifier('b')
-      .withTypes([CARD_TYPES.Action, CARD_TYPES.AttackReaction])
+      .withTypes([TYPES.Action, TYPES.AttackReaction])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([action, actionAttack])
-        .withTypes([CARD_TYPES.Action])
+        .withTypes([TYPES.Action])
         .withTypeFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -233,15 +212,15 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: In exact mode, a card matches when its types exactly equal all selected types', () => {
-    const action = cardBuilder().withCardIdentifier('a').withTypes([CARD_TYPES.Action]).build();
+    const action = cardBuilder().withCardIdentifier('a').withTypes([TYPES.Action]).build();
     const actionAttack = cardBuilder()
       .withCardIdentifier('b')
-      .withTypes([CARD_TYPES.Action, CARD_TYPES.AttackReaction])
+      .withTypes([TYPES.Action, TYPES.AttackReaction])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([action, actionAttack])
-        .withTypes([CARD_TYPES.Action, CARD_TYPES.AttackReaction])
+        .withTypes([TYPES.Action, TYPES.AttackReaction])
         .withTypeFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -250,7 +229,7 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: Excludes cards that do not match the subtype filter', () => {
-    const subtype = Object.values(CARD_SUBTYPES)[0];
+    const subtype = Object.values(SUBTYPES)[0];
     const matching = cardBuilder().withCardIdentifier('a').withSubtypes([subtype]).build();
     const excluded = cardBuilder().withCardIdentifier('b').withSubtypes([]).build();
     const cards = selectVisibleCards(
@@ -264,7 +243,7 @@ describe('Feature: Selecting which card should be visible based on filters and s
     const noSubtype = cardBuilder().withCardIdentifier('a').withSubtypes([]).build();
     const withSubtype = cardBuilder()
       .withCardIdentifier('b')
-      .withSubtypes([CARD_SUBTYPES.Arrow])
+      .withSubtypes([SUBTYPES.Arrow])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
@@ -277,15 +256,15 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: In exact mode, multi-subtype cards are excluded when only one of their subtypes is selected', () => {
-    const arrow = cardBuilder().withCardIdentifier('a').withSubtypes([CARD_SUBTYPES.Arrow]).build();
+    const arrow = cardBuilder().withCardIdentifier('a').withSubtypes([SUBTYPES.Arrow]).build();
     const arrowItem = cardBuilder()
       .withCardIdentifier('b')
-      .withSubtypes([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Item])
+      .withSubtypes([SUBTYPES.Arrow, SUBTYPES.Item])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([arrow, arrowItem])
-        .withSubtypes([CARD_SUBTYPES.Arrow])
+        .withSubtypes([SUBTYPES.Arrow])
         .withSubtypeFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -294,15 +273,15 @@ describe('Feature: Selecting which card should be visible based on filters and s
   });
 
   test('Rule: In exact mode, a card matches when its subtypes exactly equal all selected subtypes', () => {
-    const arrow = cardBuilder().withCardIdentifier('a').withSubtypes([CARD_SUBTYPES.Arrow]).build();
+    const arrow = cardBuilder().withCardIdentifier('a').withSubtypes([SUBTYPES.Arrow]).build();
     const arrowItem = cardBuilder()
       .withCardIdentifier('b')
-      .withSubtypes([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Item])
+      .withSubtypes([SUBTYPES.Arrow, SUBTYPES.Item])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([arrow, arrowItem])
-        .withSubtypes([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Item])
+        .withSubtypes([SUBTYPES.Arrow, SUBTYPES.Item])
         .withSubtypeFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -313,14 +292,11 @@ describe('Feature: Selecting which card should be visible based on filters and s
   test('Rule: Excludes cards that do not match the keyword filter', () => {
     const matching = cardBuilder()
       .withCardIdentifier('a')
-      .withKeywords([CARD_KEYWORDS.Dominate])
+      .withKeywords([KEYWORDS.Dominate])
       .build();
     const excluded = cardBuilder().withCardIdentifier('b').withKeywords([]).build();
     const cards = selectVisibleCards(
-      stateBuilder()
-        .withAllCards([matching, excluded])
-        .withKeywords([CARD_KEYWORDS.Dominate])
-        .build(),
+      stateBuilder().withAllCards([matching, excluded]).withKeywords([KEYWORDS.Dominate]).build(),
     );
     expect(cards).toHaveLength(1);
     expect(cards[0].cardIdentifier).toBe('a');
@@ -330,7 +306,7 @@ describe('Feature: Selecting which card should be visible based on filters and s
     const noKeyword = cardBuilder().withCardIdentifier('a').withKeywords([]).build();
     const withKeyword = cardBuilder()
       .withCardIdentifier('b')
-      .withKeywords([CARD_KEYWORDS.Dominate])
+      .withKeywords([KEYWORDS.Dominate])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
@@ -345,16 +321,16 @@ describe('Feature: Selecting which card should be visible based on filters and s
   test('Rule: In exact mode, multi-keyword cards are excluded when only one of their keywords is selected', () => {
     const dominate = cardBuilder()
       .withCardIdentifier('a')
-      .withKeywords([CARD_KEYWORDS.Dominate])
+      .withKeywords([KEYWORDS.Dominate])
       .build();
     const dominateGoAgain = cardBuilder()
       .withCardIdentifier('b')
-      .withKeywords([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain])
+      .withKeywords([KEYWORDS.Dominate, KEYWORDS.GoAgain])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([dominate, dominateGoAgain])
-        .withKeywords([CARD_KEYWORDS.Dominate])
+        .withKeywords([KEYWORDS.Dominate])
         .withKeywordFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -365,16 +341,16 @@ describe('Feature: Selecting which card should be visible based on filters and s
   test('Rule: In exact mode, a card matches when its keywords exactly equal all selected keywords', () => {
     const dominate = cardBuilder()
       .withCardIdentifier('a')
-      .withKeywords([CARD_KEYWORDS.Dominate])
+      .withKeywords([KEYWORDS.Dominate])
       .build();
     const dominateGoAgain = cardBuilder()
       .withCardIdentifier('b')
-      .withKeywords([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain])
+      .withKeywords([KEYWORDS.Dominate, KEYWORDS.GoAgain])
       .build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([dominate, dominateGoAgain])
-        .withKeywords([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain])
+        .withKeywords([KEYWORDS.Dominate, KEYWORDS.GoAgain])
         .withKeywordFilterMode(FILTER_MODES.EXACT)
         .build(),
     );
@@ -452,16 +428,16 @@ describe('Feature: Printing-level filtering', () => {
   test('Rule: Includes only printings from the selected set', () => {
     const card = cardBuilder().withPrintings([wtrPrinting, promoPrinting]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([card]).withSets([CARD_SETS.WelcomeToRathe]).build(),
+      stateBuilder().withAllCards([card]).withSets([SETS.WelcomeToRathe]).build(),
     );
     expect(cards[0].printings).toHaveLength(1);
-    expect(cards[0].printings[0].set).toBe(CARD_SETS.WelcomeToRathe);
+    expect(cards[0].printings[0].set).toBe(SETS.WelcomeToRathe);
   });
 
   test('Rule: Excludes all printings when the set filter does not match any', () => {
     const card = cardBuilder().withPrintings([wtrPrinting]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([card]).withSets([CARD_SETS.Promos]).build(),
+      stateBuilder().withAllCards([card]).withSets([SETS.Promos]).build(),
     );
     expect(cards).toHaveLength(0);
   });
@@ -470,25 +446,25 @@ describe('Feature: Printing-level filtering', () => {
     const commonPrinting = printingBuilder({
       identifier: 'WTR001',
       print: 'WTR001',
-      rarity: CARD_RARITIES.Common,
+      rarity: RARITIES.Common,
     }).build();
     const rarePrinting = printingBuilder({
       identifier: 'WTR002',
       print: 'WTR002',
-      rarity: CARD_RARITIES.Rare,
+      rarity: RARITIES.Rare,
     }).build();
     const card = cardBuilder().withPrintings([commonPrinting, rarePrinting]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([card]).withRarities([CARD_RARITIES.Rare]).build(),
+      stateBuilder().withAllCards([card]).withRarities([RARITIES.Rare]).build(),
     );
     expect(cards[0].printings).toHaveLength(1);
-    expect(cards[0].printings[0].rarity).toBe(CARD_RARITIES.Rare);
+    expect(cards[0].printings[0].rarity).toBe(RARITIES.Rare);
   });
 
   test('Rule: Excludes all printings when the rarity filter does not match any', () => {
     const card = cardBuilder().withPrintings([wtrPrinting]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([card]).withRarities([CARD_RARITIES.Marvel]).build(),
+      stateBuilder().withAllCards([card]).withRarities([RARITIES.Marvel]).build(),
     );
     expect(cards).toHaveLength(0);
   });
@@ -497,20 +473,20 @@ describe('Feature: Printing-level filtering', () => {
     const rainbowPrinting = printingBuilder({
       identifier: 'WTR001-RF',
       print: 'WTR001-RF',
-      foiling: CARD_FOILINGS.Rainbow,
+      foiling: FOILINGS.Rainbow,
     }).build();
     const card = cardBuilder().withPrintings([wtrPrinting, rainbowPrinting]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([card]).withFoilings([CARD_FOILINGS.Rainbow]).build(),
+      stateBuilder().withAllCards([card]).withFoilings([FOILINGS.Rainbow]).build(),
     );
     expect(cards[0].printings).toHaveLength(1);
-    expect(cards[0].printings[0].foiling).toBe(CARD_FOILINGS.Rainbow);
+    expect(cards[0].printings[0].foiling).toBe(FOILINGS.Rainbow);
   });
 
   test('Rule: Excludes all printings when the foiling filter does not match any', () => {
     const card = cardBuilder().withPrintings([wtrPrinting]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([card]).withFoilings([CARD_FOILINGS.Cold]).build(),
+      stateBuilder().withAllCards([card]).withFoilings([FOILINGS.Cold]).build(),
     );
     expect(cards).toHaveLength(0);
   });
@@ -519,23 +495,23 @@ describe('Feature: Printing-level filtering', () => {
     const back = printingBuilder({
       identifier: 'MST010',
       print: 'MST010-Back',
-      rarity: CARD_RARITIES.Marvel,
+      rarity: RARITIES.Marvel,
       image: 'MST010_BACK',
     }).build();
     const front = printingBuilder({
       identifier: 'MST010',
       print: 'MST010',
-      rarity: CARD_RARITIES.Majestic,
+      rarity: RARITIES.Majestic,
       image: 'MST010',
       backPrinting: back,
     }).build();
     const card = cardBuilder().withPrintings([front]).build();
     const cards = selectVisibleCards(
-      stateBuilder().withAllCards([card]).withRarities([CARD_RARITIES.Marvel]).build(),
+      stateBuilder().withAllCards([card]).withRarities([RARITIES.Marvel]).build(),
     );
     expect(cards).toHaveLength(1);
-    expect(cards[0].printings[0].rarity).toBe(CARD_RARITIES.Majestic);
-    expect(cards[0].printings[0].backPrinting?.rarity).toBe(CARD_RARITIES.Marvel);
+    expect(cards[0].printings[0].rarity).toBe(RARITIES.Majestic);
+    expect(cards[0].printings[0].backPrinting?.rarity).toBe(RARITIES.Marvel);
   });
 });
 
@@ -544,13 +520,13 @@ describe('Feature: Artist filtering', () => {
     const micahPrinting = printingBuilder()
       .withIdentifier('WTR001')
       .withPrint('WTR001')
-      .withSet(CARD_SETS.WelcomeToRathe)
+      .withSet(SETS.WelcomeToRathe)
       .withArtists(['Micah Epstein'])
       .build();
     const otherPrinting = printingBuilder()
       .withIdentifier('WTR002')
       .withPrint('WTR002')
-      .withSet(CARD_SETS.WelcomeToRathe)
+      .withSet(SETS.WelcomeToRathe)
       .withArtists(['Svetlin Velinov'])
       .build();
     const card = cardBuilder().withPrintings([micahPrinting, otherPrinting]).build();
@@ -595,12 +571,12 @@ describe('Feature: Double-sided card pairing', () => {
     const front = printingBuilder({
       identifier: 'HNT264',
       print: 'HNT264-Cold',
-      foiling: CARD_FOILINGS.Cold,
+      foiling: FOILINGS.Cold,
     }).build();
     const back = printingBuilder({
       identifier: 'HNT264',
       print: 'HNT264-Cold-Full Art-Back',
-      foiling: CARD_FOILINGS.Cold,
+      foiling: FOILINGS.Cold,
     }).build();
     const card = cardBuilder().withPrintings([front, back]).build();
     const cards = selectVisibleCards(stateBuilder().withAllCards([card]).build());
@@ -612,12 +588,12 @@ describe('Feature: Double-sided card pairing', () => {
     const back = printingBuilder({
       identifier: 'HNT264',
       print: 'HNT264-Cold-Full Art-Back',
-      foiling: CARD_FOILINGS.Cold,
+      foiling: FOILINGS.Cold,
     }).build();
     const front = printingBuilder({
       identifier: 'HNT264',
       print: 'HNT264-Cold',
-      foiling: CARD_FOILINGS.Cold,
+      foiling: FOILINGS.Cold,
       backPrinting: back,
     }).build();
     const card = cardBuilder().withPrintings([front, back]).build();
@@ -630,7 +606,7 @@ describe('Feature: Double-sided card pairing', () => {
       identifier: 'MST002',
       print: 'MST002',
       foiling: undefined,
-      rarity: CARD_RARITIES.Token,
+      rarity: RARITIES.Token,
     }).build();
     const card = cardBuilder().withPrintings([tokenFront]).build();
     const cards = selectVisibleCards(stateBuilder().withAllCards([card]).build());
@@ -651,70 +627,70 @@ describe('Feature: Group printings', () => {
     const coldFoilPrinting = printingBuilder()
       .withIdentifier('WTR001')
       .withPrint('WTR001-Cold')
-      .withSet(CARD_SETS.WelcomeToRathe)
-      .withFoiling(CARD_FOILINGS.Cold)
+      .withSet(SETS.WelcomeToRathe)
+      .withFoiling(FOILINGS.Cold)
       .build();
     const rainbowFoilPrinting = printingBuilder()
       .withIdentifier('ARC001')
       .withPrint('ARC001-Rainbow')
-      .withSet(CARD_SETS.ArcaneRising)
-      .withFoiling(CARD_FOILINGS.Rainbow)
+      .withSet(SETS.ArcaneRising)
+      .withFoiling(FOILINGS.Rainbow)
       .build();
     const card = cardBuilder().withPrintings([coldFoilPrinting, rainbowFoilPrinting]).build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([card])
-        .withFoilings([CARD_FOILINGS.Cold, CARD_FOILINGS.Rainbow])
+        .withFoilings([FOILINGS.Cold, FOILINGS.Rainbow])
         .withGroupPrintings(true)
         .build(),
     );
     expect(cards[0].printings).toHaveLength(1);
-    expect(cards[0].printings[0].foiling).toBe(CARD_FOILINGS.Rainbow);
+    expect(cards[0].printings[0].foiling).toBe(FOILINGS.Rainbow);
   });
 
   test('Rule: When multiple rarities are selected, the printing with the lowest rarity is shown', () => {
     const majesticPrinting = printingBuilder()
       .withIdentifier('WTR001')
       .withPrint('WTR001')
-      .withSet(CARD_SETS.WelcomeToRathe)
-      .withRarity(CARD_RARITIES.Majestic)
+      .withSet(SETS.WelcomeToRathe)
+      .withRarity(RARITIES.Majestic)
       .build();
     const commonPrinting = printingBuilder()
       .withIdentifier('ARC001')
       .withPrint('ARC001')
-      .withSet(CARD_SETS.ArcaneRising)
-      .withRarity(CARD_RARITIES.Common)
+      .withSet(SETS.ArcaneRising)
+      .withRarity(RARITIES.Common)
       .build();
     const card = cardBuilder().withPrintings([majesticPrinting, commonPrinting]).build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([card])
-        .withRarities([CARD_RARITIES.Majestic, CARD_RARITIES.Common])
+        .withRarities([RARITIES.Majestic, RARITIES.Common])
         .withGroupPrintings(true)
         .build(),
     );
     expect(cards[0].printings).toHaveLength(1);
-    expect(cards[0].printings[0].rarity).toBe(CARD_RARITIES.Common);
+    expect(cards[0].printings[0].rarity).toBe(RARITIES.Common);
   });
 
   test('Rule: When a single foiling is selected and multiple printings match, the oldest matching printing is shown', () => {
     const oldColdPrinting = printingBuilder()
       .withIdentifier('WTR001')
       .withPrint('WTR001-Cold')
-      .withSet(CARD_SETS.WelcomeToRathe)
-      .withFoiling(CARD_FOILINGS.Cold)
+      .withSet(SETS.WelcomeToRathe)
+      .withFoiling(FOILINGS.Cold)
       .build();
     const newColdPrinting = printingBuilder()
       .withIdentifier('ARC001')
       .withPrint('ARC001-Cold')
-      .withSet(CARD_SETS.ArcaneRising)
-      .withFoiling(CARD_FOILINGS.Cold)
+      .withSet(SETS.ArcaneRising)
+      .withFoiling(FOILINGS.Cold)
       .build();
     const card = cardBuilder().withPrintings([newColdPrinting, oldColdPrinting]).build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([card])
-        .withFoilings([CARD_FOILINGS.Cold])
+        .withFoilings([FOILINGS.Cold])
         .withGroupPrintings(true)
         .build(),
     );
@@ -726,19 +702,19 @@ describe('Feature: Group printings', () => {
     const back = printingBuilder({
       identifier: 'WTR001',
       print: 'WTR001-Cold-Back',
-      foiling: CARD_FOILINGS.Cold,
+      foiling: FOILINGS.Cold,
     }).build();
     const front = printingBuilder({
       identifier: 'WTR001',
       print: 'WTR001',
-      foiling: CARD_FOILINGS.Regular,
+      foiling: FOILINGS.Regular,
       backPrinting: back,
     }).build();
     const card = cardBuilder().withPrintings([front, back]).build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([card])
-        .withFoilings([CARD_FOILINGS.Cold])
+        .withFoilings([FOILINGS.Cold])
         .withGroupPrintings(true)
         .build(),
     );
@@ -749,14 +725,14 @@ describe('Feature: Group printings', () => {
     const arcPrinting = printingBuilder()
       .withIdentifier('ARC001')
       .withPrint('ARC001')
-      .withSet(CARD_SETS.ArcaneRising)
+      .withSet(SETS.ArcaneRising)
       .build();
     const card = cardBuilder().withPrintings([arcPrinting, wtrPrinting]).build();
     const cards = selectVisibleCards(
       stateBuilder().withAllCards([card]).withGroupPrintings(true).build(),
     );
     expect(cards[0].printings).toHaveLength(1);
-    expect(cards[0].printings[0].set).toBe(CARD_SETS.WelcomeToRathe);
+    expect(cards[0].printings[0].set).toBe(SETS.WelcomeToRathe);
   });
 });
 
@@ -766,7 +742,7 @@ describe('Feature: Sorting', () => {
       .withCardIdentifier('wtr-card')
       .withPrintings([
         printingBuilder({
-          set: CARD_SETS.WelcomeToRathe,
+          set: SETS.WelcomeToRathe,
           identifier: 'WTR001',
           print: 'WTR001',
         }).build(),
@@ -775,7 +751,7 @@ describe('Feature: Sorting', () => {
     const promoCard = cardBuilder()
       .withCardIdentifier('promo-card')
       .withPrintings([
-        printingBuilder({ set: CARD_SETS.Promos, identifier: 'LGS001', print: 'LGS001' }).build(),
+        printingBuilder({ set: SETS.Promos, identifier: 'LGS001', print: 'LGS001' }).build(),
       ])
       .build();
     const result = selectCardWithActivePrinting(
@@ -790,7 +766,7 @@ describe('Feature: Sorting', () => {
       .withCardIdentifier('wtr-card')
       .withPrintings([
         printingBuilder({
-          set: CARD_SETS.WelcomeToRathe,
+          set: SETS.WelcomeToRathe,
           identifier: 'WTR001',
           print: 'WTR001',
         }).build(),
@@ -799,7 +775,7 @@ describe('Feature: Sorting', () => {
     const promoCard = cardBuilder()
       .withCardIdentifier('promo-card')
       .withPrintings([
-        printingBuilder({ set: CARD_SETS.Promos, identifier: 'LGS001', print: 'LGS001' }).build(),
+        printingBuilder({ set: SETS.Promos, identifier: 'LGS001', print: 'LGS001' }).build(),
       ])
       .build();
 
@@ -814,12 +790,12 @@ describe('Feature: Sorting', () => {
   test('Rule: sorts later sets first when sort order is set DESC', () => {
     const welcomeToRathePrinting = cardBuilder()
       .withCardIdentifier('alpha-rampage-red')
-      .withPrintings([printingBuilder().withSet(CARD_SETS.WelcomeToRathe).build()])
+      .withPrintings([printingBuilder().withSet(SETS.WelcomeToRathe).build()])
       .build();
 
     const arcaneRisingPrinting = cardBuilder()
       .withCardIdentifier('absorb-in-aether-red')
-      .withPrintings([printingBuilder().withSet(CARD_SETS.ArcaneRising).build()])
+      .withPrintings([printingBuilder().withSet(SETS.ArcaneRising).build()])
       .build();
 
     const result = selectCardWithActivePrinting(
@@ -875,12 +851,12 @@ describe('Feature: Sorting', () => {
 
   test('Rule: Sorts printings within the same card by identifier', () => {
     const printingA = printingBuilder({
-      set: CARD_SETS.WelcomeToRathe,
+      set: SETS.WelcomeToRathe,
       identifier: 'WTR001',
       print: 'WTR001-A',
     }).build();
     const printingB = printingBuilder({
-      set: CARD_SETS.WelcomeToRathe,
+      set: SETS.WelcomeToRathe,
       identifier: 'WTR002',
       print: 'WTR002-B',
     }).build();
@@ -896,7 +872,7 @@ describe('Feature: Card printings grid ordering', () => {
     const arcPrinting = printingBuilder()
       .withIdentifier('ARC001')
       .withPrint('ARC001')
-      .withSet(CARD_SETS.ArcaneRising)
+      .withSet(SETS.ArcaneRising)
       .build();
     const ira = cardBuilder()
       .withCardIdentifier('ira')
@@ -909,10 +885,10 @@ describe('Feature: Card printings grid ordering', () => {
     );
 
     expect(result[0].card.cardIdentifier).toBe('ira');
-    expect(result[0].printing.set).toBe(CARD_SETS.WelcomeToRathe);
+    expect(result[0].printing.set).toBe(SETS.WelcomeToRathe);
     expect(result[1].card.cardIdentifier).toBe('other');
-    expect(result[1].printing.set).toBe(CARD_SETS.WelcomeToRathe);
+    expect(result[1].printing.set).toBe(SETS.WelcomeToRathe);
     expect(result[2].card.cardIdentifier).toBe('ira');
-    expect(result[2].printing.set).toBe(CARD_SETS.ArcaneRising);
+    expect(result[2].printing.set).toBe(SETS.ArcaneRising);
   });
 });

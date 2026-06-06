@@ -1,14 +1,14 @@
 import { expect } from 'vitest';
 
 import type {
-  CardClassT,
-  CardFoilingT,
-  CardKeywordT,
-  CardRarityT,
-  CardSetT,
-  CardSubtypeT,
-  CardTalentT,
-  CardTypeT,
+  ClassT,
+  FoilingT,
+  KeywordT,
+  RarityT,
+  SetT,
+  SubtypeT,
+  TalentT,
+  TypeT,
 } from '@codex/core';
 
 import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
@@ -48,7 +48,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store = createTestStore({}, stateBuilderProvider.getState());
   };
 
-  const whenAddingClassFilter = (classes: CardClassT[]) => {
+  const whenAddingClassFilter = (classes: ClassT[]) => {
     initStore();
     store.dispatch(setClasses(classes));
   };
@@ -58,7 +58,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setClassFilterMode(mode));
   };
 
-  const whenAddingTalentFilter = (talents: CardTalentT[]) => {
+  const whenAddingTalentFilter = (talents: TalentT[]) => {
     initStore();
     store.dispatch(setTalents(talents));
   };
@@ -68,7 +68,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setTalentFilterMode(mode));
   };
 
-  const whenAddingTypeFilter = (types: CardTypeT[]) => {
+  const whenAddingTypeFilter = (types: TypeT[]) => {
     initStore();
     store.dispatch(setTypes(types));
   };
@@ -78,7 +78,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setTypeFilterMode(mode));
   };
 
-  const whenAddingSubtypeFilter = (subtypes: CardSubtypeT[]) => {
+  const whenAddingSubtypeFilter = (subtypes: SubtypeT[]) => {
     initStore();
     store.dispatch(setSubtypes(subtypes));
   };
@@ -88,7 +88,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setSubtypeFilterMode(mode));
   };
 
-  const whenAddingKeywordFilter = (keywords: CardKeywordT[]) => {
+  const whenAddingKeywordFilter = (keywords: KeywordT[]) => {
     initStore();
     store.dispatch(setKeywords(keywords));
   };
@@ -98,17 +98,17 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setKeywordFilterMode(mode));
   };
 
-  const whenAddingSetFilter = (sets: CardSetT[]) => {
+  const whenAddingSetFilter = (sets: SetT[]) => {
     initStore();
     store.dispatch(setSets(sets));
   };
 
-  const whenAddingRarityFilter = (rarities: CardRarityT[]) => {
+  const whenAddingRarityFilter = (rarities: RarityT[]) => {
     initStore();
     store.dispatch(setRarities(rarities));
   };
 
-  const whenAddingFoilingFilter = (foilings: CardFoilingT[]) => {
+  const whenAddingFoilingFilter = (foilings: FoilingT[]) => {
     initStore();
     store.dispatch(setFoilings(foilings));
   };

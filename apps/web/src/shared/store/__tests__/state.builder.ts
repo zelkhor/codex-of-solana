@@ -2,14 +2,14 @@ import { type ActionCreatorWithPayload, createAction, createReducer } from '@red
 
 import type {
   Card,
-  CardClassT,
-  CardFoilingT,
-  CardKeywordT,
-  CardRarityT,
-  CardSetT,
-  CardSubtypeT,
-  CardTalentT,
-  CardTypeT,
+  ClassT,
+  FoilingT,
+  KeywordT,
+  RarityT,
+  SetT,
+  SubtypeT,
+  TalentT,
+  TypeT,
 } from '@codex/core';
 
 import type { RootState } from '@/shared/store';
@@ -22,18 +22,18 @@ const initialState: RootState = rootReducer(undefined, { type: '@@INIT' });
 
 const withAllCards = createAction<Card[]>('withAllCards');
 const withSearchResults = createAction<Card[]>('withSearchResults');
-const withClasses = createAction<CardClassT[]>('withClasses');
+const withClasses = createAction<ClassT[]>('withClasses');
 const withClassFilterMode = createAction<FilterModeT>('withClassFilterMode');
-const withTalents = createAction<CardTalentT[]>('withTalents');
-const withTypes = createAction<CardTypeT[]>('withTypes');
+const withTalents = createAction<TalentT[]>('withTalents');
+const withTypes = createAction<TypeT[]>('withTypes');
 const withTypeFilterMode = createAction<FilterModeT>('withTypeFilterMode');
-const withSubtypes = createAction<CardSubtypeT[]>('withSubtypes');
+const withSubtypes = createAction<SubtypeT[]>('withSubtypes');
 const withSubtypeFilterMode = createAction<FilterModeT>('withSubtypeFilterMode');
-const withKeywords = createAction<CardKeywordT[]>('withKeywords');
+const withKeywords = createAction<KeywordT[]>('withKeywords');
 const withKeywordFilterMode = createAction<FilterModeT>('withKeywordFilterMode');
-const withSets = createAction<CardSetT[]>('withSets');
-const withRarities = createAction<CardRarityT[]>('withRarities');
-const withFoilings = createAction<CardFoilingT[]>('withFoilings');
+const withSets = createAction<SetT[]>('withSets');
+const withRarities = createAction<RarityT[]>('withRarities');
+const withFoilings = createAction<FoilingT[]>('withFoilings');
 const withArtists = createAction<string[]>('withArtists');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');

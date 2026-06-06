@@ -1,10 +1,8 @@
-import {
-  CARD_EDITIONS,
-  CARD_FOILINGS,
-  CARD_RARITIES,
-  CARD_SETS,
-  type Printing,
-} from '../../card-catalog/domain/card';
+import type { Printing } from '../../card-catalog/domain/card';
+import { EDITIONS } from '../../shared/game/edition';
+import { FOILINGS } from '../../shared/game/foiling';
+import { RARITIES } from '../../shared/game/rarity';
+import { SETS } from '../../shared/game/set';
 
 type PrintingBuilderT = {
   withIdentifier: (identifier: string) => PrintingBuilderT;
@@ -22,10 +20,10 @@ type PrintingBuilderT = {
 export const printingBuilder = ({
   identifier = 'WTR001',
   print = 'WTR001-First',
-  set = CARD_SETS.WelcomeToRathe,
-  rarity = CARD_RARITIES.Common,
-  edition = CARD_EDITIONS.First,
-  foiling = CARD_FOILINGS.Regular,
+  set = SETS.WelcomeToRathe,
+  rarity = RARITIES.Common,
+  edition = EDITIONS.First,
+  foiling = FOILINGS.Regular,
   image = 'WTR001',
   backPrinting = null,
   artists = ['Test Artist'],

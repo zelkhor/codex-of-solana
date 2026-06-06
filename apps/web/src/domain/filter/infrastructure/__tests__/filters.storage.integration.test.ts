@@ -1,15 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import {
-  CARD_CLASSES,
-  CARD_FOILINGS,
-  CARD_KEYWORDS,
-  CARD_RARITIES,
-  CARD_SETS,
-  CARD_SUBTYPES,
-  CARD_TALENTS,
-  CARD_TYPES,
-} from '@codex/core';
+import { CLASSES, FOILINGS, KEYWORDS, RARITIES, SETS, SUBTYPES, TALENTS, TYPES } from '@codex/core';
 
 import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
@@ -23,19 +14,19 @@ import {
 } from '@/domain/filter/infrastructure/filters.storage.ts';
 
 const fullState = stateBuilder()
-  .withClasses([CARD_CLASSES.Ninja])
+  .withClasses([CLASSES.Ninja])
   .withClassFilterMode(FILTER_MODES.ANY)
-  .withTalents([CARD_TALENTS.Draconic])
+  .withTalents([TALENTS.Draconic])
   .withTalentFilterMode(FILTER_MODES.ANY)
-  .withTypes([CARD_TYPES.Action])
+  .withTypes([TYPES.Action])
   .withTypeFilterMode(FILTER_MODES.ANY)
-  .withSubtypes([CARD_SUBTYPES.Attack])
+  .withSubtypes([SUBTYPES.Attack])
   .withSubtypeFilterMode(FILTER_MODES.ANY)
-  .withKeywords([CARD_KEYWORDS.Amp])
+  .withKeywords([KEYWORDS.Amp])
   .withKeywordFilterMode(FILTER_MODES.ANY)
-  .withSets([CARD_SETS.WelcomeToRathe])
-  .withRarities([CARD_RARITIES.Promo])
-  .withFoilings([CARD_FOILINGS.Gold])
+  .withSets([SETS.WelcomeToRathe])
+  .withRarities([RARITIES.Promo])
+  .withFoilings([FOILINGS.Gold])
   .withArtists(['Micah Epstein'])
   .withSearchQuery('ninja')
   .withSortOrder(SORT_ORDER.SET_ASC)

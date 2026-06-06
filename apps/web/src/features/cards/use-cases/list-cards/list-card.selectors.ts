@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { Card, CardFoilingT, CardRarityT, CardSetT, Printing } from '@codex/core';
+import type { Card, FoilingT, Printing, RarityT, SetT } from '@codex/core';
 import { FOILING_ORDER, RARITY_ORDER, SET_ORDER } from '@codex/core';
 
 import {
@@ -143,7 +143,7 @@ const matchesNumericFilter = (cardValue: number | null, filter: NumericCompariso
 
 // ── Sorting ──────────────────────────────────────────────────────────────────
 
-const setIdx = (setName: CardSetT): number => {
+const setIdx = (setName: SetT): number => {
   const idx = SET_ORDER.indexOf(setName);
   return idx === -1 ? Infinity : idx;
 };
@@ -155,20 +155,20 @@ const compareBySetThenIdentifier = (a: Printing, b: Printing): number => {
 
 // ── Grouping ─────────────────────────────────────────────────────────────────
 
-const foilingIdx = (foiling: CardFoilingT): number => {
+const foilingIdx = (foiling: FoilingT): number => {
   const idx = FOILING_ORDER.indexOf(foiling);
   return idx === -1 ? Infinity : idx;
 };
 
-const rarityIdx = (rarity: CardRarityT): number => {
+const rarityIdx = (rarity: RarityT): number => {
   const idx = RARITY_ORDER.indexOf(rarity);
   return idx === -1 ? Infinity : idx;
 };
 
 const pickGroupedPrinting = (
   printings: Printing[],
-  foilings: CardFoilingT[],
-  rarities: CardRarityT[],
+  foilings: FoilingT[],
+  rarities: RarityT[],
 ): Printing =>
   [...printings].sort((a, b) => {
     if (foilings.length > 0) {

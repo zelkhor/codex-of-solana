@@ -1,5 +1,5 @@
-import type { CardRarityT } from '@codex/core';
-import { CARD_RARITIES } from '@codex/core';
+import type { RarityT } from '@codex/core';
+import { RARITIES } from '@codex/core';
 
 import attackImg from '@/shared/assets/attack.png';
 import defenseImg from '@/shared/assets/defense.png';
@@ -38,19 +38,19 @@ const CircleLetter = ({ letter, fill }: { letter: string; fill: string }) => (
   </svg>
 );
 
-export const RarityIcon = ({ rarity }: { rarity: CardRarityT }) => {
+export const RarityIcon = ({ rarity }: { rarity: RarityT }) => {
   switch (rarity) {
-    case CARD_RARITIES.Basic:
+    case RARITIES.Basic:
       return <CircleLetter letter="B" fill="#a6acae" />;
-    case CARD_RARITIES.Token:
+    case RARITIES.Token:
       return <CircleLetter letter="T" fill="#a6acae" />;
-    case CARD_RARITIES.Common:
+    case RARITIES.Common:
       return <CircleLetter letter="C" fill="#a6acae" />;
-    case CARD_RARITIES.Rare:
+    case RARITIES.Rare:
       return <CircleLetter letter="R" fill="#019ee2" />;
-    case CARD_RARITIES.SuperRare:
+    case RARITIES.SuperRare:
       return <CircleLetter letter="S" fill="#7e4796" />;
-    case CARD_RARITIES.Majestic:
+    case RARITIES.Majestic:
       return (
         <svg width="13" height="13" viewBox="0 0 13 13">
           <circle cx="6.5" cy="6.5" r="6" fill="#dc2626" />
@@ -67,21 +67,21 @@ export const RarityIcon = ({ rarity }: { rarity: CardRarityT }) => {
           </text>
         </svg>
       );
-    case CARD_RARITIES.Legendary:
+    case RARITIES.Legendary:
       return <CircleLetter letter="L" fill="#cf9f56" />;
-    case CARD_RARITIES.Fabled:
+    case RARITIES.Fabled:
       return (
         <svg width="13" height="13" viewBox="0 0 13 13">
           <path d="M6.5 0.5 L10 6.5 L6.5 12.5 L3 6.5 Z" fill="#cf9f56" />
         </svg>
       );
-    case CARD_RARITIES.Marvel:
+    case RARITIES.Marvel:
       return (
         <svg width="13" height="13" viewBox="0 0 13 13">
           <path d="M6.5 1.5 L12 11.5 L1 11.5 Z" fill="#7e4796" />
         </svg>
       );
-    case CARD_RARITIES.Promo:
+    case RARITIES.Promo:
       return <CircleLetter letter="P" fill="#28af38" />;
     default:
       return null;

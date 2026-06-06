@@ -3,22 +3,22 @@ import type React from 'react';
 import { RotateCcw, X } from 'lucide-react';
 
 import {
-  CARD_CLASSES,
-  CARD_FOILINGS,
-  CARD_KEYWORDS,
-  CARD_RARITIES,
-  CARD_SUBTYPES,
-  CARD_TALENTS,
-  CARD_TYPES,
-  type CardClassT,
-  type CardFoilingT,
-  type CardKeywordT,
-  type CardRarityT,
-  type CardSetT,
-  type CardSubtypeT,
-  type CardTalentT,
-  type CardTypeT,
+  CLASSES,
+  type ClassT,
+  FOILINGS,
+  type FoilingT,
+  KEYWORDS,
+  type KeywordT,
+  RARITIES,
+  type RarityT,
   SET_GROUPS,
+  SUBTYPES,
+  type SetT,
+  type SubtypeT,
+  TALENTS,
+  TYPES,
+  type TalentT,
+  type TypeT,
 } from '@codex/core';
 
 import { cn } from '@/shared/lib/utils.ts';
@@ -101,9 +101,9 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
               />
             </div>
             <MultiSelect
-              options={Object.values(CARD_CLASSES)}
+              options={Object.values(CLASSES)}
               selected={vm.filters.classes}
-              onChange={(values) => vm.setClasses(values as CardClassT[])}
+              onChange={(values) => vm.setClasses(values as ClassT[])}
               placeholder="e.g. Assassin, Brute, Warrior, ..."
             />
           </div>
@@ -118,9 +118,9 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
               />
             </div>
             <MultiSelect
-              options={Object.values(CARD_TALENTS)}
+              options={Object.values(TALENTS)}
               selected={vm.filters.talents}
-              onChange={(values) => vm.setTalents(values as CardTalentT[])}
+              onChange={(values) => vm.setTalents(values as TalentT[])}
               placeholder="e.g. Earth, Draconic, Mystic, ..."
             />
           </div>
@@ -135,9 +135,9 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
               />
             </div>
             <MultiSelect
-              options={Object.values(CARD_TYPES)}
+              options={Object.values(TYPES)}
               selected={vm.filters.types}
-              onChange={(values) => vm.setTypes(values as CardTypeT[])}
+              onChange={(values) => vm.setTypes(values as TypeT[])}
               placeholder="e.g. Action, Hero, Weapon, ..."
             />
           </div>
@@ -152,9 +152,9 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
               />
             </div>
             <MultiSelect
-              options={Object.values(CARD_SUBTYPES)}
+              options={Object.values(SUBTYPES)}
               selected={vm.filters.subtypes}
-              onChange={(values) => vm.setSubtypes(values as CardSubtypeT[])}
+              onChange={(values) => vm.setSubtypes(values as SubtypeT[])}
               placeholder="e.g. Arrow, Item, Trap, ..."
             />
           </div>
@@ -169,9 +169,9 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
               />
             </div>
             <MultiSelect
-              options={Object.values(CARD_KEYWORDS)}
+              options={Object.values(KEYWORDS)}
               selected={vm.filters.keywords}
-              onChange={(values) => vm.setKeywords(values as CardKeywordT[])}
+              onChange={(values) => vm.setKeywords(values as KeywordT[])}
               placeholder="e.g. Dominate, Go again, ..."
             />
           </div>
@@ -180,23 +180,23 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
           <MultiSelect
             groups={SET_GROUPS.map((g) => ({ label: g.group, options: g.sets }))}
             selected={vm.filters.sets}
-            onChange={(values) => vm.setSets(values as CardSetT[])}
+            onChange={(values) => vm.setSets(values as SetT[])}
             placeholder="e.g. Dynasty, Armory Deck: Kayo, ..."
           />
         </FilterRow>
         <FilterRow label="Rarity">
           <MultiSelect
-            options={Object.values(CARD_RARITIES)}
+            options={Object.values(RARITIES)}
             selected={vm.filters.rarities}
-            onChange={(values) => vm.setRarities(values as CardRarityT[])}
+            onChange={(values) => vm.setRarities(values as RarityT[])}
             placeholder="e.g. Promo, Marvel, Rare, ..."
           />
         </FilterRow>
         <FilterRow label="Foiling">
           <MultiSelect
-            options={Object.values(CARD_FOILINGS)}
+            options={Object.values(FOILINGS)}
             selected={vm.filters.foilings}
-            onChange={(values) => vm.setFoilings(values as CardFoilingT[])}
+            onChange={(values) => vm.setFoilings(values as FoilingT[])}
             placeholder="e.g. Regular, Cold Foil, Rainbow Foil, ..."
           />
         </FilterRow>

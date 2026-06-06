@@ -1,10 +1,10 @@
 import { useId, useRef } from 'react';
 
-import type { CardFoilingT } from '@codex/core';
-import { CARD_FOILINGS } from '@codex/core';
+import type { FoilingT } from '@codex/core';
+import { FOILINGS } from '@codex/core';
 
 interface FoilingBadgeProps {
-  foiling: CardFoilingT;
+  foiling: FoilingT;
 }
 
 export const FoilingBadge = ({ foiling }: FoilingBadgeProps) => {
@@ -17,10 +17,10 @@ export const FoilingBadge = ({ foiling }: FoilingBadgeProps) => {
   const coldShineId = `${id}-cold-shine`;
   const clipId = `${id}-clip`;
 
-  if (foiling === CARD_FOILINGS.Regular) return <></>;
+  if (foiling === FOILINGS.Regular) return <></>;
 
-  const isRainbow = foiling === CARD_FOILINGS.Rainbow;
-  const isCold = foiling === CARD_FOILINGS.Cold;
+  const isRainbow = foiling === FOILINGS.Rainbow;
+  const isCold = foiling === FOILINGS.Cold;
   const fillId = isRainbow ? rainbowId : isCold ? coldId : goldId;
 
   return (

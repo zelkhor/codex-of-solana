@@ -1,14 +1,14 @@
 import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import {
-  type CardClassT,
-  type CardFoilingT,
-  type CardKeywordT,
-  type CardRarityT,
-  type CardSetT,
-  type CardSubtypeT,
-  type CardTalentT,
-  type CardTypeT,
+  type ClassT,
+  type FoilingT,
+  type KeywordT,
+  type RarityT,
+  type SetT,
+  type SubtypeT,
+  type TalentT,
+  type TypeT,
 } from '@codex/core';
 
 import {
@@ -21,19 +21,19 @@ import { SORT_ORDER, type SortOrderT } from '@/shared/types/sort-order.ts';
 const emptyNumericFilter: NumericComparisonT = { operator: COMPARISON_OPERATORS.GTE, value: null };
 
 export interface FiltersState {
-  classes: CardClassT[];
+  classes: ClassT[];
   classFilterMode: FilterModeT;
-  talents: CardTalentT[];
+  talents: TalentT[];
   talentFilterMode: FilterModeT;
-  types: CardTypeT[];
+  types: TypeT[];
   typeFilterMode: FilterModeT;
-  subtypes: CardSubtypeT[];
+  subtypes: SubtypeT[];
   subtypeFilterMode: FilterModeT;
-  keywords: CardKeywordT[];
+  keywords: KeywordT[];
   keywordFilterMode: FilterModeT;
-  sets: CardSetT[];
-  rarities: CardRarityT[];
-  foilings: CardFoilingT[];
+  sets: SetT[];
+  rarities: RarityT[];
+  foilings: FoilingT[];
   artists: string[];
   searchQuery: string;
   sortOrder: SortOrderT;
@@ -72,43 +72,43 @@ export const filtersSlice = createSlice({
   name: 'filters',
   initialState: initialFiltersState,
   reducers: {
-    setClasses(state, action: PayloadAction<CardClassT[]>) {
+    setClasses(state, action: PayloadAction<ClassT[]>) {
       state.classes = action.payload;
     },
     setClassFilterMode(state, action: PayloadAction<FilterModeT>) {
       state.classFilterMode = action.payload;
     },
-    setTalents(state, action: PayloadAction<CardTalentT[]>) {
+    setTalents(state, action: PayloadAction<TalentT[]>) {
       state.talents = action.payload;
     },
     setTalentFilterMode(state, action: PayloadAction<FilterModeT>) {
       state.talentFilterMode = action.payload;
     },
-    setTypes(state, action: PayloadAction<CardTypeT[]>) {
+    setTypes(state, action: PayloadAction<TypeT[]>) {
       state.types = action.payload;
     },
     setTypeFilterMode(state, action: PayloadAction<FilterModeT>) {
       state.typeFilterMode = action.payload;
     },
-    setSubtypes(state, action: PayloadAction<CardSubtypeT[]>) {
+    setSubtypes(state, action: PayloadAction<SubtypeT[]>) {
       state.subtypes = action.payload;
     },
     setSubtypeFilterMode(state, action: PayloadAction<FilterModeT>) {
       state.subtypeFilterMode = action.payload;
     },
-    setKeywords(state, action: PayloadAction<CardKeywordT[]>) {
+    setKeywords(state, action: PayloadAction<KeywordT[]>) {
       state.keywords = action.payload;
     },
     setKeywordFilterMode(state, action: PayloadAction<FilterModeT>) {
       state.keywordFilterMode = action.payload;
     },
-    setSets(state, action: PayloadAction<CardSetT[]>) {
+    setSets(state, action: PayloadAction<SetT[]>) {
       state.sets = action.payload;
     },
-    setRarities(state, action: PayloadAction<CardRarityT[]>) {
+    setRarities(state, action: PayloadAction<RarityT[]>) {
       state.rarities = action.payload;
     },
-    setFoilings(state, action: PayloadAction<CardFoilingT[]>) {
+    setFoilings(state, action: PayloadAction<FoilingT[]>) {
       state.foilings = action.payload;
     },
     setArtists(state, action: PayloadAction<string[]>) {

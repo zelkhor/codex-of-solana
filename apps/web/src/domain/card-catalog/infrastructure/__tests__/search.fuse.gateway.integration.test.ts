@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 
-import { CARD_SUBTYPES, cardBuilder } from '@codex/core';
+import { SUBTYPES, cardBuilder } from '@codex/core';
 
 import { FuseSearchGateway } from '@/domain/card-catalog/infrastructure/search.fuse.gateway.ts';
 
@@ -42,12 +42,12 @@ describe('Integration: FuseSearchGateway', () => {
     const matchedByNameAndSubtype = cardBuilder()
       .withCardIdentifier('endless-arrow-red')
       .withName('Endless arrow')
-      .withSubtypes([CARD_SUBTYPES.Arrow])
+      .withSubtypes([SUBTYPES.Arrow])
       .build();
     const matchedBySubtypeOnly = cardBuilder()
       .withCardIdentifier('red-in-the-ledger-red')
       .withName('Red in the ledger')
-      .withSubtypes([CARD_SUBTYPES.Arrow])
+      .withSubtypes([SUBTYPES.Arrow])
       .build();
 
     gateway.index([matchedByNameAndSubtype, matchedBySubtypeOnly]);

@@ -1,13 +1,11 @@
 import { cardBuilder } from '../../../__tests__/builders/card.builder';
 import { printingBuilder } from '../../../__tests__/builders/printing.builder';
-import {
-  CARD_CLASSES,
-  CARD_EDITIONS,
-  CARD_PITCHES,
-  CARD_RARITIES,
-  CARD_SETS,
-  CARD_TYPES,
-} from '../../domain/card';
+import { CLASSES } from '../../../shared/game/class';
+import { EDITIONS } from '../../../shared/game/edition';
+import { PITCH_VALUES } from '../../../shared/game/pitch';
+import { RARITIES } from '../../../shared/game/rarity';
+import { SETS } from '../../../shared/game/set';
+import { TYPES } from '../../../shared/game/type';
 import { IMAGE_BASE } from '../card-catalog.fab.repository';
 import {
   type FabRepositoryFixture,
@@ -27,9 +25,9 @@ describe('Integration: CardCatalogFabRepository', () => {
     const expectedPrinting = printingBuilder()
       .withIdentifier('ARC124')
       .withPrint('ARC124-First')
-      .withSet(CARD_SETS.ArcaneRising)
-      .withRarity(CARD_RARITIES.Rare)
-      .withEdition(CARD_EDITIONS.First)
+      .withSet(SETS.ArcaneRising)
+      .withRarity(RARITIES.Rare)
+      .withEdition(EDITIONS.First)
       .withArtists(['Daria Cherkashina'])
       .withImage(`${IMAGE_BASE}ARC124.webp`)
       .build();
@@ -37,15 +35,15 @@ describe('Integration: CardCatalogFabRepository', () => {
     const expectedCard = cardBuilder()
       .withCardIdentifier('absorb-in-aether-yellow')
       .withName('Absorb in Aether')
-      .withPitch(CARD_PITCHES.Yellow)
-      .withClasses([CARD_CLASSES.Wizard])
+      .withPitch(PITCH_VALUES.Yellow)
+      .withClasses([CLASSES.Wizard])
       .withTalents([])
-      .withTypes([CARD_TYPES.DefenseReaction])
+      .withTypes([TYPES.DefenseReaction])
       .withSubtypes([])
       .withKeywords([])
-      .withRarity(CARD_RARITIES.Rare)
-      .withRarities([CARD_RARITIES.Rare])
-      .withSets([CARD_SETS.ArcaneRising])
+      .withRarity(RARITIES.Rare)
+      .withRarities([RARITIES.Rare])
+      .withSets([SETS.ArcaneRising])
       .withTypeText('Wizard Defense Reaction')
       .withCost(1)
       .withAttack(null)
@@ -92,8 +90,8 @@ describe('Integration: CardCatalogFabRepository', () => {
       printingBuilder()
         .withIdentifier('DTD007')
         .withPrint('DTD007')
-        .withSet(CARD_SETS.DuskTillDawn)
-        .withRarity(CARD_RARITIES.Majestic)
+        .withSet(SETS.DuskTillDawn)
+        .withRarity(RARITIES.Majestic)
         .withEdition(null)
         .withImage(`${IMAGE_BASE}DTD007.webp`)
         .withArtists(['Bastien Jez'])

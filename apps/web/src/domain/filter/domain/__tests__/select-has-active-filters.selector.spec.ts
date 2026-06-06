@@ -1,15 +1,6 @@
 import { beforeEach, describe, test } from 'vitest';
 
-import {
-  CARD_CLASSES,
-  CARD_FOILINGS,
-  CARD_KEYWORDS,
-  CARD_RARITIES,
-  CARD_SETS,
-  CARD_SUBTYPES,
-  CARD_TALENTS,
-  CARD_TYPES,
-} from '@codex/core';
+import { CLASSES, FOILINGS, KEYWORDS, RARITIES, SETS, SUBTYPES, TALENTS, TYPES } from '@codex/core';
 
 import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
@@ -32,19 +23,19 @@ describe('Feature: Detecting whether any filter is active', () => {
   });
 
   test.each([
-    ['class', (b: StateBuilder) => b.withClasses([CARD_CLASSES.Generic])],
+    ['class', (b: StateBuilder) => b.withClasses([CLASSES.Generic])],
     ['class exact mode', (b: StateBuilder) => b.withClassFilterMode(FILTER_MODES.EXACT)],
-    ['talent', (b: StateBuilder) => b.withTalents([CARD_TALENTS.Shadow])],
+    ['talent', (b: StateBuilder) => b.withTalents([TALENTS.Shadow])],
     ['talent exact mode', (b: StateBuilder) => b.withTalentFilterMode(FILTER_MODES.EXACT)],
-    ['type', (b: StateBuilder) => b.withTypes([CARD_TYPES.Action])],
+    ['type', (b: StateBuilder) => b.withTypes([TYPES.Action])],
     ['type exact mode', (b: StateBuilder) => b.withTypeFilterMode(FILTER_MODES.EXACT)],
-    ['subtype', (b: StateBuilder) => b.withSubtypes([Object.values(CARD_SUBTYPES)[0]])],
+    ['subtype', (b: StateBuilder) => b.withSubtypes([Object.values(SUBTYPES)[0]])],
     ['subtype exact mode', (b: StateBuilder) => b.withSubtypeFilterMode(FILTER_MODES.EXACT)],
-    ['keyword', (b: StateBuilder) => b.withKeywords([CARD_KEYWORDS.Dominate])],
+    ['keyword', (b: StateBuilder) => b.withKeywords([KEYWORDS.Dominate])],
     ['keyword exact mode', (b: StateBuilder) => b.withKeywordFilterMode(FILTER_MODES.EXACT)],
-    ['set', (b: StateBuilder) => b.withSets([CARD_SETS.WelcomeToRathe])],
-    ['rarity', (b: StateBuilder) => b.withRarities([CARD_RARITIES.Common])],
-    ['foiling', (b: StateBuilder) => b.withFoilings([CARD_FOILINGS.Rainbow])],
+    ['set', (b: StateBuilder) => b.withSets([SETS.WelcomeToRathe])],
+    ['rarity', (b: StateBuilder) => b.withRarities([RARITIES.Common])],
+    ['foiling', (b: StateBuilder) => b.withFoilings([FOILINGS.Rainbow])],
     ['artist', (b: StateBuilder) => b.withArtists(['Micah Epstein'])],
     ['search query', (b: StateBuilder) => b.withSearchQuery('ninja')],
   ])('Rule: Returns true when a %s filter is active', (_, setup) => {

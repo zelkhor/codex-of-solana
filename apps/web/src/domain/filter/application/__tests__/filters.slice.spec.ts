@@ -1,15 +1,6 @@
 import { beforeEach, describe, test } from 'vitest';
 
-import {
-  CARD_CLASSES,
-  CARD_FOILINGS,
-  CARD_KEYWORDS,
-  CARD_RARITIES,
-  CARD_SETS,
-  CARD_SUBTYPES,
-  CARD_TALENTS,
-  CARD_TYPES,
-} from '@codex/core';
+import { CLASSES, FOILINGS, KEYWORDS, RARITIES, SETS, SUBTYPES, TALENTS, TYPES } from '@codex/core';
 
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
 import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
@@ -28,8 +19,8 @@ describe('Feature: Filtering cards', () => {
   });
 
   test('Rule: I should be able to filter cards by class', () => {
-    fixture.whenAddingClassFilter([CARD_CLASSES.Generic, CARD_CLASSES.Ninja]);
-    fixture.thenFiltersShouldBe({ classes: [CARD_CLASSES.Generic, CARD_CLASSES.Ninja] });
+    fixture.whenAddingClassFilter([CLASSES.Generic, CLASSES.Ninja]);
+    fixture.thenFiltersShouldBe({ classes: [CLASSES.Generic, CLASSES.Ninja] });
   });
 
   test('Rule: I should be able to switch the class filter to exact matching mode', () => {
@@ -44,8 +35,8 @@ describe('Feature: Filtering cards', () => {
   });
 
   test('Rule: I should be able to filter cards by talent', () => {
-    fixture.whenAddingTalentFilter([CARD_TALENTS.Shadow, CARD_TALENTS.Draconic]);
-    fixture.thenFiltersShouldBe({ talents: [CARD_TALENTS.Shadow, CARD_TALENTS.Draconic] });
+    fixture.whenAddingTalentFilter([TALENTS.Shadow, TALENTS.Draconic]);
+    fixture.thenFiltersShouldBe({ talents: [TALENTS.Shadow, TALENTS.Draconic] });
   });
 
   test('Rule: I should be able to switch the talent filter to exact matching mode', () => {
@@ -60,8 +51,8 @@ describe('Feature: Filtering cards', () => {
   });
 
   test('Rule: I should be able to filter cards by type', () => {
-    fixture.whenAddingTypeFilter([CARD_TYPES.Action, CARD_TYPES.DefenseReaction]);
-    fixture.thenFiltersShouldBe({ types: [CARD_TYPES.Action, CARD_TYPES.DefenseReaction] });
+    fixture.whenAddingTypeFilter([TYPES.Action, TYPES.DefenseReaction]);
+    fixture.thenFiltersShouldBe({ types: [TYPES.Action, TYPES.DefenseReaction] });
   });
 
   test('Rule: I should be able to switch the type filter to exact matching mode', () => {
@@ -76,8 +67,8 @@ describe('Feature: Filtering cards', () => {
   });
 
   test('Rule: I should be able to filter cards by subtype', () => {
-    fixture.whenAddingSubtypeFilter([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Chi]);
-    fixture.thenFiltersShouldBe({ subtypes: [CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Chi] });
+    fixture.whenAddingSubtypeFilter([SUBTYPES.Arrow, SUBTYPES.Chi]);
+    fixture.thenFiltersShouldBe({ subtypes: [SUBTYPES.Arrow, SUBTYPES.Chi] });
   });
 
   test('Rule: I should be able to switch the subtype filter to exact matching mode', () => {
@@ -92,8 +83,8 @@ describe('Feature: Filtering cards', () => {
   });
 
   test('Rule: I should be able to filter cards by keyword', () => {
-    fixture.whenAddingKeywordFilter([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain]);
-    fixture.thenFiltersShouldBe({ keywords: [CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain] });
+    fixture.whenAddingKeywordFilter([KEYWORDS.Dominate, KEYWORDS.GoAgain]);
+    fixture.thenFiltersShouldBe({ keywords: [KEYWORDS.Dominate, KEYWORDS.GoAgain] });
   });
 
   test('Rule: I should be able to switch the keyword filter to exact matching mode', () => {
@@ -108,18 +99,18 @@ describe('Feature: Filtering cards', () => {
   });
 
   test('Rule: I should be able to filter cards by set', () => {
-    fixture.whenAddingSetFilter([CARD_SETS.WelcomeToRathe, CARD_SETS.ArcaneRising]);
-    fixture.thenFiltersShouldBe({ sets: [CARD_SETS.WelcomeToRathe, CARD_SETS.ArcaneRising] });
+    fixture.whenAddingSetFilter([SETS.WelcomeToRathe, SETS.ArcaneRising]);
+    fixture.thenFiltersShouldBe({ sets: [SETS.WelcomeToRathe, SETS.ArcaneRising] });
   });
 
   test('Rule: I should be able to filter cards by rarity', () => {
-    fixture.whenAddingRarityFilter([CARD_RARITIES.Rare, CARD_RARITIES.Majestic]);
-    fixture.thenFiltersShouldBe({ rarities: [CARD_RARITIES.Rare, CARD_RARITIES.Majestic] });
+    fixture.whenAddingRarityFilter([RARITIES.Rare, RARITIES.Majestic]);
+    fixture.thenFiltersShouldBe({ rarities: [RARITIES.Rare, RARITIES.Majestic] });
   });
 
   test('Rule: I should be able to filter cards by foiling', () => {
-    fixture.whenAddingFoilingFilter([CARD_FOILINGS.Rainbow, CARD_FOILINGS.Cold]);
-    fixture.thenFiltersShouldBe({ foilings: [CARD_FOILINGS.Rainbow, CARD_FOILINGS.Cold] });
+    fixture.whenAddingFoilingFilter([FOILINGS.Rainbow, FOILINGS.Cold]);
+    fixture.thenFiltersShouldBe({ foilings: [FOILINGS.Rainbow, FOILINGS.Cold] });
   });
 
   test('Rule: I should be able to filter cards by artist', () => {
@@ -130,14 +121,14 @@ describe('Feature: Filtering cards', () => {
   test('Rule: I should be able to reset all active filters at once', () => {
     fixture.givenActiveFilters((b) =>
       b
-        .withClasses([CARD_CLASSES.Generic])
-        .withTalents([CARD_TALENTS.Draconic])
-        .withTypes([CARD_TYPES.Action, CARD_TYPES.DefenseReaction])
-        .withSubtypes([CARD_SUBTYPES.Arrow, CARD_SUBTYPES.Chi])
-        .withKeywords([CARD_KEYWORDS.Dominate, CARD_KEYWORDS.GoAgain])
-        .withSets([CARD_SETS.WelcomeToRathe, CARD_SETS.ArcaneRising])
-        .withRarities([CARD_RARITIES.Rare, CARD_RARITIES.Majestic])
-        .withFoilings([CARD_FOILINGS.Rainbow, CARD_FOILINGS.Cold])
+        .withClasses([CLASSES.Generic])
+        .withTalents([TALENTS.Draconic])
+        .withTypes([TYPES.Action, TYPES.DefenseReaction])
+        .withSubtypes([SUBTYPES.Arrow, SUBTYPES.Chi])
+        .withKeywords([KEYWORDS.Dominate, KEYWORDS.GoAgain])
+        .withSets([SETS.WelcomeToRathe, SETS.ArcaneRising])
+        .withRarities([RARITIES.Rare, RARITIES.Majestic])
+        .withFoilings([FOILINGS.Rainbow, FOILINGS.Cold])
         .withArtists(['Micah Epstein', 'Dominik Mayer']),
     );
     fixture.whenResettingFilters();

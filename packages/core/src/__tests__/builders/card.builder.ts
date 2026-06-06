@@ -1,13 +1,10 @@
-import {
-  CARD_CLASSES,
-  CARD_PITCHES,
-  CARD_RARITIES,
-  CARD_SETS,
-  CARD_SUBTYPES,
-  CARD_TYPES,
-  type Card,
-  type Printing,
-} from '../../card-catalog/domain/card';
+import type { Card, Printing } from '../../card-catalog/domain/card';
+import { CLASSES } from '../../shared/game/class';
+import { PITCH_VALUES } from '../../shared/game/pitch';
+import { RARITIES } from '../../shared/game/rarity';
+import { SETS } from '../../shared/game/set';
+import { SUBTYPES } from '../../shared/game/subtype';
+import { TYPES } from '../../shared/game/type';
 import { printingBuilder } from './printing.builder';
 
 type CardBuilderT = {
@@ -39,15 +36,15 @@ const defaultPrinting = printingBuilder().build();
 export const cardBuilder = ({
   cardIdentifier = 'test-card-red',
   name = 'Test Card',
-  pitch = CARD_PITCHES.Red,
-  classes = [CARD_CLASSES.Generic],
+  pitch = PITCH_VALUES.Red,
+  classes = [CLASSES.Generic],
   talents = [],
-  types = [CARD_TYPES.Action],
-  subtypes = [CARD_SUBTYPES.Arrow],
+  types = [TYPES.Action],
+  subtypes = [SUBTYPES.Arrow],
   keywords = [],
-  rarity = CARD_RARITIES.Common,
-  rarities = [CARD_RARITIES.Common],
-  sets = [CARD_SETS.WelcomeToRathe],
+  rarity = RARITIES.Common,
+  rarities = [RARITIES.Common],
+  sets = [SETS.WelcomeToRathe],
   typeText = 'Action',
   cost = 0,
   attack = 7,

@@ -1,4 +1,4 @@
-import { AppError } from '../../shared/errors';
+import { AppError } from '../../shared/helpers/errors';
 
 export class CardCatalogLoadError extends AppError {
   constructor(cause?: string) {

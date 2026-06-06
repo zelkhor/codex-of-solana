@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import type {
-  CardClassT,
-  CardFoilingT,
-  CardKeywordT,
-  CardRarityT,
-  CardSetT,
-  CardSubtypeT,
-  CardTalentT,
-  CardTypeT,
+  ClassT,
+  FoilingT,
+  KeywordT,
+  RarityT,
+  SetT,
+  SubtypeT,
+  TalentT,
+  TypeT,
 } from '@codex/core';
 
 import type { AppDispatch } from '@/shared/store';
@@ -49,19 +49,19 @@ export interface FilterPanelViewModel {
   sortOrderValue: string;
   isSortDisabled: boolean;
   sortOrderOptions: { value: string; label: string }[];
-  setClasses: (v: CardClassT[]) => void;
+  setClasses: (v: ClassT[]) => void;
   setClassFilterMode: (v: FilterModeT) => void;
-  setTalents: (v: CardTalentT[]) => void;
+  setTalents: (v: TalentT[]) => void;
   setTalentFilterMode: (v: FilterModeT) => void;
-  setTypes: (v: CardTypeT[]) => void;
+  setTypes: (v: TypeT[]) => void;
   setTypeFilterMode: (v: FilterModeT) => void;
-  setSubtypes: (v: CardSubtypeT[]) => void;
+  setSubtypes: (v: SubtypeT[]) => void;
   setSubtypeFilterMode: (v: FilterModeT) => void;
-  setKeywords: (v: CardKeywordT[]) => void;
+  setKeywords: (v: KeywordT[]) => void;
   setKeywordFilterMode: (v: FilterModeT) => void;
-  setSets: (v: CardSetT[]) => void;
-  setRarities: (v: CardRarityT[]) => void;
-  setFoilings: (v: CardFoilingT[]) => void;
+  setSets: (v: SetT[]) => void;
+  setRarities: (v: RarityT[]) => void;
+  setFoilings: (v: FoilingT[]) => void;
   setArtists: (v: string[]) => void;
   setSortOrder: (v: SortOrderT) => void;
   setCostFilter: (v: NumericComparisonT) => void;

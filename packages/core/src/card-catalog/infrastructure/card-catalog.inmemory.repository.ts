@@ -1,4 +1,4 @@
-import { type Result, ok } from '../../shared/result';
+import { type Result, ok } from '../../shared/helpers/result';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
 import type { Card } from '../domain/card';
 import type { CardCatalogLoadError } from '../domain/card-catalog.errors';

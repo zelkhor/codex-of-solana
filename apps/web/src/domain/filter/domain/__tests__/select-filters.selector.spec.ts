@@ -1,6 +1,6 @@
 import { beforeEach, describe, test } from 'vitest';
 
-import { CARD_CLASSES, CARD_RARITIES } from '@codex/core';
+import { CLASSES, RARITIES } from '@codex/core';
 
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
 
@@ -17,12 +17,10 @@ describe('Feature: Getting filters', () => {
   });
 
   test('Rule: Returns the full filter state', () => {
-    fixture.givenFilters((b) =>
-      b.withClasses([CARD_CLASSES.Generic]).withRarities([CARD_RARITIES.Marvel]),
-    );
+    fixture.givenFilters((b) => b.withClasses([CLASSES.Generic]).withRarities([RARITIES.Marvel]));
     fixture.thenFiltersShouldBe({
-      classes: [CARD_CLASSES.Generic],
-      rarities: [CARD_RARITIES.Marvel],
+      classes: [CLASSES.Generic],
+      rarities: [RARITIES.Marvel],
     });
   });
 });
