@@ -9,6 +9,7 @@ import {
   SETS,
   SUBTYPES,
   TALENTS,
+  TREATMENTS,
   TYPES,
 } from '@codex/core';
 
@@ -123,6 +124,22 @@ describe('Feature: Filtering cards', () => {
     fixture.thenFiltersShouldBe({ foilings: [FOILINGS.Rainbow, FOILINGS.Cold] });
   });
 
+  test('Rule: I should be able to filter cards by art treatment', () => {
+    fixture.whenAddingTreatmentFilter([TREATMENTS.AA, TREATMENTS.FA]);
+    fixture.thenFiltersShouldBe({ treatments: [TREATMENTS.AA, TREATMENTS.FA] });
+  });
+
+  test('Rule: I should be able to switch the treatment filter to exact matching mode', () => {
+    fixture.whenSettingTreatmentFilterMode(FILTER_MODES.EXACT);
+    fixture.thenFiltersShouldBe({ treatmentFilterMode: FILTER_MODES.EXACT });
+  });
+
+  test('Rule: I should be able to switch the treatment filter back to any-match mode', () => {
+    fixture.givenActiveFilters((b) => b.withTreatmentFilterMode(FILTER_MODES.EXACT));
+    fixture.whenSettingTreatmentFilterMode(FILTER_MODES.ANY);
+    fixture.thenFiltersShouldBe({ treatmentFilterMode: FILTER_MODES.ANY });
+  });
+
   test('Rule: I should be able to filter cards by artist', () => {
     fixture.whenAddingArtistFilter(['Micah Epstein', 'Dominik Mayer']);
     fixture.thenFiltersShouldBe({ artists: ['Micah Epstein', 'Dominik Mayer'] });
@@ -144,6 +161,7 @@ describe('Feature: Filtering cards', () => {
         .withSets([SETS.WelcomeToRathe, SETS.ArcaneRising])
         .withRarities([RARITIES.Rare, RARITIES.Majestic])
         .withFoilings([FOILINGS.Rainbow, FOILINGS.Cold])
+        .withTreatments([TREATMENTS.AA, TREATMENTS.EA])
         .withArtists(['Micah Epstein', 'Dominik Mayer']),
     );
     fixture.whenResettingFilters();

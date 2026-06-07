@@ -9,6 +9,7 @@ import {
   type SetT,
   type SubtypeT,
   type TalentT,
+  type TreatmentT,
   type TypeT,
 } from '@codex/core';
 
@@ -35,6 +36,8 @@ export interface FiltersState {
   sets: SetT[];
   rarities: RarityT[];
   foilings: FoilingT[];
+  treatments: TreatmentT[];
+  treatmentFilterMode: FilterModeT;
   artists: string[];
   hero: HeroT | null;
   searchQuery: string;
@@ -60,6 +63,8 @@ export const initialFiltersState: FiltersState = {
   sets: [],
   rarities: [],
   foilings: [],
+  treatments: [],
+  treatmentFilterMode: FILTER_MODES.ANY,
   artists: [],
   hero: null,
   searchQuery: '',
@@ -114,6 +119,12 @@ export const filtersSlice = createSlice({
     setFoilings(state, action: PayloadAction<FoilingT[]>) {
       state.foilings = action.payload;
     },
+    setTreatments(state, action: PayloadAction<TreatmentT[]>) {
+      state.treatments = action.payload;
+    },
+    setTreatmentFilterMode(state, action: PayloadAction<FilterModeT>) {
+      state.treatmentFilterMode = action.payload;
+    },
     setArtists(state, action: PayloadAction<string[]>) {
       state.artists = action.payload;
     },
@@ -161,6 +172,8 @@ export const {
   setSets,
   setRarities,
   setFoilings,
+  setTreatments,
+  setTreatmentFilterMode,
   setArtists,
   setHero,
   setSearchQuery,

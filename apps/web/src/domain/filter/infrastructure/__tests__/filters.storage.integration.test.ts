@@ -9,6 +9,7 @@ import {
   SETS,
   SUBTYPES,
   TALENTS,
+  TREATMENTS,
   TYPES,
 } from '@codex/core';
 
@@ -37,6 +38,8 @@ const fullState = stateBuilder()
   .withSets([SETS.WelcomeToRathe])
   .withRarities([RARITIES.Promo])
   .withFoilings([FOILINGS.Gold])
+  .withTreatments([TREATMENTS.AA])
+  .withTreatmentFilterMode(FILTER_MODES.ANY)
   .withArtists(['Micah Epstein'])
   .withHero(HEROES.Katsu)
   .withSearchQuery('ninja')

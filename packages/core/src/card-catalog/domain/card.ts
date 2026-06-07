@@ -8,6 +8,7 @@ import type { RarityT } from '../../shared/game/rarity';
 import type { SetT } from '../../shared/game/set';
 import type { SubtypeT } from '../../shared/game/subtype';
 import type { TalentT } from '../../shared/game/talent';
+import type { TreatmentT } from '../../shared/game/treatment';
 import type { TypeT } from '../../shared/game/type';
 
 export interface Printing {
@@ -17,6 +18,7 @@ export interface Printing {
   rarity: RarityT;
   edition: EditionT | null;
   foiling: FoilingT;
+  treatments: TreatmentT[];
   image: string;
   backPrinting: Printing | null;
   artists: string[];

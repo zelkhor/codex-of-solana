@@ -16,8 +16,10 @@ import {
   type SetT,
   type SubtypeT,
   TALENTS,
+  TREATMENTS,
   TYPES,
   type TalentT,
+  type TreatmentT,
   type TypeT,
 } from '@codex/core';
 
@@ -174,6 +176,23 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
               selected={vm.filters.keywords}
               onChange={(values) => vm.setKeywords(values as KeywordT[])}
               placeholder="e.g. Dominate, Go again, ..."
+            />
+          </div>
+        </FilterRow>
+        <FilterRow label="Treatment">
+          <div className="space-y-1.5">
+            <div className="pt-2">
+              <ModeToggle
+                options={FILTER_MODE_OPTIONS}
+                value={vm.filters.treatmentFilterMode}
+                onChange={vm.setTreatmentFilterMode}
+              />
+            </div>
+            <MultiSelect
+              options={Object.values(TREATMENTS)}
+              selected={vm.filters.treatments}
+              onChange={(values) => vm.setTreatments(values as TreatmentT[])}
+              placeholder="e.g. Alternate Art, Full Art, ..."
             />
           </div>
         </FilterRow>

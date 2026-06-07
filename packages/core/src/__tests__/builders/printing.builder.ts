@@ -10,6 +10,7 @@ type PrintingBuilderT = {
   withSet: (set: Printing['set']) => PrintingBuilderT;
   withRarity: (rarity: Printing['rarity']) => PrintingBuilderT;
   withFoiling: (foiling: Printing['foiling']) => PrintingBuilderT;
+  withTreatments: (treatments: Printing['treatments']) => PrintingBuilderT;
   withEdition: (edition: Printing['edition']) => PrintingBuilderT;
   withImage: (image: string) => PrintingBuilderT;
   withArtists: (artists: string[]) => PrintingBuilderT;
@@ -24,6 +25,7 @@ export const printingBuilder = ({
   rarity = RARITIES.Common,
   edition = EDITIONS.First,
   foiling = FOILINGS.Regular,
+  treatments = [],
   image = 'WTR001',
   backPrinting = null,
   artists = ['Test Artist'],
@@ -35,6 +37,7 @@ export const printingBuilder = ({
     rarity,
     edition,
     foiling,
+    treatments,
     image,
     backPrinting,
     artists,
@@ -47,6 +50,8 @@ export const printingBuilder = ({
     withRarity: (_rarity: Printing['rarity']) => printingBuilder({ ...props, rarity: _rarity }),
     withFoiling: (_foiling: Printing['foiling']) =>
       printingBuilder({ ...props, foiling: _foiling }),
+    withTreatments: (_treatments: Printing['treatments']) =>
+      printingBuilder({ ...props, treatments: _treatments }),
     withEdition: (_edition: Printing['edition']) =>
       printingBuilder({ ...props, edition: _edition }),
     withImage: (_image: string) => printingBuilder({ ...props, image: _image }),

@@ -33,7 +33,7 @@ export class CardCatalogFabRepository implements ICardCatalogRepository {
       const overrides = CARD_PRINTING_OVERRIDES[card.cardIdentifier] ?? [];
       return {
         ...dto,
-        printings: this.deduplicatePrintings([...dto.printings, ...overrides]),
+        printings: this.deduplicatePrintings([...overrides, ...dto.printings]),
       };
     });
   }
@@ -92,6 +92,7 @@ const mapToPrintingDto = (
     rarity: p.rarity as Printing['rarity'],
     edition: (p.edition ?? null) as Printing['edition'],
     foiling: (p.foiling ?? FOILINGS.Regular) as Printing['foiling'],
+    treatments: (p.treatments ?? []) as Printing['treatments'],
     image: p.image ? `${IMAGE_BASE}${p.image}.webp` : '',
     artists: p.artists,
     backPrinting: backPrinting
@@ -102,6 +103,7 @@ const mapToPrintingDto = (
           rarity: backPrinting.rarity as Printing['rarity'],
           edition: (backPrinting.edition ?? null) as Printing['edition'],
           foiling: (backPrinting.foiling ?? FOILINGS.Regular) as Printing['foiling'],
+          treatments: (backPrinting.treatments ?? []) as Printing['treatments'],
           image: backPrinting.image ? `${IMAGE_BASE}${backPrinting.image}.webp` : '',
           artists: backPrinting.artists,
           backPrinting: null,

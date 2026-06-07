@@ -22,6 +22,8 @@ export const selectVisibleCards = createSelector(
       if (filters.rarities.length > 0 && !filters.rarities.includes(p.rarity)) return false;
       if (filters.foilings.length > 0 && (!p.foiling || !filters.foilings.includes(p.foiling)))
         return false;
+      if (!matchesFilterWithMode(p.treatments, filters.treatments, filters.treatmentFilterMode))
+        return false;
       if (!matchesMultiFilter(p.artists, filters.artists)) return false;
       return true;
     };

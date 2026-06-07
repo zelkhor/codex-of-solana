@@ -9,6 +9,7 @@ import type {
   SetT,
   SubtypeT,
   TalentT,
+  TreatmentT,
   TypeT,
 } from '@codex/core';
 
@@ -40,6 +41,8 @@ import {
   setSubtypes,
   setTalentFilterMode,
   setTalents,
+  setTreatmentFilterMode,
+  setTreatments,
   setTypeFilterMode,
   setTypes,
 } from '@/domain/filter/application/filters.slice.ts';
@@ -64,6 +67,8 @@ export interface FilterPanelViewModel {
   setSets: (v: SetT[]) => void;
   setRarities: (v: RarityT[]) => void;
   setFoilings: (v: FoilingT[]) => void;
+  setTreatments: (v: TreatmentT[]) => void;
+  setTreatmentFilterMode: (v: FilterModeT) => void;
   setArtists: (v: string[]) => void;
   setHero: (v: HeroT | null) => void;
   setSortOrder: (v: SortOrderT) => void;
@@ -109,6 +114,8 @@ export const useFilterPanelViewModel = (): FilterPanelViewModel => {
     setSets: (v) => dispatch(setSets(v)),
     setRarities: (v) => dispatch(setRarities(v)),
     setFoilings: (v) => dispatch(setFoilings(v)),
+    setTreatments: (v) => dispatch(setTreatments(v)),
+    setTreatmentFilterMode: (v) => dispatch(setTreatmentFilterMode(v)),
     setArtists: (v) => dispatch(setArtists(v)),
     setHero: (v) => dispatch(setHero(v)),
     setSortOrder: (v) => dispatch(setSortOrder(v)),

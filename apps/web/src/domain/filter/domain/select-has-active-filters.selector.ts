@@ -20,6 +20,8 @@ export const selectHasActiveFilters = createSelector(
     f.sets.length > 0 ||
     f.rarities.length > 0 ||
     f.foilings.length > 0 ||
+    f.treatments.length > 0 ||
+    f.treatmentFilterMode === FILTER_MODES.EXACT ||
     f.artists.length > 0 ||
     f.hero !== null ||
     f.searchQuery.length > 0,

@@ -13,6 +13,7 @@ export const CARD_PRINTING_OVERRIDES: Record<string, Printing[]> = {
       rarity: RARITIES.Promo,
       edition: null,
       foiling: FOILINGS.Regular,
+      treatments: ['Extended Art', 'Alternate Art'],
       image:
         'https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/large/ZH_FAB401.webp',
       backPrinting: null,
@@ -27,10 +28,25 @@ export const CARD_PRINTING_OVERRIDES: Record<string, Printing[]> = {
       rarity: RARITIES.Promo,
       edition: null,
       foiling: FOILINGS.Rainbow,
+      treatments: ['Extended Art', 'Alternate Art'],
       image:
         'https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/large/JA_FAB443-RF.webp',
       backPrinting: null,
       artists: ['Kanadekana'],
+    },
+  ],
+  'razor-reflex-red': [
+    {
+      identifier: 'FAB475',
+      print: 'FAB475-Rainbow-Extended Art',
+      set: SETS.Promos,
+      rarity: RARITIES.Promo,
+      edition: null,
+      foiling: FOILINGS.Rainbow,
+      treatments: ['Extended Art', 'Alternate Art'],
+      image: 'https://content.fabrary.net/cards/FAB475-RF.webp',
+      backPrinting: null,
+      artists: ['Isuardi Therianto'],
     },
   ],
 };

@@ -11,6 +11,7 @@ export * from './shared/game/rarity';
 export * from './shared/game/set';
 export * from './shared/game/subtype';
 export * from './shared/game/talent';
+export * from './shared/game/treatment';
 export * from './shared/game/type';
 
 export * from './card-catalog/domain/card';

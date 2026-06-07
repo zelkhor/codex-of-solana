@@ -10,6 +10,7 @@ import type {
   SetT,
   SubtypeT,
   TalentT,
+  TreatmentT,
   TypeT,
 } from '@codex/core';
 
@@ -35,6 +36,8 @@ const withKeywordFilterMode = createAction<FilterModeT>('withKeywordFilterMode')
 const withSets = createAction<SetT[]>('withSets');
 const withRarities = createAction<RarityT[]>('withRarities');
 const withFoilings = createAction<FoilingT[]>('withFoilings');
+const withTreatments = createAction<TreatmentT[]>('withTreatments');
+const withTreatmentFilterMode = createAction<FilterModeT>('withTreatmentFilterMode');
 const withArtists = createAction<string[]>('withArtists');
 const withHero = createAction<HeroT | null>('withHero');
 const withSearchQuery = createAction<string>('withSearchQuery');
@@ -92,6 +95,12 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withFoilings, (state, { payload }) => {
       state.filters.foilings = payload;
     })
+    .addCase(withTreatments, (state, { payload }) => {
+      state.filters.treatments = payload;
+    })
+    .addCase(withTreatmentFilterMode, (state, { payload }) => {
+      state.filters.treatmentFilterMode = payload;
+    })
     .addCase(withArtists, (state, { payload }) => {
       state.filters.artists = payload;
     })
@@ -145,6 +154,8 @@ export const stateBuilder = (state = initialState) => {
     withSets: reduce(withSets),
     withRarities: reduce(withRarities),
     withFoilings: reduce(withFoilings),
+    withTreatments: reduce(withTreatments),
+    withTreatmentFilterMode: reduce(withTreatmentFilterMode),
     withArtists: reduce(withArtists),
     withHero: reduce(withHero),
     withSearchQuery: reduce(withSearchQuery),

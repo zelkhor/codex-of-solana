@@ -9,6 +9,7 @@ import type {
   SetT,
   SubtypeT,
   TalentT,
+  TreatmentT,
   TypeT,
 } from '@codex/core';
 
@@ -33,6 +34,8 @@ import {
   setSubtypes,
   setTalentFilterMode,
   setTalents,
+  setTreatmentFilterMode,
+  setTreatments,
   setTypeFilterMode,
   setTypes,
 } from '@/domain/filter/application/filters.slice.ts';
@@ -115,6 +118,16 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setFoilings(foilings));
   };
 
+  const whenAddingTreatmentFilter = (treatments: TreatmentT[]) => {
+    initStore();
+    store.dispatch(setTreatments(treatments));
+  };
+
+  const whenSettingTreatmentFilterMode = (mode: FilterModeT) => {
+    initStore();
+    store.dispatch(setTreatmentFilterMode(mode));
+  };
+
   const whenAddingArtistFilter = (artists: string[]) => {
     initStore();
     store.dispatch(setArtists(artists));
@@ -153,6 +166,8 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     whenAddingSetFilter,
     whenAddingRarityFilter,
     whenAddingFoilingFilter,
+    whenAddingTreatmentFilter,
+    whenSettingTreatmentFilterMode,
     whenAddingArtistFilter,
     whenSelectingHeroFilter,
     whenResettingFilters,
