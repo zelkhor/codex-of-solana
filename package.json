@@ -6,7 +6,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "test": "turbo test",
+    "test": "turbo test:unit && turbo test:integration",
+    "test:unit": "turbo test:unit",
+    "test:integration": "turbo test:integration",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\" --ignore-path .gitignore",
     "prepare": "husky"
   },
@@ -15,6 +17,8 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.9.2",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "prettier": "^3.3.3",

@@ -5,9 +5,11 @@
   "main": "./dist/index.js",
   "types": "./src/index.ts",
   "scripts": {
-    "build": "tsc --project tsconfig.build.json",
+    "build": "tsc --project tsconfig.json",
     "lint": "eslint \"src/**/*.ts\"",
-    "test": "jest --passWithNoTests"
+    "test": "pnpm test:unit && pnpm test:integration",
+    "test:unit": "jest --config jest.unit.config.js --passWithNoTests",
+    "test:integration": "jest --config jest.integration.config.js --passWithNoTests"
   },
   "dependencies": {
     "@codex/orm": "workspace:*",

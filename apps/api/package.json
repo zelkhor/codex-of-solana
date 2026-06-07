@@ -6,7 +6,9 @@
     "build": "nest build",
     "dev": "nest start --watch",
     "lint": "eslint \"src/**/*.ts\"",
-    "test": "jest --passWithNoTests"
+    "test": "pnpm test:unit && pnpm test:integration",
+    "test:unit": "jest --config jest.unit.config.js --passWithNoTests",
+    "test:integration": "jest --config jest.integration.config.js --passWithNoTests"
   },
   "dependencies": {
     "@codex/core": "workspace:*",

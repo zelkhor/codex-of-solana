@@ -11,7 +11,7 @@ while read local_ref local_sha remote_ref remote_sha; do
     pnpm build || { echo "✗ Build failed. Push aborted."; exit 1; }
 
     echo "  [3/3] Tests..."
-    pnpm test || { echo "✗ Tests failed. Push aborted."; exit 1; }
+    pnpm test:unit || { echo "✗ Tests failed. Push aborted."; exit 1; }
 
     echo "✓ All checks passed — pushing to main"
   fi

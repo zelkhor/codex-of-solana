@@ -8,6 +8,7 @@
     "dev": "vite",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "test": "vitest run",
+    "test:unit": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {

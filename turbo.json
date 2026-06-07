@@ -5,10 +5,19 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "test": {
+    "test:unit": {
       "dependsOn": ["^build"],
       "outputs": [],
       "cache": false
+    },
+    "test:integration": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["test:unit", "test:integration"],
+      "outputs": []
     },
     "lint": {
       "outputs": []

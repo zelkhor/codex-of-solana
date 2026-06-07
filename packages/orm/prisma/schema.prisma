@@ -1,5 +1,3 @@
-// Models are added incrementally in Plans 2–4.
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma-client"
@@ -7,4 +5,158 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+// ─── Card catalog ─────────────────────────────────────────────────────────────
+
+model Card {
+  id         Int     @id @default(autoincrement())
+  identifier String  @unique
+  name       String
+  pitch      String?
+  cost       String?
+  attack     String?
+  arcane     String?
+  defense    String?
+  intellect  String?
+  life       String?
+  typeText   String
+  text       String?
+  bonds      String[]
+  flows      String[]
+  fusions    String[]
+
+  heroId Int?   @unique
+  hero   Hero?  @relation("HeroCard", fields: [heroId], references: [id])
+
+  classes         Class[]
+  talents         Talent[]
+  types           CardType[]
+  subtypes        Subtype[]
+  keywords        Keyword[]
+  legalHeroes     Hero[]     @relation("CardLegalHeroes")
+  specializations Hero[]     @relation("CardSpecializations")
+  legalFormats    Format[]
+  printings       Printing[]
+}
+
+model Printing {
+  id              Int     @id @default(autoincrement())
+  identifier      String  @unique
+  image           String
+  isExpansionSlot Boolean @default(false)
+  isBack          Boolean @default(false)
+
+  cardId Int
+  card   Card @relation(fields: [cardId], references: [id])
+
+  setId Int
+  set   Set @relation(fields: [setId], references: [id])
+
+  rarityId Int
+  rarity   Rarity @relation(fields: [rarityId], references: [id])
+
+  editionId Int?
+  edition   Edition? @relation(fields: [editionId], references: [id])
+
+  foilingId Int
+  foiling   Foiling @relation(fields: [foilingId], references: [id])
+
+  artists    Artist[]
+  treatments Treatment[]
+
+  backPrintingId Int?      @unique
+  backPrinting   Printing? @relation("PrintingBack", fields: [backPrintingId], references: [id])
+  frontPrinting  Printing? @relation("PrintingBack")
+}
+
+// ─── Reference tables ─────────────────────────────────────────────────────────
+
+model Class {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  cards Card[]
+}
+
+model Talent {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  cards Card[]
+}
+
+model CardType {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  cards Card[]
+}
+
+model Subtype {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  cards Card[]
+}
+
+model Keyword {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  cards Card[]
+}
+
+model Set {
+  id           Int        @id @default(autoincrement())
+  name         String     @unique
+  group        String
+  releaseOrder Int
+  releaseDate  DateTime?
+  printings    Printing[]
+}
+
+model Rarity {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  printings Printing[]
+}
+
+model Edition {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  printings Printing[]
+}
+
+model Foiling {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  printings Printing[]
+}
+
+model Treatment {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  printings Printing[]
+}
+
+model Format {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  cards Card[]
+}
+
+model Hero {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  isYoung Boolean @default(false)
+
+  adultFormId Int?   @unique
+  adultForm   Hero?  @relation("HeroMaturation", fields: [adultFormId], references: [id])
+  youngForm   Hero?  @relation("HeroMaturation")
+
+  heroCard            Card?  @relation("HeroCard")
+  legalCards          Card[] @relation("CardLegalHeroes")
+  specializationCards Card[] @relation("CardSpecializations")
+}
+
+model Artist {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  printings Printing[]
 }
