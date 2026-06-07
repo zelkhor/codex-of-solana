@@ -1,6 +1,7 @@
 import { cards as fabCards } from '@flesh-and-blood/cards';
 
 import { FOILINGS } from '../../shared/game/foiling';
+import { SET_ORDER } from '../../shared/game/set';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
 import type { Card, Printing } from '../domain/card';
@@ -31,10 +32,13 @@ export class CardCatalogFabRepository implements ICardCatalogRepository {
     return cards.map((card) => {
       const dto = mapToCardDto(card, printingImageIndex);
       const overrides = CARD_PRINTING_OVERRIDES[card.cardIdentifier] ?? [];
-      return {
-        ...dto,
-        printings: this.deduplicatePrintings([...overrides, ...dto.printings]),
-      };
+      const printings = this.deduplicatePrintings([...overrides, ...dto.printings]);
+      printings.sort((a, b) => {
+        const ai = SET_ORDER.indexOf(a.set);
+        const bi = SET_ORDER.indexOf(b.set);
+        return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
+      });
+      return { ...dto, printings };
     });
   }
 
