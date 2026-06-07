@@ -1,6 +1,16 @@
 import { beforeEach, describe, test } from 'vitest';
 
-import { CLASSES, FOILINGS, KEYWORDS, RARITIES, SETS, SUBTYPES, TALENTS, TYPES } from '@codex/core';
+import {
+  CLASSES,
+  FOILINGS,
+  HEROES,
+  KEYWORDS,
+  RARITIES,
+  SETS,
+  SUBTYPES,
+  TALENTS,
+  TYPES,
+} from '@codex/core';
 
 import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
@@ -37,6 +47,7 @@ describe('Feature: Detecting whether any filter is active', () => {
     ['rarity', (b: StateBuilder) => b.withRarities([RARITIES.Common])],
     ['foiling', (b: StateBuilder) => b.withFoilings([FOILINGS.Rainbow])],
     ['artist', (b: StateBuilder) => b.withArtists(['Micah Epstein'])],
+    ['hero', (b: StateBuilder) => b.withHero(HEROES.Katsu)],
     ['search query', (b: StateBuilder) => b.withSearchQuery('ninja')],
   ])('Rule: Returns true when a %s filter is active', (_, setup) => {
     fixture.givenFilters(setup);

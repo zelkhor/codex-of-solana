@@ -4,6 +4,7 @@ import type {
   Card,
   ClassT,
   FoilingT,
+  HeroT,
   KeywordT,
   RarityT,
   SetT,
@@ -35,6 +36,7 @@ const withSets = createAction<SetT[]>('withSets');
 const withRarities = createAction<RarityT[]>('withRarities');
 const withFoilings = createAction<FoilingT[]>('withFoilings');
 const withArtists = createAction<string[]>('withArtists');
+const withHero = createAction<HeroT | null>('withHero');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');
 const withGroupPrintings = createAction<boolean>('withGroupPrintings');
@@ -93,6 +95,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withArtists, (state, { payload }) => {
       state.filters.artists = payload;
     })
+    .addCase(withHero, (state, { payload }) => {
+      state.filters.hero = payload;
+    })
     .addCase(withSearchQuery, (state, { payload }) => {
       state.filters.searchQuery = payload;
     })
@@ -141,6 +146,7 @@ export const stateBuilder = (state = initialState) => {
     withRarities: reduce(withRarities),
     withFoilings: reduce(withFoilings),
     withArtists: reduce(withArtists),
+    withHero: reduce(withHero),
     withSearchQuery: reduce(withSearchQuery),
     withSortOrder: reduce(withSortOrder),
     withGroupPrintings: reduce(withGroupPrintings),

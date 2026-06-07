@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import {
   CLASSES,
   FOILINGS,
+  HEROES,
   KEYWORDS,
   RARITIES,
   SETS,
@@ -890,5 +891,36 @@ describe('Feature: Card printings grid ordering', () => {
     expect(result[1].printing.set).toBe(SETS.WelcomeToRathe);
     expect(result[2].card.cardIdentifier).toBe('ira');
     expect(result[2].printing.set).toBe(SETS.ArcaneRising);
+  });
+
+  test('Rule: Excludes cards not legal for the selected hero', () => {
+    const katsuCard = cardBuilder().withCardIdentifier('a').withLegalHeroes([HEROES.Katsu]).build();
+    const bravoCard = cardBuilder().withCardIdentifier('b').withLegalHeroes([HEROES.Bravo]).build();
+    const cards = selectVisibleCards(
+      stateBuilder().withAllCards([katsuCard, bravoCard]).withHero(HEROES.Katsu).build(),
+    );
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
+  });
+
+  test('Rule: Shows all cards when no hero filter is set', () => {
+    const katsuCard = cardBuilder().withCardIdentifier('a').withLegalHeroes([HEROES.Katsu]).build();
+    const bravoCard = cardBuilder().withCardIdentifier('b').withLegalHeroes([HEROES.Bravo]).build();
+    const cards = selectVisibleCards(stateBuilder().withAllCards([katsuCard, bravoCard]).build());
+    expect(cards).toHaveLength(2);
+  });
+
+  test('Rule: Cards legal for multiple heroes match when one of those heroes is selected', () => {
+    const generic = cardBuilder()
+      .withCardIdentifier('a')
+      .withLegalHeroes([HEROES.Katsu, HEROES.Bravo, HEROES.Ira])
+      .build();
+    const katsuOnly = cardBuilder().withCardIdentifier('b').withLegalHeroes([HEROES.Katsu]).build();
+    const bravoOnly = cardBuilder().withCardIdentifier('c').withLegalHeroes([HEROES.Bravo]).build();
+    const cards = selectVisibleCards(
+      stateBuilder().withAllCards([generic, katsuOnly, bravoOnly]).withHero(HEROES.Katsu).build(),
+    );
+    expect(cards).toHaveLength(2);
+    expect(cards.map((c) => c.cardIdentifier)).toEqual(expect.arrayContaining(['a', 'b']));
   });
 });

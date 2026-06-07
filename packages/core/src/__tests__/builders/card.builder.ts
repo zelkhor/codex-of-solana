@@ -1,5 +1,6 @@
 import type { Card, Printing } from '../../card-catalog/domain/card';
 import { CLASSES } from '../../shared/game/class';
+import { HEROES } from '../../shared/game/hero';
 import { PITCH_VALUES } from '../../shared/game/pitch';
 import { RARITIES } from '../../shared/game/rarity';
 import { SETS } from '../../shared/game/set';
@@ -26,6 +27,7 @@ type CardBuilderT = {
   withIntellect: (intellect: Card['intellect']) => CardBuilderT;
   withLife: (life: Card['life']) => CardBuilderT;
   withFunctionalText: (functionalText: Card['functionalText']) => CardBuilderT;
+  withLegalHeroes: (legalHeroes: Card['legalHeroes']) => CardBuilderT;
   withDefaultImage: (defaultImage: string) => CardBuilderT;
   withPrintings: (printings: Printing[]) => CardBuilderT;
   build: () => Card;
@@ -52,6 +54,7 @@ export const cardBuilder = ({
   intellect = null,
   life = null,
   functionalText = null,
+  legalHeroes = [HEROES.Katsu],
   printings = [defaultPrinting],
   defaultImage = 'WTR001',
 }: Partial<Card> = {}): CardBuilderT => {
@@ -74,6 +77,7 @@ export const cardBuilder = ({
     intellect,
     life,
     functionalText,
+    legalHeroes,
     printings,
     defaultImage,
   };
@@ -99,6 +103,8 @@ export const cardBuilder = ({
     withLife: (_life: Card['life']) => cardBuilder({ ...props, life: _life }),
     withFunctionalText: (_functionalText: Card['functionalText']) =>
       cardBuilder({ ...props, functionalText: _functionalText }),
+    withLegalHeroes: (_legalHeroes: Card['legalHeroes']) =>
+      cardBuilder({ ...props, legalHeroes: _legalHeroes }),
     withDefaultImage: (_defaultImage: string) =>
       cardBuilder({ ...props, defaultImage: _defaultImage }),
     withPrintings: (_printings: Printing[]) => cardBuilder({ ...props, printings: _printings }),

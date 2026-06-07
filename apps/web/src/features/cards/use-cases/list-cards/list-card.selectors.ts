@@ -37,6 +37,7 @@ export const selectVisibleCards = createSelector(
           return false;
         if (!matchesFilterWithMode(card.keywords, filters.keywords, filters.keywordFilterMode))
           return false;
+        if (filters.hero !== null && !card.legalHeroes.includes(filters.hero)) return false;
         if (!matchesNumericFilter(card.cost, filters.cost)) return false;
         if (!matchesNumericFilter(card.pitch, filters.pitch)) return false;
         if (!matchesNumericFilter(card.attack, filters.attack)) return false;

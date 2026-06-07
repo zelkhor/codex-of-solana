@@ -3,6 +3,7 @@ import { expect } from 'vitest';
 import type {
   ClassT,
   FoilingT,
+  HeroT,
   KeywordT,
   RarityT,
   SetT,
@@ -23,6 +24,7 @@ import {
   setClassFilterMode,
   setClasses,
   setFoilings,
+  setHero,
   setKeywordFilterMode,
   setKeywords,
   setRarities,
@@ -118,6 +120,11 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setArtists(artists));
   };
 
+  const whenSelectingHeroFilter = (hero: HeroT | null) => {
+    initStore();
+    store.dispatch(setHero(hero));
+  };
+
   const whenResettingFilters = () => {
     initStore();
     store.dispatch(resetFilters());
@@ -147,6 +154,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     whenAddingRarityFilter,
     whenAddingFoilingFilter,
     whenAddingArtistFilter,
+    whenSelectingHeroFilter,
     whenResettingFilters,
     thenFiltersShouldBe,
     thenHasActiveFiltersShouldBe,

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type {
   ClassT,
   FoilingT,
+  HeroT,
   KeywordT,
   RarityT,
   SetT,
@@ -28,6 +29,7 @@ import {
   setDefenseFilter,
   setFoilings,
   setGroupPrintings,
+  setHero,
   setKeywordFilterMode,
   setKeywords,
   setPitchFilter,
@@ -63,6 +65,7 @@ export interface FilterPanelViewModel {
   setRarities: (v: RarityT[]) => void;
   setFoilings: (v: FoilingT[]) => void;
   setArtists: (v: string[]) => void;
+  setHero: (v: HeroT | null) => void;
   setSortOrder: (v: SortOrderT) => void;
   setCostFilter: (v: NumericComparisonT) => void;
   setPitchFilter: (v: NumericComparisonT) => void;
@@ -107,6 +110,7 @@ export const useFilterPanelViewModel = (): FilterPanelViewModel => {
     setRarities: (v) => dispatch(setRarities(v)),
     setFoilings: (v) => dispatch(setFoilings(v)),
     setArtists: (v) => dispatch(setArtists(v)),
+    setHero: (v) => dispatch(setHero(v)),
     setSortOrder: (v) => dispatch(setSortOrder(v)),
     setCostFilter: (v) => dispatch(setCostFilter(v)),
     setPitchFilter: (v) => dispatch(setPitchFilter(v)),

@@ -1,6 +1,16 @@
 import { beforeEach, describe, test } from 'vitest';
 
-import { CLASSES, FOILINGS, KEYWORDS, RARITIES, SETS, SUBTYPES, TALENTS, TYPES } from '@codex/core';
+import {
+  CLASSES,
+  FOILINGS,
+  HEROES,
+  KEYWORDS,
+  RARITIES,
+  SETS,
+  SUBTYPES,
+  TALENTS,
+  TYPES,
+} from '@codex/core';
 
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
 import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
@@ -116,6 +126,11 @@ describe('Feature: Filtering cards', () => {
   test('Rule: I should be able to filter cards by artist', () => {
     fixture.whenAddingArtistFilter(['Micah Epstein', 'Dominik Mayer']);
     fixture.thenFiltersShouldBe({ artists: ['Micah Epstein', 'Dominik Mayer'] });
+  });
+
+  test('Rule: I should be able to filter cards by hero legality', () => {
+    fixture.whenSelectingHeroFilter(HEROES.Katsu);
+    fixture.thenFiltersShouldBe({ hero: HEROES.Katsu });
   });
 
   test('Rule: I should be able to reset all active filters at once', () => {

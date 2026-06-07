@@ -30,6 +30,7 @@ import { NumericFilterInput } from '@/shared/ui/NumericFilterInput.tsx';
 import { Select } from '@/shared/ui/Select.tsx';
 import { Toggle } from '@/shared/ui/Toggle.tsx';
 
+import { HeroFilter } from './HeroFilter.tsx';
 import { SearchInput } from './SearchInput.tsx';
 import { useFilterPanelViewModel } from './filter-panel.view-model.ts';
 
@@ -176,7 +177,10 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
             />
           </div>
         </FilterRow>
-        <FilterRow label="Set" className="pt-4">
+        <FilterRow label="Hero" className="pt-4">
+          <HeroFilter value={vm.filters.hero} onChange={vm.setHero} />
+        </FilterRow>
+        <FilterRow label="Set">
           <MultiSelect
             groups={SET_GROUPS.map((g) => ({ label: g.group, options: g.sets }))}
             selected={vm.filters.sets}

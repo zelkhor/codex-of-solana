@@ -21,5 +21,6 @@ export const selectHasActiveFilters = createSelector(
     f.rarities.length > 0 ||
     f.foilings.length > 0 ||
     f.artists.length > 0 ||
+    f.hero !== null ||
     f.searchQuery.length > 0,
 );

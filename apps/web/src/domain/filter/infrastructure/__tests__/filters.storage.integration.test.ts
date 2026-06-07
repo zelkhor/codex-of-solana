@@ -1,6 +1,16 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { CLASSES, FOILINGS, KEYWORDS, RARITIES, SETS, SUBTYPES, TALENTS, TYPES } from '@codex/core';
+import {
+  CLASSES,
+  FOILINGS,
+  HEROES,
+  KEYWORDS,
+  RARITIES,
+  SETS,
+  SUBTYPES,
+  TALENTS,
+  TYPES,
+} from '@codex/core';
 
 import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
@@ -28,6 +38,7 @@ const fullState = stateBuilder()
   .withRarities([RARITIES.Promo])
   .withFoilings([FOILINGS.Gold])
   .withArtists(['Micah Epstein'])
+  .withHero(HEROES.Katsu)
   .withSearchQuery('ninja')
   .withSortOrder(SORT_ORDER.SET_ASC)
   .withCostFilter({ operator: COMPARISON_OPERATORS.GTE, value: 2 })
