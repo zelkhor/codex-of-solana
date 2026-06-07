@@ -132,7 +132,7 @@ src/
 
 **Store creation** (`main.tsx`) wires real gateways and preloads filter state from localStorage. `store.subscribe` saves filters back on every change.
 
-**Routing** (`react-router`): `/` → `CardListingView`, `/cards/:cardIdentifier` → `CardDetailView`.
+**Routing** (`react-router`): `/` → `CardListingPage`, `/cards/:cardIdentifier` → `CardDetailsPage`.
 
 **Filter persistence:** filters slice is serialised to localStorage under key `codex:filters` via `filters.storage.ts`.
 

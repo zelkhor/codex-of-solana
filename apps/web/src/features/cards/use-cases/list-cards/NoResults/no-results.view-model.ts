@@ -4,11 +4,11 @@ import type { AppDispatch } from '@/shared/store';
 
 import { resetFilters } from '@/domain/filter/application/filters.slice.ts';
 
-export interface NoFilterResultsViewModel {
+export interface NoResultsViewModel {
   reset: () => void;
 }
 
-export const useNoFilterResultsViewModel = (): NoFilterResultsViewModel => {
+export const useNoResultsViewModel = (): NoResultsViewModel => {
   const dispatch = useDispatch<AppDispatch>();
   return { reset: () => dispatch(resetFilters()) };
 };

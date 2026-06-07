@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-import { CardListingView } from '@/features/cards/pages/CardListingView.tsx';
-import { CardDetailView } from '@/features/cards/use-cases/view-card-details/CardDetailView.tsx';
+import { CardDetailsPage } from '@/features/cards/pages/CardDetailsPage/CardDetailsPage.tsx';
+import { CardListingPage } from '@/features/cards/pages/CardListingPage/CardListingPage.tsx';
 
 export const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<CardListingView />} />
-      <Route path="/cards/:cardIdentifier" element={<CardDetailView />} />
+      <Route path="/" element={<CardListingPage />} />
+      <Route path="/cards/:cardIdentifier" element={<CardDetailsPage />} />
     </Routes>
   </BrowserRouter>
 );

@@ -4,7 +4,7 @@ import type { Printing } from '@codex/core';
 
 import { type TiltEffect, foilingToEffect } from '@/features/cards/ui/card.helpers.ts';
 
-export interface CardDetailViewModel {
+export interface CardDetailsViewModel {
   activePrinting: Printing;
   setActivePrinting: (printing: Printing) => void;
   backPrinting: Printing | null;
@@ -13,7 +13,7 @@ export interface CardDetailViewModel {
   tiltEffect: TiltEffect;
 }
 
-export const useCardDetailViewModel = (initialPrinting: Printing): CardDetailViewModel => {
+export const useCardDetailsViewModel = (initialPrinting: Printing): CardDetailsViewModel => {
   const [activePrinting, setActivePrinting] = useState<Printing>(initialPrinting);
 
   const { backPrinting } = activePrinting;

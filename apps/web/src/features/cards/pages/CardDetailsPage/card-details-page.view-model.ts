@@ -6,13 +6,13 @@ import type { Card, Printing } from '@codex/core';
 import { selectCardById } from '@/domain/card-catalog/domain/select-card-by-id.selector.ts';
 import { selectPrintingByCardAndCode } from '@/domain/card-catalog/domain/select-printing-by-card-and-code.selector.ts';
 
-export interface CardDetailViewViewModel {
+export interface CardDetailsPageViewModel {
   card: Card | undefined;
   printing: Printing | undefined;
   goBack: () => void;
 }
 
-export const useCardDetailViewViewModel = (): CardDetailViewViewModel => {
+export const useCardDetailsPageViewModel = (): CardDetailsPageViewModel => {
   const { cardIdentifier } = useParams<{ cardIdentifier: string }>();
   const location = useLocation();
   const navigate = useNavigate();

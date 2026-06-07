@@ -12,17 +12,17 @@ import { ASYNC_STATUS } from '@/shared/types/async-status.ts';
 
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
 
-import { useCardListingViewModel } from '@/features/cards/pages/card-listing.view-model.ts';
+import { useCardListingPageViewModel } from '@/features/cards/pages/CardListingPage/card-listing-page.view-model.ts';
 import { CardFlipAnimation } from '@/features/cards/ui/CardFlipAnimation.tsx';
-import { FilterDrawer } from '@/features/cards/use-cases/filter-cards/FilterDrawer.tsx';
-import { CardGrid } from '@/features/cards/use-cases/list-cards/CardGrid.tsx';
-import { CardGridSkeleton } from '@/features/cards/use-cases/list-cards/CardGridSkeleton.tsx';
-import { NoFilterResults } from '@/features/cards/use-cases/list-cards/NoFilterResults.tsx';
-import { CardDetailModal } from '@/features/cards/use-cases/view-card-details/CardDetailModal.tsx';
+import { FilterDrawer } from '@/features/cards/use-cases/filter-cards/FilterDrawer/FilterDrawer.tsx';
+import { CardGrid } from '@/features/cards/use-cases/list-cards/CardGrid/CardGrid.tsx';
+import { CardGridSkeleton } from '@/features/cards/use-cases/list-cards/CardGrid/CardGridSkeleton.tsx';
+import { NoResults } from '@/features/cards/use-cases/list-cards/NoResults/NoResults.tsx';
+import { CardDetailsModal } from '@/features/cards/use-cases/view-card-details/CardDetails/CardDetailsModal.tsx';
 
-export const CardListingView = () => {
+export const CardListingPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const vm = useCardListingViewModel();
+  const vm = useCardListingPageViewModel();
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
@@ -59,9 +59,7 @@ export const CardListingView = () => {
               <p className="text-destructive">Failed to load cards. Please try again</p>
             </div>
           )}
-          {vm.status === ASYNC_STATUS.SUCCEEDED && vm.visibleCards.length === 0 && (
-            <NoFilterResults />
-          )}
+          {vm.status === ASYNC_STATUS.SUCCEEDED && vm.visibleCards.length === 0 && <NoResults />}
           {vm.status === ASYNC_STATUS.SUCCEEDED && vm.visibleCards.length > 0 && (
             <CardGrid cardPrintings={vm.visibleCards} onCardClick={handleCardClick} />
           )}
@@ -96,7 +94,7 @@ export const CardListingView = () => {
       </div>
 
       {vm.activeCard && (
-        <CardDetailModal
+        <CardDetailsModal
           key={`${vm.activeCard.card.cardIdentifier}-${vm.activeCard.printing.print}`}
           card={vm.activeCard.card}
           printing={vm.activeCard.printing}

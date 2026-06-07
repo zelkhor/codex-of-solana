@@ -20,7 +20,7 @@ interface ActiveCard {
   index: number;
 }
 
-export interface CardListingViewModel {
+export interface CardListingPageViewModel {
   status: RootState['cardCatalog']['status'];
   visibleCards: CardWithActivePrinting[];
   cardCount: number;
@@ -34,7 +34,7 @@ export interface CardListingViewModel {
   navigateNext: () => void;
 }
 
-export const useCardListingViewModel = (): CardListingViewModel => {
+export const useCardListingPageViewModel = (): CardListingPageViewModel => {
   const visibleCards = useSelector(selectCardWithActivePrinting);
   const allCardsMap = useSelector(selectAllCardsMap);
   const status = useSelector((s: RootState) => s.cardCatalog.status);

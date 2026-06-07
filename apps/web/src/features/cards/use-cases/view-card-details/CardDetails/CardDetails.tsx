@@ -17,8 +17,7 @@ import {
 } from '@/features/cards/ui/CardIcons.tsx';
 import { FoilingBadge } from '@/features/cards/ui/FoilingBadge.tsx';
 import { TiltCard } from '@/features/cards/ui/TiltCard.tsx';
-
-import { useCardDetailViewModel } from './card-detail.view-model.ts';
+import { useCardDetailsViewModel } from '@/features/cards/use-cases/view-card-details/CardDetails/card-details.view-model.ts';
 
 interface CardDetailProps {
   card: Card;
@@ -28,14 +27,14 @@ interface CardDetailProps {
   cardImageVisible?: boolean;
 }
 
-export const CardDetail = ({
+export const CardDetails = ({
   card,
   initialPrinting,
   onBack,
   cardImageContainerRef,
   cardImageVisible = true,
 }: CardDetailProps) => {
-  const vm = useCardDetailViewModel(initialPrinting);
+  const vm = useCardDetailsViewModel(initialPrinting);
   const printingsRef = useRef<HTMLDivElement>(null);
   const [hasMorePrintings, setHasMorePrintings] = useState(false);
   const [imgError, setImgError] = useState(false);

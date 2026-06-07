@@ -1,7 +1,7 @@
-import { useNoFilterResultsViewModel } from './no-filter-results.view-model.ts';
+import { useNoResultsViewModel } from './no-results.view-model.ts';
 
-export const NoFilterResults = () => {
-  const vm = useNoFilterResultsViewModel();
+export const NoResults = () => {
+  const vm = useNoResultsViewModel();
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-6 px-4 select-none">

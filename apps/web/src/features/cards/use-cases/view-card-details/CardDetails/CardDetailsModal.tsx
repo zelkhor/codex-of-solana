@@ -6,7 +6,7 @@ import type { Card, Printing } from '@codex/core';
 
 import { useKeydown } from '@/shared/hooks/useKeydown.ts';
 
-import { CardDetail } from './CardDetail.tsx';
+import { CardDetails } from './CardDetails.tsx';
 
 interface CardDetailModalProps {
   card: Card;
@@ -19,7 +19,7 @@ interface CardDetailModalProps {
   cardImageVisible?: boolean;
 }
 
-export const CardDetailModal = ({
+export const CardDetailsModal = ({
   card,
   printing,
   onClose,
@@ -73,7 +73,7 @@ export const CardDetailModal = ({
         >
           <X size={20} />
         </button>
-        <CardDetail
+        <CardDetails
           card={card}
           initialPrinting={printing}
           cardImageContainerRef={cardImageContainerRef}
