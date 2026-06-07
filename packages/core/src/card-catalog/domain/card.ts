@@ -1,6 +1,7 @@
 import type { ClassT } from '../../shared/game/class';
 import type { EditionT } from '../../shared/game/edition';
 import type { FoilingT } from '../../shared/game/foiling';
+import type { FormatT } from '../../shared/game/format';
 import type { HeroT } from '../../shared/game/hero';
 import type { KeywordT } from '../../shared/game/keyword';
 import type { PitchT } from '../../shared/game/pitch';
@@ -44,6 +45,7 @@ export interface Card {
   life: number | null;
   functionalText: string | null;
   legalHeroes: HeroT[];
+  legalFormats: FormatT[];
   printings: Printing[];
   defaultImage: string;
 }

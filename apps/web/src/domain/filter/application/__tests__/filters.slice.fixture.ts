@@ -3,6 +3,7 @@ import { expect } from 'vitest';
 import type {
   ClassT,
   FoilingT,
+  FormatT,
   HeroT,
   KeywordT,
   RarityT,
@@ -25,6 +26,7 @@ import {
   setClassFilterMode,
   setClasses,
   setFoilings,
+  setFormat,
   setHero,
   setKeywordFilterMode,
   setKeywords,
@@ -138,6 +140,11 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     store.dispatch(setHero(hero));
   };
 
+  const whenSelectingFormatFilter = (format: FormatT | null) => {
+    initStore();
+    store.dispatch(setFormat(format));
+  };
+
   const whenResettingFilters = () => {
     initStore();
     store.dispatch(resetFilters());
@@ -170,6 +177,7 @@ export const createFiltersSliceFixture = createFixture((stateBuilderProvider) =>
     whenSettingTreatmentFilterMode,
     whenAddingArtistFilter,
     whenSelectingHeroFilter,
+    whenSelectingFormatFilter,
     whenResettingFilters,
     thenFiltersShouldBe,
     thenHasActiveFiltersShouldBe,

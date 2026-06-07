@@ -4,6 +4,7 @@ import type {
   Card,
   ClassT,
   FoilingT,
+  FormatT,
   HeroT,
   KeywordT,
   RarityT,
@@ -40,6 +41,7 @@ const withTreatments = createAction<TreatmentT[]>('withTreatments');
 const withTreatmentFilterMode = createAction<FilterModeT>('withTreatmentFilterMode');
 const withArtists = createAction<string[]>('withArtists');
 const withHero = createAction<HeroT | null>('withHero');
+const withFormat = createAction<FormatT | null>('withFormat');
 const withSearchQuery = createAction<string>('withSearchQuery');
 const withSortOrder = createAction<SortOrderT>('withSortOrder');
 const withGroupPrintings = createAction<boolean>('withGroupPrintings');
@@ -107,6 +109,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(withHero, (state, { payload }) => {
       state.filters.hero = payload;
     })
+    .addCase(withFormat, (state, { payload }) => {
+      state.filters.format = payload;
+    })
     .addCase(withSearchQuery, (state, { payload }) => {
       state.filters.searchQuery = payload;
     })
@@ -158,6 +163,7 @@ export const stateBuilder = (state = initialState) => {
     withTreatmentFilterMode: reduce(withTreatmentFilterMode),
     withArtists: reduce(withArtists),
     withHero: reduce(withHero),
+    withFormat: reduce(withFormat),
     withSearchQuery: reduce(withSearchQuery),
     withSortOrder: reduce(withSortOrder),
     withGroupPrintings: reduce(withGroupPrintings),

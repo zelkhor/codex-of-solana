@@ -24,5 +24,6 @@ export const selectHasActiveFilters = createSelector(
     f.treatmentFilterMode === FILTER_MODES.EXACT ||
     f.artists.length > 0 ||
     f.hero !== null ||
+    f.format !== null ||
     f.searchQuery.length > 0,
 );

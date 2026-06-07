@@ -32,6 +32,7 @@ import { NumericFilterInput } from '@/shared/ui/NumericFilterInput.tsx';
 import { Select } from '@/shared/ui/Select.tsx';
 import { Toggle } from '@/shared/ui/Toggle.tsx';
 
+import { FormatFilter } from './FormatFilter.tsx';
 import { HeroFilter } from './HeroFilter.tsx';
 import { SearchInput } from './SearchInput.tsx';
 import { useFilterPanelViewModel } from './filter-panel.view-model.ts';
@@ -66,7 +67,7 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
   const vm = useFilterPanelViewModel();
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="px-6 pt-6 pb-32 space-y-4">
       <div className="flex items-center gap-3">
         <div className="flex-1">
           <SearchInput />
@@ -196,7 +197,10 @@ export const FilterPanel = ({ onClose }: FilterPanelProps) => {
             />
           </div>
         </FilterRow>
-        <FilterRow label="Hero" className="pt-4">
+        <FilterRow label="Format" className="pt-4">
+          <FormatFilter value={vm.filters.format} onChange={vm.setFormat} />
+        </FilterRow>
+        <FilterRow label="Hero">
           <HeroFilter value={vm.filters.hero} onChange={vm.setHero} />
         </FilterRow>
         <FilterRow label="Set">

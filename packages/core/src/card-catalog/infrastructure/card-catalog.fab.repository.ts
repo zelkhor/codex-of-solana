@@ -78,6 +78,7 @@ const mapToCardDto = (card: SourceCard, printingImageIndex: Map<string, SourcePr
   life: card.life ?? null,
   functionalText: card.functionalText ?? null,
   legalHeroes: (card.legalHeroes ?? []) as Card['legalHeroes'],
+  legalFormats: (card.legalFormats ?? []) as Card['legalFormats'],
   printings: card.printings.map((p) => mapToPrintingDto(p, printingImageIndex)),
   defaultImage: card.defaultImage ?? '',
 });

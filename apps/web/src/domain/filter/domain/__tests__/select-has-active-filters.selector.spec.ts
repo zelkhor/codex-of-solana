@@ -9,7 +9,6 @@ import {
   SETS,
   SUBTYPES,
   TALENTS,
-  TREATMENTS,
   TYPES,
 } from '@codex/core';
 
@@ -47,10 +46,11 @@ describe('Feature: Detecting whether any filter is active', () => {
     ['set', (b: StateBuilder) => b.withSets([SETS.WelcomeToRathe])],
     ['rarity', (b: StateBuilder) => b.withRarities([RARITIES.Common])],
     ['foiling', (b: StateBuilder) => b.withFoilings([FOILINGS.Rainbow])],
-    ['treatment', (b: StateBuilder) => b.withTreatments([TREATMENTS.AA])],
+    ['treatment', (b: StateBuilder) => b.withTreatments(['Alternate Art'])],
     ['treatment exact mode', (b: StateBuilder) => b.withTreatmentFilterMode(FILTER_MODES.EXACT)],
     ['artist', (b: StateBuilder) => b.withArtists(['Micah Epstein'])],
     ['hero', (b: StateBuilder) => b.withHero(HEROES.Katsu)],
+    ['format', (b: StateBuilder) => b.withFormat('Blitz')],
     ['search query', (b: StateBuilder) => b.withSearchQuery('ninja')],
   ])('Rule: Returns true when a %s filter is active', (_, setup) => {
     fixture.givenFilters(setup);

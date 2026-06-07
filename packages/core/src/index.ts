@@ -3,6 +3,7 @@ export * from './shared/helpers/result';
 
 export * from './shared/game/class';
 export * from './shared/game/edition';
+export * from './shared/game/format';
 export * from './shared/game/hero';
 export * from './shared/game/foiling';
 export * from './shared/game/keyword';

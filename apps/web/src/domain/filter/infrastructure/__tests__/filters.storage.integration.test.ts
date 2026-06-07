@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import {
   CLASSES,
   FOILINGS,
+  FORMATS,
   HEROES,
   KEYWORDS,
   RARITIES,
@@ -38,10 +39,11 @@ const fullState = stateBuilder()
   .withSets([SETS.WelcomeToRathe])
   .withRarities([RARITIES.Promo])
   .withFoilings([FOILINGS.Gold])
-  .withTreatments([TREATMENTS.AA])
+  .withTreatments([TREATMENTS.AB])
   .withTreatmentFilterMode(FILTER_MODES.ANY)
   .withArtists(['Micah Epstein'])
   .withHero(HEROES.Katsu)
+  .withFormat(FORMATS.SilverAge)
   .withSearchQuery('ninja')
   .withSortOrder(SORT_ORDER.SET_ASC)
   .withCostFilter({ operator: COMPARISON_OPERATORS.GTE, value: 2 })

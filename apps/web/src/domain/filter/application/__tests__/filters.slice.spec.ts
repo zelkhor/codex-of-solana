@@ -3,6 +3,7 @@ import { beforeEach, describe, test } from 'vitest';
 import {
   CLASSES,
   FOILINGS,
+  FORMATS,
   HEROES,
   KEYWORDS,
   RARITIES,
@@ -150,6 +151,11 @@ describe('Feature: Filtering cards', () => {
     fixture.thenFiltersShouldBe({ hero: HEROES.Katsu });
   });
 
+  test('Rule: I should be able to filter cards by format legality', () => {
+    fixture.whenSelectingFormatFilter(FORMATS.Blitz);
+    fixture.thenFiltersShouldBe({ format: FORMATS.Blitz });
+  });
+
   test('Rule: I should be able to reset all active filters at once', () => {
     fixture.givenActiveFilters((b) =>
       b
@@ -161,7 +167,7 @@ describe('Feature: Filtering cards', () => {
         .withSets([SETS.WelcomeToRathe, SETS.ArcaneRising])
         .withRarities([RARITIES.Rare, RARITIES.Majestic])
         .withFoilings([FOILINGS.Rainbow, FOILINGS.Cold])
-        .withTreatments([TREATMENTS.AA, TREATMENTS.EA])
+        .withTreatments([TREATMENTS.AA, TREATMENTS.FA])
         .withArtists(['Micah Epstein', 'Dominik Mayer']),
     );
     fixture.whenResettingFilters();

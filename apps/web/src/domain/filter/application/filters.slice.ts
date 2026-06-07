@@ -3,6 +3,7 @@ import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
   type ClassT,
   type FoilingT,
+  type FormatT,
   type HeroT,
   type KeywordT,
   type RarityT,
@@ -40,6 +41,7 @@ export interface FiltersState {
   treatmentFilterMode: FilterModeT;
   artists: string[];
   hero: HeroT | null;
+  format: FormatT | null;
   searchQuery: string;
   sortOrder: SortOrderT;
   cost: NumericComparisonT;
@@ -67,6 +69,7 @@ export const initialFiltersState: FiltersState = {
   treatmentFilterMode: FILTER_MODES.ANY,
   artists: [],
   hero: null,
+  format: null,
   searchQuery: '',
   sortOrder: SORT_ORDER.SET_ASC,
   cost: emptyNumericFilter,
@@ -131,6 +134,9 @@ export const filtersSlice = createSlice({
     setHero(state, action: PayloadAction<HeroT | null>) {
       state.hero = action.payload;
     },
+    setFormat(state, action: PayloadAction<FormatT | null>) {
+      state.format = action.payload;
+    },
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
     },
@@ -176,6 +182,7 @@ export const {
   setTreatmentFilterMode,
   setArtists,
   setHero,
+  setFormat,
   setSearchQuery,
   setSortOrder,
   setCostFilter,

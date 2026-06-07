@@ -46,6 +46,7 @@ export const MultiSelect = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Escape') {
+      e.nativeEvent.stopImmediatePropagation();
       setIsOpen(false);
       setSearchQuery('');
     }

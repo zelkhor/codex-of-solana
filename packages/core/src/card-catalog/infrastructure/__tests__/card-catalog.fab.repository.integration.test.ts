@@ -2,6 +2,7 @@ import { cardBuilder } from '../../../__tests__/builders/card.builder';
 import { printingBuilder } from '../../../__tests__/builders/printing.builder';
 import { CLASSES } from '../../../shared/game/class';
 import { EDITIONS } from '../../../shared/game/edition';
+import { FORMATS } from '../../../shared/game/format';
 import { PITCH_VALUES } from '../../../shared/game/pitch';
 import { RARITIES } from '../../../shared/game/rarity';
 import { SETS } from '../../../shared/game/set';
@@ -50,6 +51,8 @@ describe('Integration: CardCatalogFabRepository', () => {
       .withDefense(3)
       .withIntellect(null)
       .withLife(null)
+      .withLegalFormats([...Object.values(FORMATS)])
+      .withLegalHeroes(['Blaze', 'Broscilio', 'Iyslander', 'Kano', 'Oscilio', 'Verdance'])
       .withFunctionalText(
         'The next card you play this turn with an effect that deals arcane damage, instead deals that much arcane damage plus 2.',
       )

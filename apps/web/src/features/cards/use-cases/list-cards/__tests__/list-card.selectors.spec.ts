@@ -3,12 +3,14 @@ import { describe, expect, test } from 'vitest';
 import {
   CLASSES,
   FOILINGS,
+  FORMATS,
   HEROES,
   KEYWORDS,
   RARITIES,
   SETS,
   SUBTYPES,
   TALENTS,
+  TREATMENTS,
   TYPES,
   cardBuilder,
   printingBuilder,
@@ -514,6 +516,139 @@ describe('Feature: Printing-level filtering', () => {
     expect(cards[0].printings[0].rarity).toBe(RARITIES.Majestic);
     expect(cards[0].printings[0].backPrinting?.rarity).toBe(RARITIES.Marvel);
   });
+});
+
+test('Rule: Includes only printings with the selected treatment in any mode', () => {
+  const altArtPrinting = printingBuilder()
+    .withIdentifier('WTR001')
+    .withPrint('WTR001')
+    .withTreatments([TREATMENTS.AA])
+    .build();
+  const fullArtPrinting = printingBuilder()
+    .withIdentifier('WTR002')
+    .withPrint('WTR002')
+    .withTreatments([TREATMENTS.FA])
+    .build();
+  const card = cardBuilder().withPrintings([altArtPrinting, fullArtPrinting]).build();
+  const cards = selectVisibleCards(
+    stateBuilder().withAllCards([card]).withTreatments([TREATMENTS.AA]).build(),
+  );
+  expect(cards[0].printings).toHaveLength(1);
+  expect(cards[0].printings[0].print).toBe('WTR001');
+});
+
+test('Rule: Excludes all printings when the treatment filter does not match any', () => {
+  const printing = printingBuilder().withTreatments([TREATMENTS.FA]).build();
+  const card = cardBuilder().withPrintings([printing]).build();
+  const cards = selectVisibleCards(
+    stateBuilder().withAllCards([card]).withTreatments([TREATMENTS.AA]).build(),
+  );
+  expect(cards).toHaveLength(0);
+});
+
+test('Rule: In exact mode with no treatments selected, only printings with no treatments are shown', () => {
+  const noTreatment = printingBuilder()
+    .withIdentifier('WTR001')
+    .withPrint('WTR001')
+    .withTreatments([])
+    .build();
+  const withTreatment = printingBuilder()
+    .withIdentifier('WTR002')
+    .withPrint('WTR002')
+    .withTreatments([TREATMENTS.AA])
+    .build();
+  const card = cardBuilder().withPrintings([noTreatment, withTreatment]).build();
+  const cards = selectVisibleCards(
+    stateBuilder().withAllCards([card]).withTreatmentFilterMode(FILTER_MODES.EXACT).build(),
+  );
+  expect(cards[0].printings).toHaveLength(1);
+  expect(cards[0].printings[0].print).toBe('WTR001');
+});
+
+test('Rule: In exact mode, printings with additional treatments are excluded', () => {
+  const altArt = printingBuilder()
+    .withIdentifier('WTR001')
+    .withPrint('WTR001')
+    .withTreatments([TREATMENTS.AA])
+    .build();
+  const altArtExtended = printingBuilder()
+    .withIdentifier('WTR002')
+    .withPrint('WTR002')
+    .withTreatments([TREATMENTS.AA, TREATMENTS.EA])
+    .build();
+  const card = cardBuilder().withPrintings([altArt, altArtExtended]).build();
+  const cards = selectVisibleCards(
+    stateBuilder()
+      .withAllCards([card])
+      .withTreatments([TREATMENTS.AA])
+      .withTreatmentFilterMode(FILTER_MODES.EXACT)
+      .build(),
+  );
+  expect(cards[0].printings).toHaveLength(1);
+  expect(cards[0].printings[0].print).toBe('WTR001');
+});
+
+test('Rule: In exact mode, a printing matches when its treatments exactly equal all selected treatments', () => {
+  const altArt = printingBuilder()
+    .withIdentifier('WTR001')
+    .withPrint('WTR001')
+    .withTreatments([TREATMENTS.AA])
+    .build();
+  const altArtExtended = printingBuilder()
+    .withIdentifier('WTR002')
+    .withPrint('WTR002')
+    .withTreatments([TREATMENTS.AA, TREATMENTS.EA])
+    .build();
+  const card = cardBuilder().withPrintings([altArt, altArtExtended]).build();
+  const cards = selectVisibleCards(
+    stateBuilder()
+      .withAllCards([card])
+      .withTreatments([TREATMENTS.AA, TREATMENTS.EA])
+      .withTreatmentFilterMode(FILTER_MODES.EXACT)
+      .build(),
+  );
+  expect(cards[0].printings).toHaveLength(1);
+  expect(cards[0].printings[0].print).toBe('WTR002');
+});
+
+test('Rule: Excludes cards not legal in the selected format', () => {
+  const blitzCard = cardBuilder().withCardIdentifier('a').withLegalFormats([FORMATS.Blitz]).build();
+  const ccCard = cardBuilder()
+    .withCardIdentifier('b')
+    .withLegalFormats([FORMATS.ClassicConstructed])
+    .build();
+  const cards = selectVisibleCards(
+    stateBuilder().withAllCards([blitzCard, ccCard]).withFormat(FORMATS.Blitz).build(),
+  );
+  expect(cards).toHaveLength(1);
+  expect(cards[0].cardIdentifier).toBe('a');
+});
+
+test('Rule: Shows all cards when no format filter is set', () => {
+  const blitzCard = cardBuilder().withCardIdentifier('a').withLegalFormats([FORMATS.Blitz]).build();
+  const ccCard = cardBuilder()
+    .withCardIdentifier('b')
+    .withLegalFormats([FORMATS.ClassicConstructed])
+    .build();
+  const cards = selectVisibleCards(stateBuilder().withAllCards([blitzCard, ccCard]).build());
+  expect(cards).toHaveLength(2);
+});
+
+test('Rule: Cards legal in multiple formats match when one of those formats is selected', () => {
+  const multiFormat = cardBuilder()
+    .withCardIdentifier('a')
+    .withLegalFormats([FORMATS.Blitz, FORMATS.ClassicConstructed])
+    .build();
+  const blitzOnly = cardBuilder().withCardIdentifier('b').withLegalFormats([FORMATS.Blitz]).build();
+  const ccOnly = cardBuilder()
+    .withCardIdentifier('c')
+    .withLegalFormats([FORMATS.ClassicConstructed])
+    .build();
+  const cards = selectVisibleCards(
+    stateBuilder().withAllCards([multiFormat, blitzOnly, ccOnly]).withFormat(FORMATS.Blitz).build(),
+  );
+  expect(cards).toHaveLength(2);
+  expect(cards.map((c) => c.cardIdentifier)).toEqual(expect.arrayContaining(['a', 'b']));
 });
 
 describe('Feature: Artist filtering', () => {
