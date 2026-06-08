@@ -1,6 +1,6 @@
 import { beforeEach, describe, test } from 'vitest';
 
-import { cardBuilder, printingBuilder } from '@codex/core';
+import { cardBuilder, printingBuilder } from '@codex/core/testing';
 
 import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
 

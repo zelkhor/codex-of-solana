@@ -1,6 +1,6 @@
 import { beforeEach, describe, test } from 'vitest';
 
-import { cardBuilder } from '@codex/core';
+import { cardBuilder } from '@codex/core/testing';
 
 import {
   type CardCatalogFixture,

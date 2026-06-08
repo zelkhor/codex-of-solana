@@ -3,12 +3,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vitest/config';
 
-const srcDir = path.resolve(fileURLToPath(new URL('.', import.meta.url)), 'src');
+const rootDir = path.resolve(fileURLToPath(new URL('.', import.meta.url)));
+const srcDir = path.resolve(rootDir, 'src');
+const coreTestHelpers = path.resolve(rootDir, '../../packages/core/src/__tests__/index.ts');
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: { '@/': srcDir + '/' },
+    alias: {
+      '@/': srcDir + '/',
+      '@codex/core/testing': coreTestHelpers,
+    },
   },
   test: {
     environment: 'jsdom',

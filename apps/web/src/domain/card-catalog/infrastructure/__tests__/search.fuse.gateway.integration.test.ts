@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 
-import { SUBTYPES, cardBuilder } from '@codex/core';
+import { SUBTYPES } from '@codex/core';
+import { cardBuilder } from '@codex/core/testing';
 
 import { FuseSearchGateway } from '@/domain/card-catalog/infrastructure/search.fuse.gateway.ts';
 

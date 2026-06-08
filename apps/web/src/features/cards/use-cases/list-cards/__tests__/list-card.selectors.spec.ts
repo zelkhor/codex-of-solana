@@ -12,9 +12,8 @@ import {
   TALENTS,
   TREATMENTS,
   TYPES,
-  cardBuilder,
-  printingBuilder,
 } from '@codex/core';
+import { cardBuilder, printingBuilder } from '@codex/core/testing';
 
 import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';

@@ -2,7 +2,8 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest';
 
-import { cardBuilder, ok } from '@codex/core';
+import { ok } from '@codex/core';
+import { cardBuilder } from '@codex/core/testing';
 
 import { HttpClient } from '@/shared/gateways/http-client.ts';
 

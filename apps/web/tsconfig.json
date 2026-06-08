@@ -2,7 +2,8 @@
   "extends": "@codex/config/typescript/react.json",
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@codex/core/testing": ["../../packages/core/src/__tests__/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
