@@ -7,8 +7,8 @@
     "dev": "nest start --watch",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "pnpm test:unit && pnpm test:integration",
-    "test:unit": "jest --config jest.unit.config.js --passWithNoTests",
-    "test:integration": "jest --config jest.integration.config.js --passWithNoTests"
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "dependencies": {
     "@codex/core": "workspace:*",
@@ -26,13 +26,11 @@
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.1.24",
     "@types/express": "^5.0.0",
-    "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
-    "jest": "^30.4.2",
-    "ts-jest": "^29.4.11",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
   }
 }

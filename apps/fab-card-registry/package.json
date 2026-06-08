@@ -1,0 +1,23 @@
+{
+  "name": "@codex/fab-card-registry",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "sync": "tsx src/main.ts",
+    "test": "pnpm test:unit",
+    "test:unit": "vitest run --config vitest.unit.config.ts"
+  },
+  "dependencies": {
+    "@codex/orm": "workspace:*",
+    "@flesh-and-blood/cards": "^3.9.2",
+    "@flesh-and-blood/types": "^3.8.24",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@codex/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}

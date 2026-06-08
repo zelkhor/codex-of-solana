@@ -11,8 +11,8 @@
     "build": "prisma generate && tsc --project tsconfig.json",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "pnpm test:unit && pnpm test:integration",
-    "test:unit": "jest --config jest.unit.config.js --passWithNoTests",
-    "test:integration": "jest --config jest.integration.config.js --passWithNoTests",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev"
   },
@@ -29,9 +29,8 @@
     "dotenv": "^17.4.2",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
-    "jest": "^30.4.2",
     "prisma": "^7.8.0",
-    "ts-jest": "^29.4.11",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
   }
 }
