@@ -20,7 +20,6 @@ Browsing and filtering are available without authentication. Collection manageme
 | Validation         | Zod (API layer)                                          |
 | Linting/Formatting | ESLint + Prettier                                        |
 | Email              | SendGrid                                                 |
-| Card metadata      | `@flesh-and-blood/cards` + `@flesh-and-blood/types`      |
 | Fuzzy search       | Fuse.js (client-side, injected via Redux extra argument) |
 
 ## Monorepo Structure
@@ -29,6 +28,7 @@ Browsing and filtering are available without authentication. Collection manageme
 codex-of-solana/
 ├── apps/
 │   ├── api/                          # NestJS backend (port 3001)
+│   ├── fab-card-registry/            # Node script - CLI
 │   └── web/                          # React frontend (port 3000, /api proxied to 3001)
 ├── packages/
 │   ├── config/                       # Shared ESLint, TS, Prettier configs
@@ -39,63 +39,17 @@ codex-of-solana/
 └── package.json
 ```
 
-**Principles:**
-
-- `core` contains domain logic, use cases, repository interfaces, and concrete implementations. No web or API concerns. Also contains shared kernel types (`AppError`, `Result`).
-- `apps/api` wires NestJS DI and imports use cases from `core`.
-- `apps/web` imports domain types from `@codex/core` (aliased to `packages/core/src/index.ts` in Vite). The import alias `@/` maps to `apps/web/src/`.
-
-## Commands
-
-```bash
-# Development
-pnpm dev              # start all apps (Turborepo)
-pnpm build            # build all apps and packages
-pnpm test             # run all tests
-pnpm lint             # lint all packages
-pnpm format           # prettier format
-
-# Per-app
-pnpm --filter @codex/web dev        # Vite dev server
-pnpm --filter @codex/web test       # Vitest (run once)
-pnpm --filter @codex/web test:watch # Vitest watch
-pnpm --filter @codex/api dev        # NestJS watch mode
-pnpm --filter @codex/api test       # Jest
-
-# Single test file
-pnpm --filter @codex/web exec vitest run src/domain/card-catalog/application/__tests__/get-cards.spec.ts
-```
-
-### Result pattern
-
-Repositories and gateways return `Promise<Result<T, E>>`. `try/catch` lives **only** in infrastructure adapters (Repository implementation, API gateway, Prisma adapter). The application layer and thunks propagate `Result` without try/catch; thunks use `rejectWithValue` to surface errors.
-
-```ts
-// packages/shared
-type Result<T, E extends AppError> = { ok: true; value: T } | { ok: false; error: E };
-const ok = <T>(v: T) => ({ ok: true, value: v });
-const err = <E>(e: E) => ({ ok: false, error: e });
-```
-
-### packages/core — domain layer
-
-Organised by bounded context:
-
-- `domain/` — error types and aggregate roots (`Card`, `Printing`) with domain logic and invariants; no data-fetching concerns
-- `application/` — use case classes, repository interfaces, and unit tests for use cases; no infrastructure concerns
-- `infrastructure/` — concrete repository implementations (`card-catalog.fab.repository.ts`, `card-catalog.inmemory.repository.ts`)
-
-The FaB repository reads from `@flesh-and-blood/cards` and maps to `Card`. An in-memory repository is the standard test double.
-
-Key domain types exported from `@codex/core`: `Card`, `Printing`, `CardSetT`, `CardRarityT`, `CardFoilingT`, `CardClassT`, `CardTalentT`, `CardTypeT`, `CardSubtypeT`, `CardKeywordT`. Ordering constants: `SET_ORDER`, `RARITY_ORDER`, `FOILING_ORDER`.
+## Applications
 
 ### apps/api — NestJS
 
+Api layer using NestJS. It is kept very thin and is responsible for handling DI, instantiating use-cases, repositories and adapters and calling use-cases from HTTP controllers.
 Each domain has a NestJS module. The module wires use cases to concrete repositories via `useFactory`. A global `HttpError` converts thrown `AppError` instances into HTTP responses.
 
-### apps/web — Redux + Gateway pattern
+### apps/web — React / Redux toolkit
 
-State is managed with Redux Toolkit. Thunks receive **gateway** dependencies (`ThunkDependencies`) injected at store creation — never imported directly.
+This is the React app displaying the front-end to our users.
+State is managed with Redux Toolkit. Thunks receive **gateway** dependencies (`ThunkDependencies`) via `extraArgument` injected at store creation — never imported directly.
 
 The `src/` folder is split into three top-level areas:
 
@@ -136,7 +90,7 @@ src/
 
 **Filter persistence:** filters slice is serialised to localStorage under key `codex:filters` via `filters.storage.ts`.
 
-## Dependency flow (apps/web)
+#### Dependency flow (apps/web)
 
 ```
 @codex/core  ──►  shared  ──►  domain  ──►  features
@@ -157,6 +111,70 @@ src/
 - `pages/` — route-level entry point, wires use-cases together
 - `ui/` — context-specific visual components reusable across use-cases in the same context
 - `use-cases/{name}/` — one folder per distinct user scenario (`list-cards`, `filter-cards`, `view-card-details`). Self-contained: components, view model, and presentation selectors all live here. **A use-case cannot import from a sibling use-case.**
+
+### apps/fab-card-registry
+
+This app is used to import FaB reference data from the `@flesh-and-blood/cards` + `@flesh-and-blood/types` packages into our PostgreSQL database.
+
+- **Goal:** Insert every card, talent, class, type, keyword, artist, etc. from the package into the DB. The script is run manually on each new set release to pull in updated data. This replaces the reference data currently stored as `as const` objects in `core/shared/game`.
+- **Source-of-truth rule:** The database is always the source of truth. The script is **additive only** — it may insert new rows (a new card, talent, artist, class, …) but must NEVER override or mutate data that already exists. First run inserts everything; later runs insert only the rows that don't exist yet.
+- **Architecture:** Domain aggregates, value objects, use-cases, and repositories for this feature live in `packages/core` (shared across apps), following the existing bounded-context layout (`domain/` aggregates + invariants, `application/` use-case + repository interface, `infrastructure/` concrete repos). The seeding script drives these use-cases. Always diff against existing DB rows and insert only the missing ones.
+
+## packages/core
+
+This package contains domain aggregates or types, value-objects, use cases, repository interfaces, and concrete implementations. No web or API concerns. Also contains shared kernel types (`AppError`, `Result`).
+Every app should import from the core package while the core package should never depend on any other package except `config` and `orm` packages.
+
+This project is organized using a vertical slice for each bounded context. This is to enforce Screaming architecture.
+Each slice is separated into 3 layers :
+
+- `domain/` — error types, aggregate roots (`Card`, `Printing`) with domain logic and invariants, value-objects; no data-fetching concerns or external dependencies.
+- `application/` — use case classes, repository interfaces (port), and unit tests for use cases; no infrastructure concerns
+- `infrastructure/` — concrete repository implementations and in-memory implementations.
+
+### Dependency flow (packages/core)
+
+```
+shared kernel  ──►  domain  ──►  application  ──►  infrastructure
+```
+
+| Layer             | May import from                                                          | Must never import from            |
+| ----------------- | ------------------------------------------------------------------------ | --------------------------------- |
+| `domain/`         | shared kernel (`AppError`, `Result`) only                                | `application/`, `infrastructure/` |
+| `application/`    | `domain/`, shared kernel                                                 | `infrastructure/`                 |
+| `infrastructure/` | `domain/`, `application/` (to implement repository ports), shared kernel | —                                 |
+
+## Commands
+
+```bash
+# Development
+pnpm dev              # start all apps (Turborepo)
+pnpm build            # build all apps and packages
+pnpm test             # run all tests
+pnpm lint             # lint all packages
+pnpm format           # prettier format
+
+# Per-app
+pnpm --filter @codex/web dev        # Vite dev server
+pnpm --filter @codex/web test       # Vitest (run once)
+pnpm --filter @codex/web test:watch # Vitest watch
+pnpm --filter @codex/api dev        # NestJS watch mode
+pnpm --filter @codex/api test       # Jest
+
+# Single test file
+pnpm --filter @codex/web exec vitest run src/domain/card-catalog/application/__tests__/get-cards.spec.ts
+```
+
+### Result pattern
+
+Repositories and gateways return `Promise<Result<T, E>>`. `try/catch` lives **only** in infrastructure adapters (Repository implementation, API gateway, Prisma adapter). The application layer and thunks propagate `Result` without try/catch; thunks use `rejectWithValue` to surface errors.
+
+```ts
+// packages/shared
+type Result<T, E extends AppError> = { ok: true; value: T } | { ok: false; error: E };
+const ok = <T>(v: T) => ({ ok: true, value: v });
+const err = <E>(e: E) => ({ ok: false, error: e });
+```
 
 ## Code conventions
 
