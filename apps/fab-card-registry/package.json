@@ -5,7 +5,7 @@
   "scripts": {
     "sync": "tsx src/main.ts",
     "test": "pnpm test:unit",
-    "test:unit": "vitest run --config vitest.unit.config.ts"
+    "test:unit": "vitest run --config vitest.unit.config.mts"
   },
   "dependencies": {
     "@codex/orm": "workspace:*",
