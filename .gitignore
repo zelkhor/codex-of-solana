@@ -20,6 +20,10 @@ packages/orm/src/generated/
 # Turbo cache
 .turbo/
 
+# Test database state (written by the integration globalSetup)
+.test-db-state.json
+.test-db.env
+
 # Misc
 *.log
 .DS_Store

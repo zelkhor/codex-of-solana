@@ -1,5 +1,5 @@
 import { EmptyClassNameError } from '../../domain/game-glossary.errors';
-import { ImportClassesFixtureT, createImportClassesFixture } from './import-classes.fixture';
+import { type ImportClassesFixtureT, createImportClassesFixture } from './import-classes.fixture';
 
 describe('Feature: Importing game classes', () => {
   let fixture: ImportClassesFixtureT;

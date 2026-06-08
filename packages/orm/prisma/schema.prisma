@@ -3,6 +3,11 @@ generator client {
   output   = "../src/generated/prisma-client"
 }
 
+generator fabbrica {
+  provider = "prisma-fabbrica"
+  output   = "../src/generated/fabbrica"
+}
+
 datasource db {
   provider = "postgresql"
 }

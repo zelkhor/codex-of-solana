@@ -11,10 +11,18 @@ export default defineConfig({
     globals: true,
     passWithNoTests: true,
     testTimeout: 60000,
+    globalSetup: [path.resolve(__dirname, '../orm/src/__tests__/global-setup.ts')],
   },
   resolve: {
-    alias: {
-      '@codex/orm': path.resolve(__dirname, '../orm/src/index.ts'),
-    },
+    alias: [
+      {
+        find: '@codex/orm/__tests__',
+        replacement: path.resolve(__dirname, '../orm/src/__tests__'),
+      },
+      {
+        find: '@codex/orm',
+        replacement: path.resolve(__dirname, '../orm/src/index.ts'),
+      },
+    ],
   },
 });
