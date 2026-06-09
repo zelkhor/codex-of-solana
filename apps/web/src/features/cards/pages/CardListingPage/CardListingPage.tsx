@@ -9,7 +9,8 @@ import { AppHeader } from '@/shared/layout/AppHeader.tsx';
 import { ASYNC_STATUS } from '@/shared/types/async-status.ts';
 
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
-import { useAppDispatch } from '@/domain/store';
+import { searchCards } from '@/domain/card-catalog/application/search-cards.thunk.ts';
+import { useAppDispatch, useAppSelector } from '@/domain/store';
 
 import { useCardListingPageViewModel } from '@/features/cards/pages/CardListingPage/card-listing-page.view-model.ts';
 import { CardFlipAnimation } from '@/features/cards/ui/CardFlipAnimation.tsx';
@@ -22,13 +23,16 @@ import { CardDetailsModal } from '@/features/cards/use-cases/view-card-details/C
 export const CardListingPage = () => {
   const dispatch = useAppDispatch();
   const vm = useCardListingPageViewModel();
+  const searchQuery = useAppSelector((s) => s.filters.searchQuery);
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [animating, setAnimating] = useState(false);
   const cardImageContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (vm.status === ASYNC_STATUS.IDLE) void dispatch(getCards());
-  }, [dispatch, vm.status]);
+    // Restore a persisted search once the catalog has loaded — getCards no longer reads filters.
+    if (vm.status === ASYNC_STATUS.IDLE)
+      void dispatch(getCards()).then(() => dispatch(searchCards(searchQuery)));
+  }, [dispatch, vm.status, searchQuery]);
 
   useKeydown('k', (e) => {
     if (e.metaKey || e.ctrlKey) {

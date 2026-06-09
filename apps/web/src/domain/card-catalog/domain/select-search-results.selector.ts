@@ -3,7 +3,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import type { Card } from '@codex/core';
 
 import { selectAllCards } from '@/domain/card-catalog/domain/select-all-cards.selector.ts';
-import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
+import { selectCardsEntities } from '@/domain/card-catalog/domain/select-cards-entities.selector.ts';
 import { type RootState } from '@/domain/store';
 
 const selectSearchResultIdentifiers = (state: RootState) =>
@@ -12,11 +12,11 @@ const selectSearchResultIdentifiers = (state: RootState) =>
 export const selectSearchResults = createSelector(
   selectAllCards,
   selectSearchResultIdentifiers,
-  selectAllCardsMap,
-  (allCards, searchResultIds, cardsMap): Card[] =>
+  selectCardsEntities,
+  (allCards, searchResultIds, entities): Card[] =>
     searchResultIds === null
       ? allCards
       : searchResultIds
-          .map((identifier) => cardsMap.get(identifier))
+          .map((identifier) => entities[identifier])
           .filter((card): card is Card => card !== undefined),
 );

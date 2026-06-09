@@ -120,7 +120,7 @@ This app is used to import FaB reference data from the `@flesh-and-blood/cards` 
 
 - **Goal:** Insert every card, talent, class, type, keyword, artist, etc. from the package into the DB. The script is run manually on each new set release to pull in updated data. This replaces the reference data currently stored as `as const` objects in `core/shared/game`.
 - **Source-of-truth rule:** The database is always the source of truth. The script is **additive only** — it may insert new rows (a new card, talent, artist, class, …) but must NEVER override or mutate data that already exists. First run inserts everything; later runs insert only the rows that don't exist yet.
-- **Architecture:** Domain aggregates, value objects, use-cases, and repositories for this feature live in `packages/core` (shared across apps), following the existing bounded-context layout (`domain/` aggregates + invariants, `application/` use-case + repository interface, `infrastructure/` concrete repos). The seeding script drives these use-cases. Always diff against existing DB rows and insert only the missing ones.
+- **Architecture:** Domain aggregates, value objects, use-cases, and repositories for this feature live in `packages/core` (shared across apps), following the existing bounded-context layout (`domain/` aggregates + invariants, `application/` use-case + repository interface, `infrastructure/` concrete repos). The seeding script drives these use-cases.
 
 ## packages/core
 

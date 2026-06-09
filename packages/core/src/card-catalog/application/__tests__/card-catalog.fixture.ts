@@ -1,11 +1,11 @@
 import type { Result } from '../../../shared/helpers/result';
 import type { Card } from '../../domain/card';
 import type { CardCatalogLoadError } from '../../domain/card-catalog.errors';
-import { CardCatalogInMemoryRepository } from '../../infrastructure/card-catalog.inmemory.repository';
+import { InMemoryCardCatalogRepository } from '../../infrastructure/card-catalog.inmemory.repository';
 import { GetAllCardsUseCase } from '../get-all-cards.usecase';
 
 export const createCardCatalogFixture = () => {
-  const repository = new CardCatalogInMemoryRepository();
+  const repository = new InMemoryCardCatalogRepository();
   const useCase = new GetAllCardsUseCase(repository);
   let result: Result<Card[], CardCatalogLoadError> | null = null;
 

@@ -3,7 +3,7 @@ import type { ICardCatalogRepository } from '../application/card-catalog.reposit
 import type { Card } from '../domain/card';
 import type { CardCatalogLoadError } from '../domain/card-catalog.errors';
 
-export class CardCatalogInMemoryRepository implements ICardCatalogRepository {
+export class InMemoryCardCatalogRepository implements ICardCatalogRepository {
   private cards: Card[] = [];
 
   withCards(cards: Card[]): this {

@@ -1,24 +1,23 @@
-import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { type EntityState, type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import type { Card } from '@codex/core';
 
 import { ASYNC_STATUS, type AsyncStatusT } from '@/shared/types/async-status.ts';
 
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
+import { cardsAdapter } from '@/domain/card-catalog/domain/card.entity.ts';
 
-export interface CardCatalogState {
-  allCards: Card[];
+export interface CardCatalogState extends EntityState<Card, string> {
   searchResultIdentifiers: string[] | null;
   status: AsyncStatusT;
   error: string | undefined;
 }
 
-const initialState: CardCatalogState = {
-  allCards: [],
+const initialState: CardCatalogState = cardsAdapter.getInitialState({
   searchResultIdentifiers: null,
   status: ASYNC_STATUS.IDLE,
   error: undefined,
-};
+});
 
 export const cardCatalogSlice = createSlice({
   name: 'cardCatalog',
@@ -35,8 +34,7 @@ export const cardCatalogSlice = createSlice({
         state.error = undefined;
       })
       .addCase(getCards.fulfilled, (state, action) => {
-        state.allCards = action.payload.allCards;
-        state.searchResultIdentifiers = action.payload.searchResultIdentifiers;
+        cardsAdapter.setAll(state, action.payload);
         state.status = ASYNC_STATUS.SUCCEEDED;
       })
       .addCase(getCards.rejected, (state, action) => {

@@ -19,6 +19,7 @@ import type { NumericComparisonT } from '@/shared/types/comparison-operator.ts';
 import type { FilterModeT } from '@/shared/types/filter-mode.ts';
 import type { SortOrderT } from '@/shared/types/sort-order.ts';
 
+import { cardsAdapter } from '@/domain/card-catalog/domain/card.entity.ts';
 import type { RootState } from '@/domain/store';
 import { rootReducer } from '@/domain/store';
 
@@ -56,15 +57,12 @@ const withDefenseFilter = createAction<NumericComparisonT>('withDefenseFilter');
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(withAllCards, (state, { payload }) => {
-      state.cardCatalog.allCards = payload;
+      cardsAdapter.setAll(state.cardCatalog, payload);
       state.cardCatalog.searchResultIdentifiers = null;
       state.cardCatalog.status = 'succeeded';
     })
     .addCase(withSearchResults, (state, { payload }) => {
-      const existing = new Set(state.cardCatalog.allCards.map((card) => card.cardIdentifier));
-      for (const card of payload) {
-        if (!existing.has(card.cardIdentifier)) state.cardCatalog.allCards.push(card);
-      }
+      cardsAdapter.upsertMany(state.cardCatalog, payload);
       state.cardCatalog.searchResultIdentifiers = payload.map((card) => card.cardIdentifier);
     })
     .addCase(withSearchResultIdentifiers, (state, { payload }) => {

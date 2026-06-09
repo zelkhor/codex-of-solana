@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { Card, Printing } from '@codex/core';
 
-import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
+import { selectCardsEntities } from '@/domain/card-catalog/domain/select-cards-entities.selector.ts';
 import { useAppSelector } from '@/domain/store';
 import type { RootState } from '@/domain/store';
 
@@ -35,13 +35,13 @@ export interface CardListingPageViewModel {
 
 export const useCardListingPageViewModel = (): CardListingPageViewModel => {
   const visibleCards = useAppSelector(selectCardWithActivePrinting);
-  const allCardsMap = useAppSelector(selectAllCardsMap);
+  const cardsEntities = useAppSelector(selectCardsEntities);
   const status = useAppSelector((s: RootState) => s.cardCatalog.status);
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
 
   const navigateToIndex = (index: number) => {
     const { card, printing } = visibleCards[index];
-    const fullCard = allCardsMap.get(card.cardIdentifier) ?? card;
+    const fullCard = cardsEntities[card.cardIdentifier] ?? card;
     setActiveCard((prev) => ({
       card: fullCard,
       printing,
@@ -55,7 +55,7 @@ export const useCardListingPageViewModel = (): CardListingPageViewModel => {
     const index = visibleCards.findIndex(
       (c) => c.card.cardIdentifier === card.cardIdentifier && c.printing.print === printing.print,
     );
-    const fullCard = allCardsMap.get(card.cardIdentifier) ?? card;
+    const fullCard = cardsEntities[card.cardIdentifier] ?? card;
     setActiveCard({ card: fullCard, printing, imageUrl: printing.image, sourceRect: rect, index });
   };
 

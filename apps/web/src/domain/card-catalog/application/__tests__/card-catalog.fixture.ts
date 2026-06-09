@@ -4,6 +4,7 @@ import type { Card } from '@codex/core';
 
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
 import { searchCards } from '@/domain/card-catalog/application/search-cards.thunk.ts';
+import { selectAllCards } from '@/domain/card-catalog/domain/select-all-cards.selector.ts';
 import { selectSearchResults } from '@/domain/card-catalog/domain/select-search-results.selector.ts';
 import { InMemoryCardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.inmemory.gateway.ts';
 import { type AppTestStore, createTestStore } from '@/domain/store/__tests__/create-test-store.ts';
@@ -30,7 +31,7 @@ export const createCardCatalogFixture = () => {
   };
 
   const thenCardsShouldBe = (expected: Card[]) => {
-    expect(store.getState().cardCatalog.allCards).toEqual(expected);
+    expect(selectAllCards(store.getState())).toEqual(expected);
   };
 
   const thenStatusShouldBe = (expected: string) => {

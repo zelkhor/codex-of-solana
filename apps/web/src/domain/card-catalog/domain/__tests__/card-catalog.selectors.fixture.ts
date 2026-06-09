@@ -4,7 +4,7 @@ import type { Card, Printing } from '@codex/core';
 
 import { selectAllArtists } from '@/domain/card-catalog/domain/select-all-artists.selector.ts';
 import { selectCardById } from '@/domain/card-catalog/domain/select-card-by-id.selector.ts';
-import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
+import { selectCardsEntities } from '@/domain/card-catalog/domain/select-cards-entities.selector.ts';
 import { selectPrintingByCardAndCode } from '@/domain/card-catalog/domain/select-printing-by-card-and-code.selector.ts';
 import { selectSearchResults } from '@/domain/card-catalog/domain/select-search-results.selector.ts';
 import { createFixture } from '@/domain/store/__tests__/create-fixture.ts';
@@ -22,8 +22,8 @@ export const createCardCatalogSelectorsFixture = createFixture((stateBuilderProv
     expect(selectAllArtists(stateBuilderProvider.getState())).toEqual(expected);
   };
 
-  const thenCardsMapShouldBe = (expected: Map<string, Card>) => {
-    expect(selectAllCardsMap(stateBuilderProvider.getState())).toEqual(expected);
+  const thenCardsByIdentifierShouldBe = (expected: Record<string, Card>) => {
+    expect(selectCardsEntities(stateBuilderProvider.getState())).toEqual(expected);
   };
 
   const thenSearchResultsShouldBe = (expected: Card[]) => {
@@ -48,7 +48,7 @@ export const createCardCatalogSelectorsFixture = createFixture((stateBuilderProv
     givenCards,
     givenSearchMatched,
     thenAllArtistsShouldBe,
-    thenCardsMapShouldBe,
+    thenCardsByIdentifierShouldBe,
     thenSearchResultsShouldBe,
     thenCardByIdShouldBe,
     thenPrintingByCardAndCodeShouldBe,
