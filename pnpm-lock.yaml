@@ -129,6 +129,9 @@ importers:
       '@codex/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@codex/orm':
+        specifier: workspace:*
+        version: link:../../packages/orm
       '@flesh-and-blood/cards':
         specifier: ^3.9.2
         version: 3.9.2

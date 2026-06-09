@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@codex/core": "workspace:*",
+    "@codex/orm": "workspace:*",
     "@flesh-and-blood/cards": "^3.9.2",
     "@flesh-and-blood/types": "^3.8.24",
     "dotenv": "^16.0.0"

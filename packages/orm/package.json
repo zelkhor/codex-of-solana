@@ -2,19 +2,19 @@
   "name": "@codex/orm",
   "version": "0.0.1",
   "private": true,
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "prisma": {
     "schema": "./prisma/schema.prisma"
   },
   "scripts": {
-    "build": "prisma generate && tsc --project tsconfig.json",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "pnpm test:unit && pnpm test:integration",
     "test:unit": "vitest run --config vitest.unit.config.ts",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
@@ -35,5 +35,8 @@
     "testcontainers": "^12.0.1",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "exports": {
+    ".": "./src/index.ts"
   }
 }
