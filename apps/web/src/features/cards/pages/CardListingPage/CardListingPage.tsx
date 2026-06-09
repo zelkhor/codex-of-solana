@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { SlidersHorizontal, X } from 'lucide-react';
 
@@ -7,10 +6,10 @@ import type { Card, Printing } from '@codex/core';
 
 import { useKeydown } from '@/shared/hooks/useKeydown.ts';
 import { AppHeader } from '@/shared/layout/AppHeader.tsx';
-import type { AppDispatch } from '@/shared/store';
 import { ASYNC_STATUS } from '@/shared/types/async-status.ts';
 
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
+import { useAppDispatch } from '@/domain/store';
 
 import { useCardListingPageViewModel } from '@/features/cards/pages/CardListingPage/card-listing-page.view-model.ts';
 import { CardFlipAnimation } from '@/features/cards/ui/CardFlipAnimation.tsx';
@@ -21,7 +20,7 @@ import { NoResults } from '@/features/cards/use-cases/list-cards/NoResults/NoRes
 import { CardDetailsModal } from '@/features/cards/use-cases/view-card-details/CardDetails/CardDetailsModal.tsx';
 
 export const CardListingPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const vm = useCardListingPageViewModel();
   const [filterOpen, setFilterOpen] = useState(() => window.innerWidth >= 640);
   const [animating, setAnimating] = useState(false);

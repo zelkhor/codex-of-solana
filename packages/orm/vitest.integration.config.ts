@@ -5,6 +5,7 @@ export default defineConfig({
     environment: 'node',
     include: ['**/__tests__/**/*.integration.test.ts'],
     globals: true,
+    restoreMocks: true,
     passWithNoTests: true,
     testTimeout: 60000,
   },

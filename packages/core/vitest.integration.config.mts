@@ -9,6 +9,7 @@ export default defineConfig({
     environment: 'node',
     include: ['**/__tests__/**/*.integration.test.ts'],
     globals: true,
+    restoreMocks: true,
     passWithNoTests: true,
     testTimeout: 60000,
     globalSetup: [path.resolve(__dirname, '../orm/src/__tests__/global-setup.ts')],

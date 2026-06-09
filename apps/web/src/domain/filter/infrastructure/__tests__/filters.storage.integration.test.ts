@@ -1,5 +1,3 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
-
 import {
   CLASSES,
   FOILINGS,
@@ -14,7 +12,6 @@ import {
   TYPES,
 } from '@codex/core';
 
-import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
 import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 import { SORT_ORDER } from '@/shared/types/sort-order.ts';
@@ -24,6 +21,7 @@ import {
   loadFilters,
   saveFilters,
 } from '@/domain/filter/infrastructure/filters.storage.ts';
+import { stateBuilder } from '@/domain/store/__tests__/state.builder.ts';
 
 const fullState = stateBuilder()
   .withClasses([CLASSES.Ninja])
@@ -56,17 +54,17 @@ const fullState = stateBuilder()
 describe('Integration: Loading persisted filters from local storage', () => {
   beforeEach(() => localStorage.clear());
 
-  test('Rule: returns undefined when nothing is stored', () => {
+  test('Rule: Returns undefined when nothing is stored', () => {
     expect(loadFilters()).toBeUndefined();
   });
 
-  test('Rule: returns undefined when stored value is not valid JSON and clear local storage', () => {
+  test('Rule: Returns undefined when stored value is not valid JSON and clear local storage', () => {
     localStorage.setItem(FILTERS_STORAGE_KEY, 'not-json{{');
     expect(loadFilters()).toBeUndefined();
     expect(localStorage.getItem(FILTERS_STORAGE_KEY)).toBeNull();
   });
 
-  test('Rule: returns parsed state when stored value is valid', () => {
+  test('Rule: Returns parsed state when stored value is valid', () => {
     localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(fullState));
     expect(loadFilters()).toEqual(fullState);
   });
@@ -75,7 +73,7 @@ describe('Integration: Loading persisted filters from local storage', () => {
 describe('Integration: Saving filters to local storage', () => {
   beforeEach(() => localStorage.clear());
 
-  test('Rule: writes the correct JSON string to localStorage', () => {
+  test('Rule: Persists the filters so they can be restored later', () => {
     saveFilters(fullState);
     expect(localStorage.getItem(FILTERS_STORAGE_KEY)).toBe(JSON.stringify(fullState));
   });

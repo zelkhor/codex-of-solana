@@ -12,15 +12,9 @@ type SourceCard = (typeof fabCards)[number];
 type SourcePrinting = SourceCard['printings'][number];
 
 export class CardCatalogFabRepository implements ICardCatalogRepository {
-  private readonly cached: Card[];
-
-  constructor() {
-    this.cached = this.toDtos(fabCards);
-  }
-
   async getAll(): Promise<Result<Card[], CardCatalogLoadError>> {
     try {
-      return ok(this.cached);
+      return ok(this.toDtos(fabCards));
     } catch (e) {
       return err(new CardCatalogLoadError(e instanceof Error ? e.message : undefined));
     }

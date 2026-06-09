@@ -34,7 +34,7 @@ module.exports = [
     },
   },
 
-  // shared (excluding ui): no feature imports
+  // shared (excluding ui): no domain or feature imports
   {
     files: ['src/shared/**'],
     ignores: ['src/shared/ui/**', 'src/shared/**/__tests__/**'],
@@ -43,6 +43,11 @@ module.exports = [
         'error',
         {
           patterns: [
+            {
+              group: ['@/domain/**'],
+              message:
+                'shared/ cannot import from domain/ — the composition root lives in domain/store',
+            },
             { group: ['@/features/**'], message: 'shared/ cannot import from features/' },
           ],
         },
@@ -58,9 +63,7 @@ module.exports = [
       'no-restricted-imports': [
         'error',
         {
-          patterns: [
-            { group: ['@/features/**'], message: 'domain/ cannot import from features/' },
-          ],
+          patterns: [{ group: ['@/features/**'], message: 'domain/ cannot import from features/' }],
         },
       ],
     },
@@ -77,11 +80,13 @@ module.exports = [
           patterns: [
             {
               group: ['@/domain/*/application/**'],
-              message: 'domain layer cannot import from application layer — dependency flows downward only',
+              message:
+                'domain layer cannot import from application layer — dependency flows downward only',
             },
             {
               group: ['@/domain/*/infrastructure/**'],
-              message: 'domain layer cannot import from infrastructure layer — dependency flows downward only',
+              message:
+                'domain layer cannot import from infrastructure layer — dependency flows downward only',
             },
           ],
         },
@@ -100,7 +105,8 @@ module.exports = [
           patterns: [
             {
               group: ['@/domain/*/infrastructure/**'],
-              message: 'application layer cannot import from infrastructure layer — dependency flows downward only',
+              message:
+                'application layer cannot import from infrastructure layer — dependency flows downward only',
             },
           ],
         },
@@ -120,7 +126,8 @@ module.exports = [
           patterns: [
             {
               group: ['@/features/*/use-cases/**'],
-              message: 'A use-case cannot import from another use-case. Use relative imports within the same use-case.',
+              message:
+                'A use-case cannot import from another use-case. Use relative imports within the same use-case.',
             },
           ],
         },
@@ -139,7 +146,8 @@ module.exports = [
           patterns: [
             {
               group: ['@/domain/*/infrastructure/**'],
-              message: 'features/ cannot import from domain infrastructure — use domain or application layer exports only',
+              message:
+                'features/ cannot import from domain infrastructure — use domain or application layer exports only',
             },
           ],
         },

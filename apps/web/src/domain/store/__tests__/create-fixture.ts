@@ -1,4 +1,4 @@
-import { type StateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
+import { type StateBuilderProvider } from '@/domain/store/__tests__/state.builder.ts';
 
 export const createFixture = <T>(
   builder: (stateBuilder: StateBuilderProvider) => T,

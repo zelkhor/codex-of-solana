@@ -5,7 +5,7 @@ import { cardBuilder } from '@codex/core/testing';
 
 import { FuseSearchGateway } from '@/domain/card-catalog/infrastructure/search.fuse.gateway.ts';
 
-describe('Integration: FuseSearchGateway', () => {
+describe('Feature: Searching the card catalog', () => {
   let gateway: FuseSearchGateway;
 
   beforeEach(() => {

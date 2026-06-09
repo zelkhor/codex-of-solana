@@ -1,16 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-
 import { TALENTS, type TalentT } from '@codex/core';
 
-import type { AppDispatch } from '@/shared/store';
 import { type FilterModeT } from '@/shared/types/filter-mode.ts';
 
 import { setTalentFilterMode, setTalents } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
+import { useAppDispatch, useAppSelector } from '@/domain/store';
 
 export const useTalentFilterViewModel = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { talents, talentFilterMode } = useSelector(selectFilters);
+  const dispatch = useAppDispatch();
+  const { talents, talentFilterMode } = useAppSelector(selectFilters);
 
   return {
     options: Object.values(TALENTS),

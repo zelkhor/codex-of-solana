@@ -5,11 +5,11 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import { HttpClient } from '@/shared/gateways/http-client';
-import { createStore } from '@/shared/store';
 
 import { CardCatalogApiGateway } from '@/domain/card-catalog/infrastructure/card-catalog.api.gateway.ts';
 import { FuseSearchGateway } from '@/domain/card-catalog/infrastructure/search.fuse.gateway.ts';
-import { loadFilters, saveFilters } from '@/domain/filter/infrastructure/filters.storage.ts';
+import { loadFilters } from '@/domain/filter/infrastructure/filters.storage.ts';
+import { createStore } from '@/domain/store';
 
 import './index.css';
 
@@ -24,8 +24,6 @@ const store = createStore(
   },
   { filters: loadFilters() },
 );
-
-store.subscribe(() => saveFilters(store.getState().filters));
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Root element #root not found');

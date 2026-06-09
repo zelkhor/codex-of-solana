@@ -14,7 +14,6 @@ import {
   TYPES,
 } from '@codex/core';
 
-import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
 import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 
 import {
@@ -22,6 +21,7 @@ import {
   createFiltersSliceFixture,
 } from '@/domain/filter/application/__tests__/filters.slice.fixture.ts';
 import { initialFiltersState } from '@/domain/filter/application/filters.slice.ts';
+import { stateBuilderProvider } from '@/domain/store/__tests__/state.builder.ts';
 
 describe('Feature: Filtering cards', () => {
   let fixture: FiltersSliceFixture;

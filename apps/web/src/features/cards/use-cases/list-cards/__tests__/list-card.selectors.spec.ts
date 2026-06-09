@@ -15,10 +15,11 @@ import {
 } from '@codex/core';
 import { cardBuilder, printingBuilder } from '@codex/core/testing';
 
-import { stateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import { COMPARISON_OPERATORS } from '@/shared/types/comparison-operator.ts';
 import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 import { SORT_ORDER } from '@/shared/types/sort-order.ts';
+
+import { stateBuilder } from '@/domain/store/__tests__/state.builder.ts';
 
 import {
   selectCardWithActivePrinting,
@@ -390,14 +391,15 @@ describe('Feature: Numeric stat filtering', () => {
 
   test('Rule: Excludes cards whose cost does not satisfy the filter', () => {
     const matching = cardBuilder().withCardIdentifier('a').withCost(2).build();
-    const excluded = cardBuilder().withCardIdentifier('b').withCost(2).build();
+    const excluded = cardBuilder().withCardIdentifier('b').withCost(5).build();
     const cards = selectVisibleCards(
       stateBuilder()
         .withAllCards([matching, excluded])
         .withCostFilter({ operator: COMPARISON_OPERATORS.EQ, value: 2 })
         .build(),
     );
-    expect(cards).toHaveLength(2);
+    expect(cards).toHaveLength(1);
+    expect(cards[0].cardIdentifier).toBe('a');
   });
 
   test('Rule: Excludes cards with null stat when a numeric filter is active', () => {
@@ -1026,7 +1028,9 @@ describe('Feature: Card printings grid ordering', () => {
     expect(result[2].card.cardIdentifier).toBe('ira');
     expect(result[2].printing.set).toBe(SETS.ArcaneRising);
   });
+});
 
+describe('Feature: Filtering cards by the selected hero', () => {
   test('Rule: Excludes cards not legal for the selected hero', () => {
     const katsuCard = cardBuilder().withCardIdentifier('a').withLegalHeroes([HEROES.Katsu]).build();
     const bravoCard = cardBuilder().withCardIdentifier('b').withLegalHeroes([HEROES.Bravo]).build();

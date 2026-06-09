@@ -1,13 +1,6 @@
 import { createFixture } from '../../../__tests__/helpers/create-fixture';
-import { Class } from '../../domain/class';
 import { InMemoryClassRepository } from '../../infrastructure/class.inmemory.repository';
 import { ImportClassesUseCase } from '../import-classes.usecase';
-
-const toClass = (name: string): Class => {
-  const result = Class.create(name);
-  if (!result.ok) throw result.error;
-  return result.value;
-};
 
 export const createImportClassesFixture = () => {
   const fixture = createFixture();
@@ -16,9 +9,6 @@ export const createImportClassesFixture = () => {
 
   return {
     ...fixture,
-    givenPreExistingClasses(names: string[]) {
-      repository.setClasses(names.map(toClass));
-    },
     async whenImportingClasses(names: string[]) {
       const result = await useCase.execute({ names });
       if (!result.ok) fixture.captureError(result.error);

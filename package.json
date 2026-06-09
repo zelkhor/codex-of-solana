@@ -17,12 +17,12 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/node": "^25.9.2",
+    "@types/node": "catalog:",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "prettier": "^3.3.3",
     "turbo": "^2.9.16",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "prisma": {
     "schema": "./prisma/schema.prisma"
   },
@@ -26,14 +26,14 @@
     "@codex/config": "workspace:*",
     "@testcontainers/postgresql": "^12.0.1",
     "@types/pg": "^8.20.0",
-    "@typescript-eslint/eslint-plugin": "^8.5.0",
-    "@typescript-eslint/parser": "^8.5.0",
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
     "dotenv": "^17.4.2",
-    "eslint": "^9.10.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
     "prisma": "^7.8.0",
     "testcontainers": "^12.0.1",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

@@ -2,9 +2,11 @@
   "extends": "@codex/config/typescript/base.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "noEmit": true,
+    "outDir": "./dist",
+    "declaration": false,
+    "declarationMap": false,
     "types": ["node", "vitest/globals"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

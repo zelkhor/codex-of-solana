@@ -2,11 +2,11 @@ import { expect } from 'vitest';
 
 import type { Card } from '@codex/core';
 
-import { type AppTestStore, createTestStore } from '@/shared/store/__tests__/create-test-store.ts';
-
 import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
 import { searchCards } from '@/domain/card-catalog/application/search-cards.thunk.ts';
+import { selectSearchResults } from '@/domain/card-catalog/domain/select-search-results.selector.ts';
 import { InMemoryCardCatalogGateway } from '@/domain/card-catalog/infrastructure/card-catalog.inmemory.gateway.ts';
+import { type AppTestStore, createTestStore } from '@/domain/store/__tests__/create-test-store.ts';
 
 export const createCardCatalogFixture = () => {
   let store: AppTestStore;
@@ -42,7 +42,7 @@ export const createCardCatalogFixture = () => {
   };
 
   const thenSearchResultsShouldBe = (expected: Card[]) => {
-    expect(store.getState().cardCatalog.searchResults).toEqual(expected);
+    expect(selectSearchResults(store.getState())).toEqual(expected);
   };
 
   return {

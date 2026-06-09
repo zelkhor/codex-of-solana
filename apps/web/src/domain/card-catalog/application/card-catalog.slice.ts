@@ -8,14 +8,14 @@ import { getCards } from '@/domain/card-catalog/application/get-cards.thunk.ts';
 
 export interface CardCatalogState {
   allCards: Card[];
-  searchResults: Card[];
+  searchResultIdentifiers: string[] | null;
   status: AsyncStatusT;
   error: string | undefined;
 }
 
 const initialState: CardCatalogState = {
   allCards: [],
-  searchResults: [],
+  searchResultIdentifiers: null,
   status: ASYNC_STATUS.IDLE,
   error: undefined,
 };
@@ -24,8 +24,8 @@ export const cardCatalogSlice = createSlice({
   name: 'cardCatalog',
   initialState,
   reducers: {
-    setSearchResults(state, action: PayloadAction<Card[]>) {
-      state.searchResults = action.payload;
+    setSearchResultIdentifiers(state, action: PayloadAction<string[] | null>) {
+      state.searchResultIdentifiers = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -36,7 +36,7 @@ export const cardCatalogSlice = createSlice({
       })
       .addCase(getCards.fulfilled, (state, action) => {
         state.allCards = action.payload.allCards;
-        state.searchResults = action.payload.searchResults;
+        state.searchResultIdentifiers = action.payload.searchResultIdentifiers;
         state.status = ASYNC_STATUS.SUCCEEDED;
       })
       .addCase(getCards.rejected, (state, action) => {
@@ -46,4 +46,4 @@ export const cardCatalogSlice = createSlice({
   },
 });
 
-export const { setSearchResults } = cardCatalogSlice.actions;
+export const { setSearchResultIdentifiers } = cardCatalogSlice.actions;

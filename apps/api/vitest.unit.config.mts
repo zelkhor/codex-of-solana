@@ -9,6 +9,7 @@ export default defineConfig({
     environment: 'node',
     include: ['**/__tests__/**/*.spec.ts'],
     globals: true,
+    restoreMocks: true,
     passWithNoTests: true,
   },
   resolve: {

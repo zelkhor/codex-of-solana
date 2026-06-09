@@ -14,9 +14,6 @@ import type {
   TypeT,
 } from '@codex/core';
 
-import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
-import { type AppTestStore, createTestStore } from '@/shared/store/__tests__/create-test-store.ts';
-import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
 import type { FilterModeT } from '@/shared/types/filter-mode.ts';
 
 import {
@@ -43,6 +40,9 @@ import {
 } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 import { selectHasActiveFilters } from '@/domain/filter/domain/select-has-active-filters.selector.ts';
+import { createFixture } from '@/domain/store/__tests__/create-fixture.ts';
+import { type AppTestStore, createTestStore } from '@/domain/store/__tests__/create-test-store.ts';
+import type { StateBuilder } from '@/domain/store/__tests__/state.builder.ts';
 
 export const createFiltersSliceFixture = createFixture((stateBuilderProvider) => {
   let store: AppTestStore;

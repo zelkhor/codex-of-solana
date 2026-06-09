@@ -60,10 +60,12 @@ src/
 │   │   ├── application/    # RTK slice (card-catalog.slice.ts) + thunks
 │   │   ├── domain/         # Pure selectors (no side effects)
 │   │   └── infrastructure/ # Gateway implementations + integration tests
-│   └── filter/
-│       ├── application/    # RTK slice (filters.slice.ts)
-│       ├── domain/         # Pure selectors
-│       └── infrastructure/ # filters.storage.ts (localStorage persistence)
+│   ├── filter/
+│   │   ├── application/    # RTK slice (filters.slice.ts)
+│   │   ├── domain/         # Pure selectors
+│   │   └── infrastructure/ # filters.storage.ts (localStorage persistence)
+│   └── store/          # Composition root: createStore, rootReducer, AppDispatch, AppThunk, createAppAsyncThunk
+│       └── __tests__/  # createTestStore, stateBuilder, stateBuilderProvider, createFixture
 ├── features/        # UI only, organised by feature and use-case
 │   └── cards/
 │       ├── pages/          # Page-level components + view models
@@ -76,8 +78,6 @@ src/
     ├── gateways/    # HttpClient wrapper
     ├── hooks/       # useDebounced, useKeydown, useClickOutside, useTheme
     ├── layout/      # AppHeader
-    ├── store/       # createStore, rootReducer, AppDispatch, AppThunk, createAppAsyncThunk
-    │   └── __tests__/ # createTestStore, stateBuilder, stateBuilderProvider, createFixture
     ├── types/       # async-status.ts (ASYNC_STATUS), comparison-operator.ts, sort-order.ts
     └── ui/          # Shared shadcn-based components (MultiSelect, NumericFilterInput, etc.)
 ```
@@ -85,6 +85,8 @@ src/
 **Gateway pattern:** `I{Name}Gateway` interface + `{name}.api.gateway.ts` (real) + `{name}.inmemory.gateway.ts` (test double). HTTP goes through `HttpClient`.
 
 **Store creation** (`main.tsx`) wires real gateways and preloads filter state from localStorage. `store.subscribe` saves filters back on every change.
+
+**Composition root** — the store lives in `domain/store/` (not `shared/`). It is the one place that aggregates every bounded context's slice and gateway, so it sits at the root of the `domain/` layer it composes. This is why `shared/` can stay a true leaf (`shared/` must never import `domain/`); `domain/store/` importing sibling contexts is an allowed intra-`domain/` edge, and `features/` importing the store is the normal `features/ → domain/` edge.
 
 **Routing** (`react-router`): `/` → `CardListingPage`, `/cards/:cardIdentifier` → `CardDetailsPage`.
 
@@ -159,7 +161,7 @@ pnpm --filter @codex/web dev        # Vite dev server
 pnpm --filter @codex/web test       # Vitest (run once)
 pnpm --filter @codex/web test:watch # Vitest watch
 pnpm --filter @codex/api dev        # NestJS watch mode
-pnpm --filter @codex/api test       # Jest
+pnpm --filter @codex/api test       # Vitest
 
 # Single test file
 pnpm --filter @codex/web exec vitest run src/domain/card-catalog/application/__tests__/get-cards.spec.ts
@@ -188,7 +190,7 @@ const err = <E>(e: E) => ({ ok: false, error: e });
 
 **View models** — extract derived/display logic from components into a co-located `*.view-model.ts` file exporting a `use*ViewModel` hook. Keeps components as pure render functions.
 
-**AppThunk** — use the `AppThunk<R>` type alias (from `shared/store/app-thunk.ts`) for manually-created thunks. For async thunks use `createAppAsyncThunk` (re-exported from `shared/store/index.ts`) so `ThunkDependencies` are typed automatically.
+**AppThunk** — use the `AppThunk<R>` type alias (from `domain/store/app-thunk.ts`) for manually-created thunks. For async thunks use `createAppAsyncThunk` (re-exported from `domain/store/index.ts`) so `ThunkDependencies` are typed automatically.
 
 **Selectors live in `domain/{context}/domain/`** for pure derivations (no filtering/sorting) and in `features/{feature}/use-cases/{use-case}/` for presentation selectors that combine domain state with display logic (e.g. `selectVisibleCards`, `selectCardWithActivePrinting`).
 
@@ -232,5 +234,5 @@ Never use class/function names or any technical terms as describe / test labels.
 
 - **D.A.M.P.** (Descriptive And Meaningful Phrases): fixture files and builders make test scenarios readable without reading implementation details.
 - No tests for single methods in isolation — test the behavior of units as a whole.
-- `createFixture()` in `shared/store/__tests__/create-fixture.ts` is the base factory for domain-specific fixtures. It wraps a builder function that receives a `StateBuilderProvider` and returns domain-specific helpers (`givenX()`, `whenY()`, `thenZ()`).
+- `createFixture()` in `domain/store/__tests__/create-fixture.ts` is the base factory for domain-specific fixtures. It wraps a builder function that receives a `StateBuilderProvider` and returns domain-specific helpers (`givenX()`, `whenY()`, `thenZ()`).
 - Integration tests for gateways live in `domain/{context}/infrastructure/__tests__/` and are suffixed `.integration.ts`.

@@ -1,14 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-
-import type { AppDispatch } from '@/shared/store';
 import { SORT_ORDER, type SortOrderT } from '@/shared/types/sort-order.ts';
 
 import { setGroupPrintings, setSortOrder } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
+import { useAppDispatch, useAppSelector } from '@/domain/store';
 
 export const useSortSectionViewModel = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const filters = useSelector(selectFilters);
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector(selectFilters);
   const hasSearchQuery = !!filters.searchQuery.trim();
 
   const sortOrderOptions = [

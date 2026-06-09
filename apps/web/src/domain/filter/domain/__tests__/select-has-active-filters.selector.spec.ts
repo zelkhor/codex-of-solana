@@ -10,14 +10,14 @@ import {
   TYPES,
 } from '@codex/core';
 
-import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
-import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
 import { FILTER_MODES } from '@/shared/types/filter-mode.ts';
 
 import {
   type FiltersSelectorsFixture,
   createFiltersSelectorsFixture,
 } from '@/domain/filter/domain/__tests__/filters.selectors.fixture.ts';
+import type { StateBuilder } from '@/domain/store/__tests__/state.builder.ts';
+import { stateBuilderProvider } from '@/domain/store/__tests__/state.builder.ts';
 
 describe('Feature: Detecting whether any filter is active', () => {
   let fixture: FiltersSelectorsFixture;

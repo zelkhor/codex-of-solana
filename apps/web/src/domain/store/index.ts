@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { rootReducer } from '@/shared/store/root-reducer.ts';
-import type { ThunkDependencies } from '@/shared/store/types.ts';
+import { filtersPersistenceListener } from '@/domain/filter/infrastructure/filters-persistence.listener.ts';
+import { rootReducer } from '@/domain/store/root-reducer.ts';
+import type { ThunkDependencies } from '@/domain/store/types.ts';
 
-export { createAppAsyncThunk } from '@/shared/store/app-thunk.ts';
-export type { AppThunk } from '@/shared/store/app-thunk.ts';
-export type { RootState } from '@/shared/store/root-reducer.ts';
+export { createAppAsyncThunk } from '@/domain/store/app-thunk.ts';
+export type { AppThunk } from '@/domain/store/app-thunk.ts';
+export { useAppDispatch, useAppSelector } from '@/domain/store/hooks.ts';
+export type { RootState } from '@/domain/store/root-reducer.ts';
 export { rootReducer };
 export type { ThunkDependencies };
 
@@ -20,7 +22,7 @@ export const createStore = (
       getDefaultMiddleware({
         thunk: { extraArgument: dependencies },
         serializableCheck: false,
-      }),
+      }).prepend(filtersPersistenceListener.middleware),
   });
 
 export type AppStore = ReturnType<typeof createStore>;

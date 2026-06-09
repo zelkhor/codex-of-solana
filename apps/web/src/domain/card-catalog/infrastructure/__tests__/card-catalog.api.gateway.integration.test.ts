@@ -17,7 +17,7 @@ afterAll(() => server.close());
 
 const gateway = new CardCatalogApiGateway(new HttpClient('http://localhost'));
 
-describe('Integration: CardCatalogApiGateway', () => {
+describe('Feature: Fetching cards from the card API', () => {
   test('Rule: Returns cards when the server responds successfully', async () => {
     const card = cardBuilder().withCardIdentifier('ninja-strike-red').build();
     server.use(http.get('http://localhost/api/cards', () => HttpResponse.json([card])));

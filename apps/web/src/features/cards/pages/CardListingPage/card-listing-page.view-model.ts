@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import type { Card, Printing } from '@codex/core';
 
-import type { RootState } from '@/shared/store';
-
 import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
+import { useAppSelector } from '@/domain/store';
+import type { RootState } from '@/domain/store';
 
 import {
   type CardWithActivePrinting,
@@ -35,9 +34,9 @@ export interface CardListingPageViewModel {
 }
 
 export const useCardListingPageViewModel = (): CardListingPageViewModel => {
-  const visibleCards = useSelector(selectCardWithActivePrinting);
-  const allCardsMap = useSelector(selectAllCardsMap);
-  const status = useSelector((s: RootState) => s.cardCatalog.status);
+  const visibleCards = useAppSelector(selectCardWithActivePrinting);
+  const allCardsMap = useAppSelector(selectAllCardsMap);
+  const status = useAppSelector((s: RootState) => s.cardCatalog.status);
   const [activeCard, setActiveCard] = useState<ActiveCard | null>(null);
 
   const navigateToIndex = (index: number) => {

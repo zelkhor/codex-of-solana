@@ -13,14 +13,14 @@ import {
   createFabRepositoryFixture,
 } from './card-catalog.fab.repository.fixture';
 
-describe('Integration: CardCatalogFabRepository', () => {
+describe('Feature: Loading the card catalog data', () => {
   let fixture: FabRepositoryFixture;
 
   beforeEach(async () => {
     fixture = createFabRepositoryFixture();
   });
 
-  test('Rule: getAll returns all FAB cards correctly mapped', async () => {
+  test('Rule: Every card in the bundled data is loaded and mapped', async () => {
     await fixture.whenGettingAllCards();
 
     const expectedPrinting = printingBuilder()

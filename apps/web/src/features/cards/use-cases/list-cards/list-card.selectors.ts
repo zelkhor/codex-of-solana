@@ -13,59 +13,16 @@ import { SORT_ORDER } from '@/shared/types/sort-order.ts';
 import { selectSearchResults } from '@/domain/card-catalog/domain/select-search-results.selector.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 
+type Filters = ReturnType<typeof selectFilters>;
+
 export const selectVisibleCards = createSelector(
   selectSearchResults,
   selectFilters,
-  (cards, filters): Card[] => {
-    const matchesPrintingFilters = (p: Printing): boolean => {
-      if (filters.sets.length > 0 && !filters.sets.includes(p.set)) return false;
-      if (filters.rarities.length > 0 && !filters.rarities.includes(p.rarity)) return false;
-      if (filters.foilings.length > 0 && (!p.foiling || !filters.foilings.includes(p.foiling)))
-        return false;
-      if (!matchesFilterWithMode(p.treatments, filters.treatments, filters.treatmentFilterMode))
-        return false;
-      if (!matchesMultiFilter(p.artists, filters.artists)) return false;
-      return true;
-    };
-
-    return cards
-      .filter((card) => {
-        if (!matchesFilterWithMode(card.classes, filters.classes, filters.classFilterMode))
-          return false;
-        if (!matchesFilterWithMode(card.talents, filters.talents, filters.talentFilterMode))
-          return false;
-        if (!matchesFilterWithMode(card.types, filters.types, filters.typeFilterMode)) return false;
-        if (!matchesFilterWithMode(card.subtypes, filters.subtypes, filters.subtypeFilterMode))
-          return false;
-        if (!matchesFilterWithMode(card.keywords, filters.keywords, filters.keywordFilterMode))
-          return false;
-        if (filters.hero !== null && !card.legalHeroes.includes(filters.hero)) return false;
-        if (filters.format !== null && !card.legalFormats.includes(filters.format)) return false;
-        if (!matchesNumericFilter(card.cost, filters.cost)) return false;
-        if (!matchesNumericFilter(card.pitch, filters.pitch)) return false;
-        if (!matchesNumericFilter(card.attack, filters.attack)) return false;
-        return matchesNumericFilter(card.defense, filters.defense);
-      })
-      .map((card) => {
-        const printingOrBackFaceMatchesFilters = (p: Printing): boolean =>
-          matchesPrintingFilters(p) ||
-          (!filters.groupPrintings && !!p.backPrinting && matchesPrintingFilters(p.backPrinting));
-
-        const filteredPrintings = card.printings
-          .filter(isFrontPrinting)
-          .filter(printingOrBackFaceMatchesFilters)
-          .sort(compareBySetThenIdentifier);
-
-        return {
-          ...card,
-          printings:
-            filters.groupPrintings && filteredPrintings.length > 0
-              ? [pickGroupedPrinting(filteredPrintings, filters.foilings, filters.rarities)]
-              : filteredPrintings,
-        };
-      })
-      .filter((card) => card.printings.length > 0);
-  },
+  (cards, filters): Card[] =>
+    cards
+      .filter((card) => cardMatchesFilters(card, filters))
+      .map((card) => withVisiblePrintings(card, filters))
+      .filter((card) => card.printings.length > 0),
 );
 
 export type CardWithActivePrinting = {
@@ -106,6 +63,56 @@ export const selectCardWithActivePrinting = createSelector(
     return result;
   },
 );
+
+// ── Pipeline stages ──────────────────────────────────────────────────────────
+
+const cardMatchesFilters = (card: Card, filters: Filters): boolean => {
+  if (!matchesFilterWithMode(card.classes, filters.classes, filters.classFilterMode)) return false;
+  if (!matchesFilterWithMode(card.talents, filters.talents, filters.talentFilterMode)) return false;
+  if (!matchesFilterWithMode(card.types, filters.types, filters.typeFilterMode)) return false;
+  if (!matchesFilterWithMode(card.subtypes, filters.subtypes, filters.subtypeFilterMode))
+    return false;
+  if (!matchesFilterWithMode(card.keywords, filters.keywords, filters.keywordFilterMode))
+    return false;
+  if (filters.hero !== null && !card.legalHeroes.includes(filters.hero)) return false;
+  if (filters.format !== null && !card.legalFormats.includes(filters.format)) return false;
+  if (!matchesNumericFilter(card.cost, filters.cost)) return false;
+  if (!matchesNumericFilter(card.pitch, filters.pitch)) return false;
+  if (!matchesNumericFilter(card.attack, filters.attack)) return false;
+  return matchesNumericFilter(card.defense, filters.defense);
+};
+
+const matchesPrintingFilters = (p: Printing, filters: Filters): boolean => {
+  if (filters.sets.length > 0 && !filters.sets.includes(p.set)) return false;
+  if (filters.rarities.length > 0 && !filters.rarities.includes(p.rarity)) return false;
+  if (filters.foilings.length > 0 && (!p.foiling || !filters.foilings.includes(p.foiling)))
+    return false;
+  if (!matchesFilterWithMode(p.treatments, filters.treatments, filters.treatmentFilterMode))
+    return false;
+  if (!matchesMultiFilter(p.artists, filters.artists)) return false;
+  return true;
+};
+
+const withVisiblePrintings = (card: Card, filters: Filters): Card => {
+  const printingOrBackFaceMatchesFilters = (p: Printing): boolean =>
+    matchesPrintingFilters(p, filters) ||
+    (!filters.groupPrintings &&
+      !!p.backPrinting &&
+      matchesPrintingFilters(p.backPrinting, filters));
+
+  const filteredPrintings = card.printings
+    .filter(isFrontPrinting)
+    .filter(printingOrBackFaceMatchesFilters)
+    .sort(compareBySetThenIdentifier);
+
+  return {
+    ...card,
+    printings:
+      filters.groupPrintings && filteredPrintings.length > 0
+        ? [pickGroupedPrinting(filteredPrintings, filters.foilings, filters.rarities)]
+        : filteredPrintings,
+  };
+};
 
 // ── Filter helpers ───────────────────────────────────────────────────────────
 

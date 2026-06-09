@@ -15,16 +15,18 @@ import type {
   TypeT,
 } from '@codex/core';
 
-import type { RootState } from '@/shared/store';
-import { rootReducer } from '@/shared/store';
 import type { NumericComparisonT } from '@/shared/types/comparison-operator.ts';
 import type { FilterModeT } from '@/shared/types/filter-mode.ts';
 import type { SortOrderT } from '@/shared/types/sort-order.ts';
+
+import type { RootState } from '@/domain/store';
+import { rootReducer } from '@/domain/store';
 
 const initialState: RootState = rootReducer(undefined, { type: '@@INIT' });
 
 const withAllCards = createAction<Card[]>('withAllCards');
 const withSearchResults = createAction<Card[]>('withSearchResults');
+const withSearchResultIdentifiers = createAction<string[] | null>('withSearchResultIdentifiers');
 const withClasses = createAction<ClassT[]>('withClasses');
 const withClassFilterMode = createAction<FilterModeT>('withClassFilterMode');
 const withTalents = createAction<TalentT[]>('withTalents');
@@ -55,11 +57,18 @@ const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(withAllCards, (state, { payload }) => {
       state.cardCatalog.allCards = payload;
-      state.cardCatalog.searchResults = payload;
+      state.cardCatalog.searchResultIdentifiers = null;
       state.cardCatalog.status = 'succeeded';
     })
     .addCase(withSearchResults, (state, { payload }) => {
-      state.cardCatalog.searchResults = payload;
+      const existing = new Set(state.cardCatalog.allCards.map((card) => card.cardIdentifier));
+      for (const card of payload) {
+        if (!existing.has(card.cardIdentifier)) state.cardCatalog.allCards.push(card);
+      }
+      state.cardCatalog.searchResultIdentifiers = payload.map((card) => card.cardIdentifier);
+    })
+    .addCase(withSearchResultIdentifiers, (state, { payload }) => {
+      state.cardCatalog.searchResultIdentifiers = payload;
     })
     .addCase(withClasses, (state, { payload }) => {
       state.filters.classes = payload;
@@ -147,6 +156,7 @@ export const stateBuilder = (state = initialState) => {
   return {
     withAllCards: reduce(withAllCards),
     withSearchResults: reduce(withSearchResults),
+    withSearchResultIdentifiers: reduce(withSearchResultIdentifiers),
     withClasses: reduce(withClasses),
     withClassFilterMode: reduce(withClassFilterMode),
     withTalents: reduce(withTalents),

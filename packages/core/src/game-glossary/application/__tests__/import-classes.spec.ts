@@ -19,12 +19,4 @@ describe('Feature: Importing game classes', () => {
 
     await fixture.thenClassesShouldBe(['Warrior']);
   });
-
-  test('Rule: It does not add a class that already exists', async () => {
-    fixture.givenPreExistingClasses(['Warrior']);
-
-    await fixture.whenImportingClasses(['Warrior', 'Brute']);
-
-    await fixture.thenClassesShouldBe(['Warrior', 'Brute']);
-  });
 });

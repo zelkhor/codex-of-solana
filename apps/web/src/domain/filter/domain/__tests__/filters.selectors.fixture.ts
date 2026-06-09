@@ -1,12 +1,11 @@
 import { expect } from 'vitest';
 
-import { createFixture } from '@/shared/store/__tests__/create-fixture.ts';
-import type { StateBuilder } from '@/shared/store/__tests__/state.builder.ts';
-
 import { type FiltersState } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
 import { selectHasActiveFilters } from '@/domain/filter/domain/select-has-active-filters.selector.ts';
 import { selectSearchQuery } from '@/domain/filter/domain/select-search-query.selector.ts';
+import { createFixture } from '@/domain/store/__tests__/create-fixture.ts';
+import type { StateBuilder } from '@/domain/store/__tests__/state.builder.ts';
 
 export const createFiltersSelectorsFixture = createFixture((stateBuilderProvider) => {
   const givenFilters = (setup: (b: StateBuilder) => StateBuilder) => {

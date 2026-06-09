@@ -73,6 +73,12 @@ model Printing {
   backPrintingId Int?      @unique
   backPrinting   Printing? @relation("PrintingBack", fields: [backPrintingId], references: [id])
   frontPrinting  Printing? @relation("PrintingBack")
+
+  @@index([cardId])
+  @@index([setId])
+  @@index([rarityId])
+  @@index([editionId])
+  @@index([foilingId])
 }
 
 // ─── Reference tables ─────────────────────────────────────────────────────────

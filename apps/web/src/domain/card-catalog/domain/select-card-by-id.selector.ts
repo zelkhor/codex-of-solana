@@ -1,6 +1,5 @@
-import { type RootState } from '@/shared/store';
-
-import { selectAllCards } from '@/domain/card-catalog/domain/select-all-cards.selector.ts';
+import { selectAllCardsMap } from '@/domain/card-catalog/domain/select-cards-map.selector.ts';
+import { type RootState } from '@/domain/store';
 
 export const selectCardById = (cardIdentifier: string) => (state: RootState) =>
-  selectAllCards(state).find((c) => c.cardIdentifier === cardIdentifier);
+  selectAllCardsMap(state).get(cardIdentifier);

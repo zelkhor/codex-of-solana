@@ -2,12 +2,11 @@ import { beforeEach, describe, test } from 'vitest';
 
 import { cardBuilder, printingBuilder } from '@codex/core/testing';
 
-import { stateBuilderProvider } from '@/shared/store/__tests__/state.builder.ts';
-
 import {
   type CardCatalogSelectorsFixture,
   createCardCatalogSelectorsFixture,
 } from '@/domain/card-catalog/domain/__tests__/card-catalog.selectors.fixture.ts';
+import { stateBuilderProvider } from '@/domain/store/__tests__/state.builder.ts';
 
 describe('Feature: Selecting all artists', () => {
   let fixture: CardCatalogSelectorsFixture;

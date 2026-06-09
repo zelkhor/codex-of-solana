@@ -3,21 +3,27 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint \"src/**/*.ts\"",
     "sync": "tsx src/main.ts",
     "test": "pnpm test:unit",
     "test:unit": "vitest run --config vitest.unit.config.mts"
   },
   "dependencies": {
-    "@codex/orm": "workspace:*",
+    "@codex/core": "workspace:*",
     "@flesh-and-blood/cards": "^3.9.2",
     "@flesh-and-blood/types": "^3.8.24",
     "dotenv": "^16.0.0"
   },
   "devDependencies": {
     "@codex/config": "workspace:*",
-    "@types/node": "^22.0.0",
+    "@types/node": "catalog:",
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
     "tsx": "^4.0.0",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

@@ -1,15 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-
 import { FOILINGS, type FoilingT } from '@codex/core';
-
-import type { AppDispatch } from '@/shared/store';
 
 import { setFoilings } from '@/domain/filter/application/filters.slice.ts';
 import { selectFilters } from '@/domain/filter/domain/select-filters.selector.ts';
+import { useAppDispatch, useAppSelector } from '@/domain/store';
 
 export const useFoilingFilterViewModel = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { foilings } = useSelector(selectFilters);
+  const dispatch = useAppDispatch();
+  const { foilings } = useAppSelector(selectFilters);
 
   return {
     options: Object.values(FOILINGS),

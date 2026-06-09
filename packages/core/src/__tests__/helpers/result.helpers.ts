@@ -12,7 +12,7 @@ export function expectOk<T, E extends AppError>(
       expect(r.value).toEqual(expected);
     }
   } else {
-    fail(`Expected Ok, got Err: ${JSON.stringify(r.error)}`);
+    expect.fail(`Expected Ok, got Err: ${JSON.stringify(r.error)}`);
   }
 }
 
@@ -27,6 +27,6 @@ export function expectErr<T, E extends AppError>(
       expect(r.error.code).toBe(code);
     }
   } else {
-    fail(`Expected Err, got Ok with value: ${JSON.stringify(r.value)}`);
+    expect.fail(`Expected Err, got Ok with value: ${JSON.stringify(r.value)}`);
   }
 }

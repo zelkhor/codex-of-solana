@@ -1,12 +1,11 @@
 import type React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { RotateCcw, X } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils.ts';
-import type { AppDispatch } from '@/shared/store';
 
 import { resetFilters } from '@/domain/filter/application/filters.slice.ts';
+import { useAppDispatch } from '@/domain/store';
 
 import { ArtistFilter } from '../ArtistFilter/ArtistFilter.tsx';
 import { AttackFilter } from '../AttackFilter/AttackFilter.tsx';
@@ -49,7 +48,7 @@ const FilterRow = ({
 );
 
 export const FilterPanel = ({ onClose }: FilterPanelProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   return (
     <div className="px-6 pt-6 pb-32 space-y-4">
