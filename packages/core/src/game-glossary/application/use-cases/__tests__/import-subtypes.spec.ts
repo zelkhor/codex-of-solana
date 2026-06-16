@@ -1,4 +1,4 @@
-import { EmptySubtypeNameError } from '../../../domain/game-glossary.errors';
+import { EmptySubtypeNameError } from '../../../domain/subtype';
 import {
   type ImportSubtypesFixtureT,
   createImportSubtypesFixture,

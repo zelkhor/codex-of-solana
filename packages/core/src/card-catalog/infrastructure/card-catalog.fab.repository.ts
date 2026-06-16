@@ -2,17 +2,26 @@ import { cards as fabCards } from '@flesh-and-blood/cards';
 
 import { FOILINGS } from '../../shared/game/foiling';
 import { SET_ORDER } from '../../shared/game/set';
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
 import type { Card, Printing } from '../domain/card';
-import { CardCatalogLoadError } from '../domain/card-catalog.errors';
 import { CARD_PRINTING_OVERRIDES } from './card-catalog.overrides';
 
 type SourceCard = (typeof fabCards)[number];
 type SourcePrinting = SourceCard['printings'][number];
 
+export class CardCatalogLoadError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'CARD_CATALOG_LOAD_ERROR',
+      cause ? `Failed to load card catalog: ${cause}` : 'Failed to load card catalog',
+    );
+  }
+}
+
 export class CardCatalogFabRepository implements ICardCatalogRepository {
-  async getAll(): Promise<Result<Card[], CardCatalogLoadError>> {
+  async getAll(): Promise<Result<Card[]>> {
     try {
       return ok(this.toDtos(fabCards));
     } catch (e) {

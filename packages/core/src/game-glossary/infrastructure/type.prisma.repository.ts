@@ -1,9 +1,18 @@
 import type { Prisma } from '@codex/orm';
 
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { ITypeRepository } from '../application/type.repository';
 import { Type } from '../domain/type';
-import { TypeRepositoryError } from './game-glossary.repository.errors';
+
+export class TypeRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'TYPE_REPOSITORY_ERROR',
+      cause ? `Type repository failure: ${cause}` : 'Type repository failure',
+    );
+  }
+}
 
 export class TypePrismaRepository implements ITypeRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}

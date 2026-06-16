@@ -1,4 +1,4 @@
-import { EmptyTypeNameError } from '../../../domain/game-glossary.errors';
+import { EmptyTypeNameError } from '../../../domain/type';
 import {
   type ImportCardTypesFixtureT,
   createImportCardTypesFixture,

@@ -1,4 +1,4 @@
-import { EmptyKeywordNameError } from '../../../domain/game-glossary.errors';
+import { EmptyKeywordNameError } from '../../../domain/keyword';
 import {
   type ImportKeywordsFixtureT,
   createImportKeywordsFixture,

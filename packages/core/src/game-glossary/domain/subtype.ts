@@ -1,5 +1,11 @@
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
-import { EmptySubtypeNameError } from './game-glossary.errors';
+
+export class EmptySubtypeNameError extends AppError {
+  constructor() {
+    super('EMPTY_SUBTYPE_NAME', 'A subtype name cannot be empty');
+  }
+}
 
 export class Subtype {
   private constructor(public readonly name: string) {}

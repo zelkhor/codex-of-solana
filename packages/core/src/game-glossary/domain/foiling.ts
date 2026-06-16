@@ -1,5 +1,17 @@
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
-import { EmptyFoilingNameError, UnknownFoilingError } from './game-glossary.errors';
+
+export class EmptyFoilingNameError extends AppError {
+  constructor() {
+    super('EMPTY_FOILING_NAME', 'A foiling name cannot be empty');
+  }
+}
+
+export class UnknownFoilingError extends AppError {
+  constructor(name: string) {
+    super('UNKNOWN_FOILING', `Foiling "${name}" has no known game order`);
+  }
+}
 
 const FOILING_ORDER = ['Regular', 'Rainbow', 'Cold', 'Gold'] as const;
 

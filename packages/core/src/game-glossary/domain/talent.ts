@@ -1,5 +1,11 @@
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
-import { EmptyTalentNameError } from './game-glossary.errors';
+
+export class EmptyTalentNameError extends AppError {
+  constructor() {
+    super('EMPTY_TALENT_NAME', 'A talent name cannot be empty');
+  }
+}
 
 export class Talent {
   private constructor(public readonly name: string) {}

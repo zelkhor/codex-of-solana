@@ -1,9 +1,18 @@
 import type { Prisma } from '@codex/orm';
 
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { IKeywordRepository } from '../application/keyword.repository';
 import { Keyword } from '../domain/keyword';
-import { KeywordRepositoryError } from './game-glossary.repository.errors';
+
+export class KeywordRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'KEYWORD_REPOSITORY_ERROR',
+      cause ? `Keyword repository failure: ${cause}` : 'Keyword repository failure',
+    );
+  }
+}
 
 export class KeywordPrismaRepository implements IKeywordRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}

@@ -1,5 +1,11 @@
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
-import { EmptyKeywordNameError } from './game-glossary.errors';
+
+export class EmptyKeywordNameError extends AppError {
+  constructor() {
+    super('EMPTY_KEYWORD_NAME', 'A keyword name cannot be empty');
+  }
+}
 
 export class Keyword {
   private constructor(public readonly name: string) {}

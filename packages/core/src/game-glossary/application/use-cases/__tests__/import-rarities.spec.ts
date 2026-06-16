@@ -1,4 +1,4 @@
-import { EmptyRarityNameError } from '../../../domain/game-glossary.errors';
+import { EmptyRarityNameError } from '../../../domain/rarity';
 import {
   type ImportRaritiesFixtureT,
   createImportRaritiesFixture,

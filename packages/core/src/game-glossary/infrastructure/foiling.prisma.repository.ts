@@ -1,9 +1,18 @@
 import type { Prisma } from '@codex/orm';
 
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { IFoilingRepository } from '../application/foiling.repository';
 import { Foiling } from '../domain/foiling';
-import { FoilingRepositoryError } from './game-glossary.repository.errors';
+
+export class FoilingRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'FOILING_REPOSITORY_ERROR',
+      cause ? `Foiling repository failure: ${cause}` : 'Foiling repository failure',
+    );
+  }
+}
 
 export class FoilingPrismaRepository implements IFoilingRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}

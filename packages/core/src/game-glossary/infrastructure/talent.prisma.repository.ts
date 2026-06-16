@@ -1,9 +1,18 @@
 import type { Prisma } from '@codex/orm';
 
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { ITalentRepository } from '../application/talent.repository';
 import { Talent } from '../domain/talent';
-import { TalentRepositoryError } from './game-glossary.repository.errors';
+
+export class TalentRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'TALENT_REPOSITORY_ERROR',
+      cause ? `Talent repository failure: ${cause}` : 'Talent repository failure',
+    );
+  }
+}
 
 export class TalentPrismaRepository implements ITalentRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}

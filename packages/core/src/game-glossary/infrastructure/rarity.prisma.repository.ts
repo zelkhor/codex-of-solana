@@ -1,9 +1,18 @@
 import type { Prisma } from '@codex/orm';
 
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { IRarityRepository } from '../application/rarity.repository';
 import { Rarity } from '../domain/rarity';
-import { RarityRepositoryError } from './game-glossary.repository.errors';
+
+export class RarityRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'RARITY_REPOSITORY_ERROR',
+      cause ? `Rarity repository failure: ${cause}` : 'Rarity repository failure',
+    );
+  }
+}
 
 export class RarityPrismaRepository implements IRarityRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}

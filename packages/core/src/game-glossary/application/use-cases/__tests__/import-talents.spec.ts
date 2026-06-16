@@ -1,4 +1,4 @@
-import { EmptyTalentNameError } from '../../../domain/game-glossary.errors';
+import { EmptyTalentNameError } from '../../../domain/talent';
 import { type ImportTalentsFixtureT, createImportTalentsFixture } from './import-talents.fixture';
 
 describe('Feature: Importing game talents', () => {

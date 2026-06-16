@@ -1,4 +1,13 @@
-import { Class, Foiling, Keyword, Rarity, Subtype, Talent, Type } from '@flesh-and-blood/types';
+import {
+  Class,
+  Foiling,
+  Keyword,
+  Rarity,
+  Subtype,
+  Talent,
+  Treatment,
+  Type,
+} from '@flesh-and-blood/types';
 import 'dotenv/config';
 
 import {
@@ -10,11 +19,13 @@ import {
   ImportRaritiesUseCase,
   ImportSubtypesUseCase,
   ImportTalentsUseCase,
+  ImportTreatmentsUseCase,
   ImportTypesUsecase,
   KeywordPrismaRepository,
   RarityPrismaRepository,
   SubtypePrismaRepository,
   TalentPrismaRepository,
+  TreatmentPrismaRepository,
   TypePrismaRepository,
 } from '@codex/core';
 import { prisma } from '@codex/orm';
@@ -27,6 +38,7 @@ const getKeywords = (): string[] => Object.values(Keyword);
 const getRarities = (): string[] => Object.values(Rarity);
 // 'Regular' is our domain's base foiling — the package only defines the special foils.
 const getFoilings = (): string[] => ['Regular', ...Object.values(Foiling)];
+const getTreatments = (): string[] => Object.values(Treatment);
 
 const main = async () => {
   console.log('[fab-card-registry] sync starting…');
@@ -39,6 +51,7 @@ const main = async () => {
   const keywordRepository = new KeywordPrismaRepository(prisma);
   const rarityRepository = new RarityPrismaRepository(prisma);
   const foilingRepository = new FoilingPrismaRepository(prisma);
+  const treatmentRepository = new TreatmentPrismaRepository(prisma);
 
   // Use-cases
   const importClasses = new ImportClassesUseCase(classRepository);
@@ -48,6 +61,7 @@ const main = async () => {
   const importKeywords = new ImportKeywordsUseCase(keywordRepository);
   const importRarities = new ImportRaritiesUseCase(rarityRepository);
   const importFoilings = new ImportFoilingsUseCase(foilingRepository);
+  const importTreatments = new ImportTreatmentsUseCase(treatmentRepository);
 
   // Values from package
   const names = getClasses();
@@ -57,6 +71,7 @@ const main = async () => {
   const keywords = getKeywords();
   const rarities = getRarities();
   const foilings = getFoilings();
+  const treatments = getTreatments();
 
   try {
     const classResult = await importClasses.execute({ names });
@@ -93,6 +108,11 @@ const main = async () => {
     if (!foilingsResult.ok) throw foilingsResult.error;
 
     console.log(`[fab-card-registry] synced ${foilings.length} foilings.`);
+
+    const treatmentsResult = await importTreatments.execute({ names: treatments });
+    if (!treatmentsResult.ok) throw treatmentsResult.error;
+
+    console.log(`[fab-card-registry] synced ${treatments.length} treatments.`);
   } finally {
     await prisma.$disconnect();
   }

@@ -1,9 +1,18 @@
 import type { Prisma } from '@codex/orm';
 
+import { AppError } from '../../shared/helpers/errors';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { ISubtypeRepository } from '../application/subtype.repository';
 import { Subtype } from '../domain/subtype';
-import { SubtypeRepositoryError } from './game-glossary.repository.errors';
+
+export class SubtypeRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'SUBTYPE_REPOSITORY_ERROR',
+      cause ? `Subtype repository failure: ${cause}` : 'Subtype repository failure',
+    );
+  }
+}
 
 export class SubtypePrismaRepository implements ISubtypeRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}

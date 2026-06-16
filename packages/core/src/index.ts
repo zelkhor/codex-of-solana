@@ -16,7 +16,6 @@ export * from './shared/game/treatment';
 export * from './shared/game/type';
 
 export * from './card-catalog/domain/card';
-export * from './card-catalog/domain/card-catalog.errors';
 
 export * from './card-catalog/application/card-catalog.repository';
 export * from './card-catalog/application/use-cases/get-all-cards.usecase';
@@ -32,7 +31,7 @@ export * from './game-glossary/domain/subtype';
 export * from './game-glossary/domain/keyword';
 export * from './game-glossary/domain/rarity';
 export * from './game-glossary/domain/foiling';
-export * from './game-glossary/domain/game-glossary.errors';
+export * from './game-glossary/domain/treatment';
 
 export * from './game-glossary/application/class.repository';
 export * from './game-glossary/application/use-cases/import-classes.usecase';
@@ -48,6 +47,8 @@ export * from './game-glossary/application/rarity.repository';
 export * from './game-glossary/application/use-cases/import-rarities.usecase';
 export * from './game-glossary/application/foiling.repository';
 export * from './game-glossary/application/use-cases/import-foilings.usecase';
+export * from './game-glossary/application/treatment.repository';
+export * from './game-glossary/application/use-cases/import-treatments.usecase';
 
 export * from './game-glossary/infrastructure/class.inmemory.repository';
 export * from './game-glossary/infrastructure/class.prisma.repository';
@@ -63,4 +64,5 @@ export * from './game-glossary/infrastructure/rarity.inmemory.repository';
 export * from './game-glossary/infrastructure/rarity.prisma.repository';
 export * from './game-glossary/infrastructure/foiling.inmemory.repository';
 export * from './game-glossary/infrastructure/foiling.prisma.repository';
-export * from './game-glossary/infrastructure/game-glossary.repository.errors';
+export * from './game-glossary/infrastructure/treatment.inmemory.repository';
+export * from './game-glossary/infrastructure/treatment.prisma.repository';

@@ -1,4 +1,4 @@
-import { EmptyFoilingNameError, UnknownFoilingError } from '../../../domain/game-glossary.errors';
+import { EmptyFoilingNameError, UnknownFoilingError } from '../../../domain/foiling';
 import {
   type ImportFoilingsFixtureT,
   createImportFoilingsFixture,

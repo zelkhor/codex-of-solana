@@ -1,7 +1,6 @@
 import { type Result, ok } from '../../shared/helpers/result';
 import type { ICardCatalogRepository } from '../application/card-catalog.repository';
 import type { Card } from '../domain/card';
-import type { CardCatalogLoadError } from '../domain/card-catalog.errors';
 
 export class InMemoryCardCatalogRepository implements ICardCatalogRepository {
   private cards: Card[] = [];
@@ -11,7 +10,7 @@ export class InMemoryCardCatalogRepository implements ICardCatalogRepository {
     return this;
   }
 
-  async getAll(): Promise<Result<Card[], CardCatalogLoadError>> {
+  async getAll(): Promise<Result<Card[]>> {
     return ok(this.cards);
   }
 }
