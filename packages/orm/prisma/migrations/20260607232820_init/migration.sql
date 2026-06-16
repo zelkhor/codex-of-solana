@@ -81,9 +81,9 @@ CREATE TABLE "Keyword" (
 CREATE TABLE "Set" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "group" TEXT NOT NULL,
-    "releaseOrder" INTEGER NOT NULL,
-    "releaseDate" TIMESTAMP(3),
+    "groupId" INTEGER NOT NULL,
+    "releaseOrder" INTEGER NOT NULL DEFAULT 0,
+    "releaseDate" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Set_pkey" PRIMARY KEY ("id")
 );
@@ -126,6 +126,14 @@ CREATE TABLE "Format" (
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Format_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SetGroup" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "SetGroup_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -272,6 +280,9 @@ CREATE UNIQUE INDEX "Treatment_name_key" ON "Treatment"("name");
 CREATE UNIQUE INDEX "Format_name_key" ON "Format"("name");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "SetGroup_name_key" ON "SetGroup"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Hero_name_key" ON "Hero"("name");
 
 -- CreateIndex
@@ -315,6 +326,9 @@ ALTER TABLE "Card" ADD CONSTRAINT "Card_heroId_fkey" FOREIGN KEY ("heroId") REFE
 
 -- AddForeignKey
 ALTER TABLE "Printing" ADD CONSTRAINT "Printing_cardId_fkey" FOREIGN KEY ("cardId") REFERENCES "Card"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Set" ADD CONSTRAINT "Set_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "SetGroup"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Printing" ADD CONSTRAINT "Printing_setId_fkey" FOREIGN KEY ("setId") REFERENCES "Set"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

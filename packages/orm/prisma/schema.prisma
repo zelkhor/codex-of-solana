@@ -113,12 +113,19 @@ model Keyword {
   cards Card[]
 }
 
+model SetGroup {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  sets Set[]
+}
+
 model Set {
   id           Int        @id @default(autoincrement())
   name         String     @unique
-  group        String
-  releaseOrder Int
-  releaseDate  DateTime?
+  groupId      Int
+  group        SetGroup   @relation(fields: [groupId], references: [id])
+  releaseOrder Int        @default(0)
+  releaseDate  DateTime
   printings    Printing[]
 }
 

@@ -3,9 +3,9 @@ import { Release } from '@flesh-and-blood/types';
 export const SETS = Release;
 export type SetT = `${Release}`;
 
-export type SetGroup = { group: string; sets: readonly SetT[] };
+export type SetGrouping = { group: string; sets: readonly SetT[] };
 
-export const SET_GROUPS: SetGroup[] = [
+export const SET_GROUPS: SetGrouping[] = [
   {
     group: 'Main Sets',
     sets: [
