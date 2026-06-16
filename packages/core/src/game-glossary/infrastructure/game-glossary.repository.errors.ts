@@ -18,11 +18,11 @@ export class TalentRepositoryError extends AppError {
   }
 }
 
-export class CardTypeRepositoryError extends AppError {
+export class TypeRepositoryError extends AppError {
   constructor(cause?: string) {
     super(
-      'CARD_TYPE_REPOSITORY_ERROR',
-      cause ? `Card type repository failure: ${cause}` : 'Card type repository failure',
+      'TYPE_REPOSITORY_ERROR',
+      cause ? `Type repository failure: ${cause}` : 'Type repository failure',
     );
   }
 }

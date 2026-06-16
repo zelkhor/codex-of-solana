@@ -3,39 +3,39 @@ import type { Prisma } from '@codex/orm';
 import { type Result, err, ok } from '../../shared/helpers/result';
 import type { ITypeRepository } from '../application/type.repository';
 import { Type } from '../domain/type';
-import { CardTypeRepositoryError } from './game-glossary.repository.errors';
+import { TypeRepositoryError } from './game-glossary.repository.errors';
 
 export class TypePrismaRepository implements ITypeRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Type[]>> {
     try {
-      const rows = await this.prisma.cardType.findMany({ orderBy: { name: 'asc' } });
+      const rows = await this.prisma.type.findMany({ orderBy: { name: 'asc' } });
 
-      const cardTypes: Type[] = [];
+      const types: Type[] = [];
 
       for (const row of rows) {
         const result = Type.create(row.name);
         if (!result.ok) return err(result.error);
-        cardTypes.push(result.value);
+        types.push(result.value);
       }
 
-      return ok(cardTypes);
+      return ok(types);
     } catch (error) {
-      return err(new CardTypeRepositoryError(error instanceof Error ? error.message : undefined));
+      return err(new TypeRepositoryError(error instanceof Error ? error.message : undefined));
     }
   }
 
-  async saveAll(cardTypes: Type[]): Promise<Result<void>> {
+  async saveAll(types: Type[]): Promise<Result<void>> {
     try {
-      await this.prisma.cardType.createMany({
-        data: cardTypes.map((cardType) => ({ name: cardType.name })),
+      await this.prisma.type.createMany({
+        data: types.map((type) => ({ name: type.name })),
         skipDuplicates: true,
       });
 
       return ok(undefined);
     } catch (error) {
-      return err(new CardTypeRepositoryError(error instanceof Error ? error.message : undefined));
+      return err(new TypeRepositoryError(error instanceof Error ? error.message : undefined));
     }
   }
 }

@@ -54,11 +54,11 @@ CREATE TABLE "Talent" (
 );
 
 -- CreateTable
-CREATE TABLE "CardType" (
+CREATE TABLE "Type" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
 
-    CONSTRAINT "CardType_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Type_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -163,11 +163,11 @@ CREATE TABLE "_CardToTalent" (
 );
 
 -- CreateTable
-CREATE TABLE "_CardToCardType" (
+CREATE TABLE "_CardToType" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL,
 
-    CONSTRAINT "_CardToCardType_AB_pkey" PRIMARY KEY ("A","B")
+    CONSTRAINT "_CardToType_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
@@ -245,7 +245,7 @@ CREATE UNIQUE INDEX "Class_name_key" ON "Class"("name");
 CREATE UNIQUE INDEX "Talent_name_key" ON "Talent"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "CardType_name_key" ON "CardType"("name");
+CREATE UNIQUE INDEX "Type_name_key" ON "Type"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Subtype_name_key" ON "Subtype"("name");
@@ -287,7 +287,7 @@ CREATE INDEX "_CardToClass_B_index" ON "_CardToClass"("B");
 CREATE INDEX "_CardToTalent_B_index" ON "_CardToTalent"("B");
 
 -- CreateIndex
-CREATE INDEX "_CardToCardType_B_index" ON "_CardToCardType"("B");
+CREATE INDEX "_CardToType_B_index" ON "_CardToType"("B");
 
 -- CreateIndex
 CREATE INDEX "_CardToSubtype_B_index" ON "_CardToSubtype"("B");
@@ -347,10 +347,10 @@ ALTER TABLE "_CardToTalent" ADD CONSTRAINT "_CardToTalent_A_fkey" FOREIGN KEY ("
 ALTER TABLE "_CardToTalent" ADD CONSTRAINT "_CardToTalent_B_fkey" FOREIGN KEY ("B") REFERENCES "Talent"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_CardToCardType" ADD CONSTRAINT "_CardToCardType_A_fkey" FOREIGN KEY ("A") REFERENCES "Card"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_CardToType" ADD CONSTRAINT "_CardToType_A_fkey" FOREIGN KEY ("A") REFERENCES "Card"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_CardToCardType" ADD CONSTRAINT "_CardToCardType_B_fkey" FOREIGN KEY ("B") REFERENCES "CardType"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_CardToType" ADD CONSTRAINT "_CardToType_B_fkey" FOREIGN KEY ("B") REFERENCES "Type"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CardToSubtype" ADD CONSTRAINT "_CardToSubtype_A_fkey" FOREIGN KEY ("A") REFERENCES "Card"("id") ON DELETE CASCADE ON UPDATE CASCADE;
