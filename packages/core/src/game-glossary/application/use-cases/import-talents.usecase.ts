@@ -1,6 +1,6 @@
-import { type Result, err } from '../../shared/helpers/result';
-import { Talent } from '../domain/talent';
-import type { ITalentRepository } from './talent.repository';
+import { type Result, err } from '../../../shared/helpers/result';
+import { Talent } from '../../domain/talent';
+import type { ITalentRepository } from '../talent.repository';
 
 export type ImportTalentsCommand = {
   names: string[];

@@ -1,40 +1,98 @@
-import { Class, Talent } from '@flesh-and-blood/types';
+import { Class, Foiling, Keyword, Rarity, Subtype, Talent, Type } from '@flesh-and-blood/types';
 import 'dotenv/config';
 
 import {
   ClassPrismaRepository,
+  FoilingPrismaRepository,
   ImportClassesUseCase,
+  ImportFoilingsUseCase,
+  ImportKeywordsUseCase,
+  ImportRaritiesUseCase,
+  ImportSubtypesUseCase,
   ImportTalentsUseCase,
+  ImportTypesUsecase,
+  KeywordPrismaRepository,
+  RarityPrismaRepository,
+  SubtypePrismaRepository,
   TalentPrismaRepository,
+  TypePrismaRepository,
 } from '@codex/core';
 import { prisma } from '@codex/orm';
 
-const classNames = (): string[] => Object.values(Class).filter((name) => name !== Class.NotClassed);
-
-const talentNames = (): string[] => Object.values(Talent);
+const getClasses = (): string[] => Object.values(Class).filter((name) => name !== Class.NotClassed);
+const getTalents = (): string[] => Object.values(Talent);
+const getTypes = (): string[] => Object.values(Type);
+const getSubtypes = (): string[] => Object.values(Subtype);
+const getKeywords = (): string[] => Object.values(Keyword);
+const getRarities = (): string[] => Object.values(Rarity);
+// 'Regular' is our domain's base foiling — the package only defines the special foils.
+const getFoilings = (): string[] => ['Regular', ...Object.values(Foiling)];
 
 const main = async () => {
   console.log('[fab-card-registry] sync starting…');
 
+  // Repositories
   const classRepository = new ClassPrismaRepository(prisma);
   const talentRepository = new TalentPrismaRepository(prisma);
+  const typeRepository = new TypePrismaRepository(prisma);
+  const subtypeRepository = new SubtypePrismaRepository(prisma);
+  const keywordRepository = new KeywordPrismaRepository(prisma);
+  const rarityRepository = new RarityPrismaRepository(prisma);
+  const foilingRepository = new FoilingPrismaRepository(prisma);
+
+  // Use-cases
+  const importClasses = new ImportClassesUseCase(classRepository);
+  const importTalents = new ImportTalentsUseCase(talentRepository);
+  const importTypes = new ImportTypesUsecase(typeRepository);
+  const importSubtypes = new ImportSubtypesUseCase(subtypeRepository);
+  const importKeywords = new ImportKeywordsUseCase(keywordRepository);
+  const importRarities = new ImportRaritiesUseCase(rarityRepository);
+  const importFoilings = new ImportFoilingsUseCase(foilingRepository);
+
+  // Values from package
+  const names = getClasses();
+  const talents = getTalents();
+  const types = getTypes();
+  const subtypes = getSubtypes();
+  const keywords = getKeywords();
+  const rarities = getRarities();
+  const foilings = getFoilings();
 
   try {
-    const importClasses = new ImportClassesUseCase(classRepository);
-
-    const names = classNames();
-    const result = await importClasses.execute({ names });
-    if (!result.ok) throw result.error;
+    const classResult = await importClasses.execute({ names });
+    if (!classResult.ok) throw classResult.error;
 
     console.log(`[fab-card-registry] synced ${names.length} classes.`);
 
-    const importTalents = new ImportTalentsUseCase(talentRepository);
-
-    const talents = talentNames();
     const talentsResult = await importTalents.execute({ names: talents });
     if (!talentsResult.ok) throw talentsResult.error;
 
     console.log(`[fab-card-registry] synced ${talents.length} talents.`);
+
+    const typesResult = await importTypes.execute({ names: types });
+    if (!typesResult.ok) throw typesResult.error;
+
+    console.log(`[fab-card-registry] synced ${types.length} types.`);
+
+    const subtypesResult = await importSubtypes.execute({ names: subtypes });
+    if (!subtypesResult.ok) throw subtypesResult.error;
+
+    console.log(`[fab-card-registry] synced ${subtypes.length} subtypes.`);
+
+    const keywordsResult = await importKeywords.execute({ names: keywords });
+    if (!keywordsResult.ok) throw keywordsResult.error;
+
+    console.log(`[fab-card-registry] synced ${keywords.length} keywords.`);
+
+    const raritiesResult = await importRarities.execute({ names: rarities });
+    if (!raritiesResult.ok) throw raritiesResult.error;
+
+    console.log(`[fab-card-registry] synced ${rarities.length} rarities.`);
+
+    const foilingsResult = await importFoilings.execute({ names: foilings });
+    if (!foilingsResult.ok) throw foilingsResult.error;
+
+    console.log(`[fab-card-registry] synced ${foilings.length} foilings.`);
   } finally {
     await prisma.$disconnect();
   }

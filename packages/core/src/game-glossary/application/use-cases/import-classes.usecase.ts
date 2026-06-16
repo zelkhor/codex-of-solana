@@ -1,6 +1,6 @@
-import { type Result, err } from '../../shared/helpers/result';
-import { Class } from '../domain/class';
-import type { IClassRepository } from './class.repository';
+import { type Result, err } from '../../../shared/helpers/result';
+import { Class } from '../../domain/class';
+import type { IClassRepository } from '../class.repository';
 
 export type ImportClassesCommand = {
   names: string[];

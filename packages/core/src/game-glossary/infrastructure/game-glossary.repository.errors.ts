@@ -17,3 +17,48 @@ export class TalentRepositoryError extends AppError {
     );
   }
 }
+
+export class CardTypeRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'CARD_TYPE_REPOSITORY_ERROR',
+      cause ? `Card type repository failure: ${cause}` : 'Card type repository failure',
+    );
+  }
+}
+
+export class SubtypeRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'SUBTYPE_REPOSITORY_ERROR',
+      cause ? `Subtype repository failure: ${cause}` : 'Subtype repository failure',
+    );
+  }
+}
+
+export class KeywordRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'KEYWORD_REPOSITORY_ERROR',
+      cause ? `Keyword repository failure: ${cause}` : 'Keyword repository failure',
+    );
+  }
+}
+
+export class RarityRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'RARITY_REPOSITORY_ERROR',
+      cause ? `Rarity repository failure: ${cause}` : 'Rarity repository failure',
+    );
+  }
+}
+
+export class FoilingRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'FOILING_REPOSITORY_ERROR',
+      cause ? `Foiling repository failure: ${cause}` : 'Foiling repository failure',
+    );
+  }
+}

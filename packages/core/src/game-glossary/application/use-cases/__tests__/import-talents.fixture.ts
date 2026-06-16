@@ -1,5 +1,5 @@
-import { createFixture } from '../../../__tests__/helpers/create-fixture';
-import { InMemoryTalentRepository } from '../../infrastructure/talent.inmemory.repository';
+import { createFixture } from '../../../../__tests__/helpers/create-fixture';
+import { InMemoryTalentRepository } from '../../../infrastructure/talent.inmemory.repository';
 import { ImportTalentsUseCase } from '../import-talents.usecase';
 
 export const createImportTalentsFixture = () => {

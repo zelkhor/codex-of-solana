@@ -1,4 +1,4 @@
-import { cardBuilder } from '../../../__tests__/builders/card.builder';
+import { cardBuilder } from '../../../../__tests__';
 import { createCardCatalogFixture } from './card-catalog.fixture';
 
 describe('Feature: Listing all cards', () => {

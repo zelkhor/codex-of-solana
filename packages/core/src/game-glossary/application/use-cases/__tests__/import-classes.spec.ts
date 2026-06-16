@@ -1,4 +1,4 @@
-import { EmptyClassNameError } from '../../domain/game-glossary.errors';
+import { EmptyClassNameError } from '../../../domain/game-glossary.errors';
 import { type ImportClassesFixtureT, createImportClassesFixture } from './import-classes.fixture';
 
 describe('Feature: Importing game classes', () => {

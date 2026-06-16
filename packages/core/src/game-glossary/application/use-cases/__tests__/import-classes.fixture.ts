@@ -1,5 +1,5 @@
-import { createFixture } from '../../../__tests__/helpers/create-fixture';
-import { InMemoryClassRepository } from '../../infrastructure/class.inmemory.repository';
+import { createFixture } from '../../../../__tests__/helpers/create-fixture';
+import { InMemoryClassRepository } from '../../../infrastructure/class.inmemory.repository';
 import { ImportClassesUseCase } from '../import-classes.usecase';
 
 export const createImportClassesFixture = () => {

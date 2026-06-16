@@ -15,8 +15,8 @@ datasource db {
 // ─── Card catalog ─────────────────────────────────────────────────────────────
 
 model Card {
-  id         Int     @id @default(autoincrement())
-  identifier String  @unique
+  id         Int      @id @default(autoincrement())
+  identifier String   @unique
   name       String
   pitch      String?
   cost       String?
@@ -31,12 +31,12 @@ model Card {
   flows      String[]
   fusions    String[]
 
-  heroId Int?   @unique
-  hero   Hero?  @relation("HeroCard", fields: [heroId], references: [id])
+  heroId Int?  @unique
+  hero   Hero? @relation("HeroCard", fields: [heroId], references: [id])
 
   classes         Class[]
   talents         Talent[]
-  types           CardType[]
+  types           Type[]
   subtypes        Subtype[]
   keywords        Keyword[]
   legalHeroes     Hero[]     @relation("CardLegalHeroes")
@@ -95,7 +95,7 @@ model Talent {
   cards Card[]
 }
 
-model CardType {
+model Type {
   id    Int    @id @default(autoincrement())
   name  String @unique
   cards Card[]
@@ -157,9 +157,9 @@ model Hero {
   name    String  @unique
   isYoung Boolean @default(false)
 
-  adultFormId Int?   @unique
-  adultForm   Hero?  @relation("HeroMaturation", fields: [adultFormId], references: [id])
-  youngForm   Hero?  @relation("HeroMaturation")
+  adultFormId Int?  @unique
+  adultForm   Hero? @relation("HeroMaturation", fields: [adultFormId], references: [id])
+  youngForm   Hero? @relation("HeroMaturation")
 
   heroCard            Card?  @relation("HeroCard")
   legalCards          Card[] @relation("CardLegalHeroes")
