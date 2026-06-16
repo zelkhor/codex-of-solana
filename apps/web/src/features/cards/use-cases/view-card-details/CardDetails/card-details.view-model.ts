@@ -6,26 +6,33 @@ import { type TiltEffect, foilingToEffect } from '@/features/cards/ui/card.helpe
 
 export interface CardDetailsViewModel {
   activePrinting: Printing;
+  frontPrinting: Printing;
   setActivePrinting: (printing: Printing) => void;
   backPrinting: Printing | null;
+  frontTiltEffect: TiltEffect;
+  backTiltEffect?: TiltEffect;
   isFlipped: boolean;
   flip: () => void;
-  tiltEffect: TiltEffect;
 }
 
 export const useCardDetailsViewModel = (initialPrinting: Printing): CardDetailsViewModel => {
-  const [activePrinting, setActivePrinting] = useState<Printing>(initialPrinting);
+  const [frontPrinting, setFrontPrinting] = useState<Printing>(initialPrinting);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-  const { backPrinting } = activePrinting;
-
-  const isFlipped = !!backPrinting && activePrinting.print === backPrinting.print;
+  const backPrinting = frontPrinting.backPrinting;
+  const activePrinting = isFlipped && backPrinting ? backPrinting : frontPrinting;
 
   return {
     activePrinting,
-    setActivePrinting,
+    frontPrinting,
+    setActivePrinting: (p: Printing) => {
+      setFrontPrinting(p);
+      setIsFlipped(false);
+    },
     backPrinting,
+    frontTiltEffect: foilingToEffect(frontPrinting.foiling),
+    backTiltEffect: backPrinting ? foilingToEffect(backPrinting.foiling) : undefined,
     isFlipped,
-    flip: () => setActivePrinting(isFlipped ? initialPrinting : backPrinting!),
-    tiltEffect: foilingToEffect(activePrinting.foiling),
+    flip: () => setIsFlipped((f) => !f),
   };
 };

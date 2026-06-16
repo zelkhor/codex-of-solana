@@ -6,7 +6,7 @@ import type { Card, Printing } from '@codex/core';
 
 import { ExpandableText } from '@/shared/ui/ExpandableText.tsx';
 
-import { CardBack } from '@/features/cards/ui/CardBack.tsx';
+import { CardFace } from '@/features/cards/ui/CardFace.tsx';
 import {
   AttackIcon,
   CostIcon,
@@ -15,8 +15,8 @@ import {
   LifeIcon,
   RarityIcon,
 } from '@/features/cards/ui/CardIcons.tsx';
+import { FlipContainer } from '@/features/cards/ui/FlipContainer.tsx';
 import { FoilingBadge } from '@/features/cards/ui/FoilingBadge.tsx';
-import { TiltCard } from '@/features/cards/ui/TiltCard.tsx';
 import { useCardDetailsViewModel } from '@/features/cards/use-cases/view-card-details/CardDetails/card-details.view-model.ts';
 
 interface CardDetailProps {
@@ -37,7 +37,6 @@ export const CardDetails = ({
   const vm = useCardDetailsViewModel(initialPrinting);
   const printingsRef = useRef<HTMLDivElement>(null);
   const [hasMorePrintings, setHasMorePrintings] = useState(false);
-  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const el = printingsRef.current;
@@ -71,18 +70,35 @@ export const CardDetails = ({
           className="relative w-full max-w-50 mx-auto sm:max-w-none"
           style={{ opacity: cardImageVisible ? 1 : 0 }}
         >
-          <TiltCard className="w-full aspect-5/7" effect={vm.tiltEffect}>
-            {imgError ? (
-              <CardBack className="w-full h-full" />
-            ) : (
-              <img
-                src={vm.activePrinting.image}
-                alt={card.name}
-                onError={() => setImgError(true)}
-                className={`w-full h-full object-cover`}
-              />
-            )}
-          </TiltCard>
+          {vm.backPrinting ? (
+            <FlipContainer
+              isFlipped={vm.isFlipped}
+              className="w-full aspect-5/7"
+              front={
+                <CardFace
+                  className="w-full h-full"
+                  src={vm.frontPrinting.image}
+                  alt={card.name}
+                  effect={vm.frontTiltEffect}
+                />
+              }
+              back={
+                <CardFace
+                  className="w-full h-full"
+                  src={vm.backPrinting.image}
+                  alt={`${card.name} (back)`}
+                  effect={vm.backTiltEffect}
+                />
+              }
+            />
+          ) : (
+            <CardFace
+              className="w-full aspect-5/7"
+              src={vm.frontPrinting.image}
+              alt={card.name}
+              effect={vm.frontTiltEffect}
+            />
+          )}
           <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
             <FoilingBadge foiling={vm.activePrinting.foiling} />
           </div>
@@ -221,7 +237,7 @@ export const CardDetails = ({
                     key={p.print}
                     onClick={() => vm.setActivePrinting(p)}
                     className={`text-xs px-2 py-1 rounded-md transition-colors ${
-                      p.print === vm.activePrinting.print
+                      p.print === vm.frontPrinting.print
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted text-muted-foreground hover:bg-accent'
                     }`}

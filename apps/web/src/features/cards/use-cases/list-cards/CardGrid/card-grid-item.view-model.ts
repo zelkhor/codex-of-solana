@@ -6,8 +6,8 @@ import { type TiltEffect, foilingToEffect } from '@/features/cards/ui/card.helpe
 
 export interface CardGridItemViewModel {
   activePrinting: Printing;
-  imageUrl: string;
-  tiltEffect: TiltEffect;
+  frontTiltEffect: TiltEffect;
+  backTiltEffect?: TiltEffect;
   flipped: boolean;
   flip: () => void;
 }
@@ -17,13 +17,12 @@ export const useCardGridItemViewModel = (
   backPrinting?: Printing,
 ): CardGridItemViewModel => {
   const [flipped, setFlipped] = useState(false);
-
   const activePrinting = flipped && backPrinting ? backPrinting : printing;
 
   return {
     activePrinting,
-    imageUrl: activePrinting.image,
-    tiltEffect: foilingToEffect(activePrinting.foiling),
+    frontTiltEffect: foilingToEffect(printing.foiling),
+    backTiltEffect: backPrinting ? foilingToEffect(backPrinting.foiling) : undefined,
     flipped,
     flip: () => setFlipped((f) => !f),
   };
