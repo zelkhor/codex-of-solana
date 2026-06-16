@@ -8,3 +8,12 @@ export class ClassRepositoryError extends AppError {
     );
   }
 }
+
+export class TalentRepositoryError extends AppError {
+  constructor(cause?: string) {
+    super(
+      'TALENT_REPOSITORY_ERROR',
+      cause ? `Talent repository failure: ${cause}` : 'Talent repository failure',
+    );
+  }
+}

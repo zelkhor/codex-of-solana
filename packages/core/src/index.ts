@@ -26,11 +26,16 @@ export * from './card-catalog/infrastructure/card-catalog.inmemory.repository';
 export * from './card-catalog/infrastructure/card-catalog.overrides';
 
 export * from './game-glossary/domain/class';
+export * from './game-glossary/domain/talent';
 export * from './game-glossary/domain/game-glossary.errors';
 
 export * from './game-glossary/application/class.repository';
 export * from './game-glossary/application/import-classes.usecase';
+export * from './game-glossary/application/talent.repository';
+export * from './game-glossary/application/import-talents.usecase';
 
 export * from './game-glossary/infrastructure/class.inmemory.repository';
 export * from './game-glossary/infrastructure/class.prisma.repository';
+export * from './game-glossary/infrastructure/talent.inmemory.repository';
+export * from './game-glossary/infrastructure/talent.prisma.repository';
 export * from './game-glossary/infrastructure/game-glossary.repository.errors';
