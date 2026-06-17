@@ -14,11 +14,13 @@
     "@codex/orm": "workspace:*",
     "@flesh-and-blood/cards": "^3.9.2",
     "@flesh-and-blood/types": "^3.8.24",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.0",
+    "prompts": "^2.4.2"
   },
   "devDependencies": {
     "@codex/config": "workspace:*",
     "@types/node": "catalog:",
+    "@types/prompts": "^2.4.9",
     "@typescript-eslint/eslint-plugin": "catalog:",
     "@typescript-eslint/parser": "catalog:",
     "eslint": "catalog:",
