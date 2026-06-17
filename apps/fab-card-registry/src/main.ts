@@ -1,17 +1,13 @@
 import 'dotenv/config';
 
 import {
-  ArtistPrismaRepository,
-  ClassPrismaRepository,
   CreateSetGroupUseCase,
-  EditionPrismaRepository,
-  FoilingPrismaRepository,
-  FormatPrismaRepository,
   ImportArtistsUseCase,
   ImportClassesUseCase,
   ImportEditionsUseCase,
   ImportFoilingsUseCase,
   ImportFormatsUseCase,
+  ImportHeroesUseCase,
   ImportKeywordsUseCase,
   ImportRaritiesUseCase,
   ImportSetReleasesUseCase,
@@ -19,17 +15,25 @@ import {
   ImportTalentsUseCase,
   ImportTreatmentsUseCase,
   ImportTypesUsecase,
-  KeywordPrismaRepository,
-  RarityPrismaRepository,
-  SetGroupPrismaRepository,
-  SetReleasePrismaRepository,
-  SubtypePrismaRepository,
-  TalentPrismaRepository,
-  TreatmentPrismaRepository,
-  TypePrismaRepository,
+  PrismaArtistRepository,
+  PrismaClassRepository,
+  PrismaEditionRepository,
+  PrismaFoilingRepository,
+  PrismaFormatRepository,
+  PrismaHeroRepository,
+  PrismaKeywordRepository,
+  PrismaRarityRepository,
+  PrismaSetGroupRepository,
+  PrismaSetReleaseRepository,
+  PrismaSubtypeRepository,
+  PrismaTalentRepository,
+  PrismaTransactionPerformer,
+  PrismaTreatmentRepository,
+  PrismaTypeRepository,
 } from '@codex/core';
 import { prisma } from '@codex/orm';
 
+import { importHeroes } from './import-heroes';
 import { importReferenceData } from './import-reference-data';
 import { importSetReleases } from './import-set-releases';
 
@@ -37,19 +41,20 @@ const main = async () => {
   console.log('[fab-card-registry] sync starting…');
 
   // Repositories
-  const classRepository = new ClassPrismaRepository(prisma);
-  const talentRepository = new TalentPrismaRepository(prisma);
-  const typeRepository = new TypePrismaRepository(prisma);
-  const subtypeRepository = new SubtypePrismaRepository(prisma);
-  const keywordRepository = new KeywordPrismaRepository(prisma);
-  const rarityRepository = new RarityPrismaRepository(prisma);
-  const foilingRepository = new FoilingPrismaRepository(prisma);
-  const treatmentRepository = new TreatmentPrismaRepository(prisma);
-  const editionRepository = new EditionPrismaRepository(prisma);
-  const formatRepository = new FormatPrismaRepository(prisma);
-  const artistRepository = new ArtistPrismaRepository(prisma);
-  const setGroupRepository = new SetGroupPrismaRepository(prisma);
-  const setReleaseRepository = new SetReleasePrismaRepository(prisma);
+  const classRepository = new PrismaClassRepository(prisma);
+  const talentRepository = new PrismaTalentRepository(prisma);
+  const typeRepository = new PrismaTypeRepository(prisma);
+  const subtypeRepository = new PrismaSubtypeRepository(prisma);
+  const keywordRepository = new PrismaKeywordRepository(prisma);
+  const rarityRepository = new PrismaRarityRepository(prisma);
+  const foilingRepository = new PrismaFoilingRepository(prisma);
+  const treatmentRepository = new PrismaTreatmentRepository(prisma);
+  const editionRepository = new PrismaEditionRepository(prisma);
+  const formatRepository = new PrismaFormatRepository(prisma);
+  const artistRepository = new PrismaArtistRepository(prisma);
+  const heroRepository = new PrismaHeroRepository(prisma);
+  const setGroupRepository = new PrismaSetGroupRepository(prisma);
+  const setReleaseRepository = new PrismaSetReleaseRepository(prisma);
 
   // Use-cases
   const importClasses = new ImportClassesUseCase(classRepository);
@@ -65,6 +70,8 @@ const main = async () => {
   const importArtists = new ImportArtistsUseCase(artistRepository);
   const createSetGroup = new CreateSetGroupUseCase(setGroupRepository);
   const importSetReleasesUseCase = new ImportSetReleasesUseCase(setReleaseRepository);
+  const transactionPerformer = new PrismaTransactionPerformer(prisma);
+  const importHeroesUseCase = new ImportHeroesUseCase(heroRepository, transactionPerformer);
 
   try {
     await importReferenceData({
@@ -88,6 +95,9 @@ const main = async () => {
       createSetGroup,
       importSetReleasesUseCase,
     });
+
+    // Interactive phase: prompts to match young↔adult forms for ambiguous hero groups.
+    await importHeroes({ heroRepository, importHeroesUseCase });
   } finally {
     await prisma.$disconnect();
   }

@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { SetGroup } from '../../domain/set-group';
-import { SetGroupPrismaRepository } from '../set-group.prisma.repository';
+import { PrismaSetGroupRepository } from '../set-group.prisma.repository';
 
 const toSetGroup = (name: string): SetGroup => {
   const result = SetGroup.create(name);
@@ -11,8 +11,8 @@ const toSetGroup = (name: string): SetGroup => {
   return result.value;
 };
 
-export const createSetGroupPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new SetGroupPrismaRepository(tx);
+export const createPrismaSetGroupRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaSetGroupRepository(tx);
   let storedGroups: SetGroup[] = [];
 
   return {

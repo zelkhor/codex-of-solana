@@ -14,7 +14,7 @@ export class SubtypeRepositoryError extends AppError {
   }
 }
 
-export class SubtypePrismaRepository implements ISubtypeRepository {
+export class PrismaSubtypeRepository implements ISubtypeRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Subtype[]>> {

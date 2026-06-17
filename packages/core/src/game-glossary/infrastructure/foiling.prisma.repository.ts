@@ -14,7 +14,7 @@ export class FoilingRepositoryError extends AppError {
   }
 }
 
-export class FoilingPrismaRepository implements IFoilingRepository {
+export class PrismaFoilingRepository implements IFoilingRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Foiling[]>> {

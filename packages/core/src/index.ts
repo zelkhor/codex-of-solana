@@ -1,5 +1,7 @@
 export * from './shared/helpers/errors';
 export * from './shared/helpers/result';
+export * from './shared/helpers/transaction';
+export * from './shared/helpers/prisma-transaction-performer';
 
 export * from './shared/game/class';
 export * from './shared/game/edition';
@@ -35,6 +37,7 @@ export * from './game-glossary/domain/treatment';
 export * from './game-glossary/domain/edition';
 export * from './game-glossary/domain/format';
 export * from './game-glossary/domain/artist';
+export * from './game-glossary/domain/hero';
 export * from './game-glossary/domain/set-group';
 export * from './game-glossary/domain/set-release';
 
@@ -60,6 +63,8 @@ export * from './game-glossary/application/format.repository';
 export * from './game-glossary/application/use-cases/import-formats.usecase';
 export * from './game-glossary/application/artist.repository';
 export * from './game-glossary/application/use-cases/import-artists.usecase';
+export * from './game-glossary/application/hero.repository';
+export * from './game-glossary/application/use-cases/import-heroes.usecase';
 export * from './game-glossary/application/set-group.repository';
 export * from './game-glossary/application/use-cases/create-set-group.usecase';
 export * from './game-glossary/application/set-release.repository';
@@ -87,6 +92,8 @@ export * from './game-glossary/infrastructure/format.inmemory.repository';
 export * from './game-glossary/infrastructure/format.prisma.repository';
 export * from './game-glossary/infrastructure/artist.inmemory.repository';
 export * from './game-glossary/infrastructure/artist.prisma.repository';
+export * from './game-glossary/infrastructure/hero.inmemory.repository';
+export * from './game-glossary/infrastructure/hero.prisma.repository';
 export * from './game-glossary/infrastructure/set-group.inmemory.repository';
 export * from './game-glossary/infrastructure/set-group.prisma.repository';
 export * from './game-glossary/infrastructure/set-release.inmemory.repository';

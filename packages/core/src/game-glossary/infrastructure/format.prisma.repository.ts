@@ -14,7 +14,7 @@ export class FormatRepositoryError extends AppError {
   }
 }
 
-export class FormatPrismaRepository implements IFormatRepository {
+export class PrismaFormatRepository implements IFormatRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Format[]>> {

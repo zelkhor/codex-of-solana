@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Treatment } from '../../domain/treatment';
-import { TreatmentPrismaRepository } from '../treatment.prisma.repository';
+import { PrismaTreatmentRepository } from '../treatment.prisma.repository';
 
 const toTreatment = (name: string): Treatment => {
   const result = Treatment.create(name);
@@ -11,8 +11,8 @@ const toTreatment = (name: string): Treatment => {
   return result.value;
 };
 
-export const createTreatmentPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new TreatmentPrismaRepository(tx);
+export const createPrismaTreatmentRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaTreatmentRepository(tx);
   let storedTreatments: Treatment[] = [];
 
   return {

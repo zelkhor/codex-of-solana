@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Edition } from '../../domain/edition';
-import { EditionPrismaRepository } from '../edition.prisma.repository';
+import { PrismaEditionRepository } from '../edition.prisma.repository';
 
 const toEdition = (name: string): Edition => {
   const result = Edition.create(name);
@@ -11,8 +11,8 @@ const toEdition = (name: string): Edition => {
   return result.value;
 };
 
-export const createEditionPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new EditionPrismaRepository(tx);
+export const createPrismaEditionRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaEditionRepository(tx);
   let storedEditions: Edition[] = [];
 
   return {

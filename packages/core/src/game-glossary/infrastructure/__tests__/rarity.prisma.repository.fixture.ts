@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Rarity } from '../../domain/rarity';
-import { RarityPrismaRepository } from '../rarity.prisma.repository';
+import { PrismaRarityRepository } from '../rarity.prisma.repository';
 
 const toRarity = (name: string): Rarity => {
   const result = Rarity.create(name);
@@ -11,8 +11,8 @@ const toRarity = (name: string): Rarity => {
   return result.value;
 };
 
-export const createRarityPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new RarityPrismaRepository(tx);
+export const createPrismaRarityRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaRarityRepository(tx);
   let storedRarities: Rarity[] = [];
 
   return {

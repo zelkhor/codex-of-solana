@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Class } from '../../domain/class';
-import { ClassPrismaRepository } from '../class.prisma.repository';
+import { PrismaClassRepository } from '../class.prisma.repository';
 
 const toClass = (name: string): Class => {
   const result = Class.create(name);
@@ -11,8 +11,8 @@ const toClass = (name: string): Class => {
   return result.value;
 };
 
-export const createClassPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new ClassPrismaRepository(tx);
+export const createPrismaClassRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaClassRepository(tx);
   let storedClasses: Class[] = [];
 
   return {

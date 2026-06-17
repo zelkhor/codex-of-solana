@@ -5,7 +5,7 @@ export const createFixture = () => {
     captureError(error: Error) {
       capturedError = error;
     },
-    thenErrorShouldBe(expectedErrorClass: new () => Error) {
+    thenErrorShouldBe(expectedErrorClass: new (...args: never[]) => Error) {
       expect(capturedError).toBeTruthy();
       expect(capturedError).toBeInstanceOf(expectedErrorClass);
     },

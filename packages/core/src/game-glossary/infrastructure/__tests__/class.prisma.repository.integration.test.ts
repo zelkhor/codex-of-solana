@@ -1,7 +1,7 @@
 import type { PrismaClient } from '@codex/orm';
 import { createTestPrismaClient, wrapInTransaction } from '@codex/orm/__tests__/test-database';
 
-import { createClassPrismaRepositoryFixture } from './class.prisma.repository.fixture';
+import { createPrismaClassRepositoryFixture } from './class.prisma.repository.fixture';
 
 describe('Integration: Persisting game classes', () => {
   let prisma: PrismaClient;
@@ -17,7 +17,7 @@ describe('Integration: Persisting game classes', () => {
   describe('Feature: Getting classes', () => {
     test('Rule: It should return an empty list when no classes have been stored yet', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createClassPrismaRepositoryFixture(tx);
+        const fixture = createPrismaClassRepositoryFixture(tx);
 
         await fixture.givenPreExistingClasses([]);
 
@@ -29,7 +29,7 @@ describe('Integration: Persisting game classes', () => {
 
     test('Rule: It should return the list of stored classes', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createClassPrismaRepositoryFixture(tx);
+        const fixture = createPrismaClassRepositoryFixture(tx);
 
         await fixture.givenPreExistingClasses(['Wizard']);
         await fixture.whenGettingClasses();
@@ -40,7 +40,7 @@ describe('Integration: Persisting game classes', () => {
 
     test('Rule: It should order the classes by name ASC', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createClassPrismaRepositoryFixture(tx);
+        const fixture = createPrismaClassRepositoryFixture(tx);
 
         await fixture.givenPreExistingClasses(['Wizard', 'Bard', 'Assassin']);
         await fixture.whenGettingClasses();
@@ -53,7 +53,7 @@ describe('Integration: Persisting game classes', () => {
   describe('Feature: Importing classes', () => {
     test('Rule: It should save imported classes', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createClassPrismaRepositoryFixture(tx);
+        const fixture = createPrismaClassRepositoryFixture(tx);
 
         await fixture.givenPreExistingClasses([]);
 
@@ -65,7 +65,7 @@ describe('Integration: Persisting game classes', () => {
 
     test('Rule: It should not duplicate a class that already exists', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createClassPrismaRepositoryFixture(tx);
+        const fixture = createPrismaClassRepositoryFixture(tx);
 
         await fixture.givenPreExistingClasses(['Wizard']);
 

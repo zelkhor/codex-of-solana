@@ -14,7 +14,7 @@ export class ArtistRepositoryError extends AppError {
   }
 }
 
-export class ArtistPrismaRepository implements IArtistRepository {
+export class PrismaArtistRepository implements IArtistRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Artist[]>> {

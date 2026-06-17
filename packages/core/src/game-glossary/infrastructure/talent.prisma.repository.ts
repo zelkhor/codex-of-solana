@@ -14,7 +14,7 @@ export class TalentRepositoryError extends AppError {
   }
 }
 
-export class TalentPrismaRepository implements ITalentRepository {
+export class PrismaTalentRepository implements ITalentRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Talent[]>> {

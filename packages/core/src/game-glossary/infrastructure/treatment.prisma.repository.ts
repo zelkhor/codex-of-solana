@@ -14,7 +14,7 @@ export class TreatmentRepositoryError extends AppError {
   }
 }
 
-export class TreatmentPrismaRepository implements ITreatmentRepository {
+export class PrismaTreatmentRepository implements ITreatmentRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Treatment[]>> {

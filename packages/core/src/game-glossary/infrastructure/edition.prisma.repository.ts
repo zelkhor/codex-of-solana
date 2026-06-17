@@ -14,7 +14,7 @@ export class EditionRepositoryError extends AppError {
   }
 }
 
-export class EditionPrismaRepository implements IEditionRepository {
+export class PrismaEditionRepository implements IEditionRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Edition[]>> {

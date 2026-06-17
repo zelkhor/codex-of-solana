@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Type } from '../../domain/type';
-import { TypePrismaRepository } from '../type.prisma.repository';
+import { PrismaTypeRepository } from '../type.prisma.repository';
 
 const toType = (name: string): Type => {
   const result = Type.create(name);
@@ -11,8 +11,8 @@ const toType = (name: string): Type => {
   return result.value;
 };
 
-export const createTypePrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new TypePrismaRepository(tx);
+export const createPrismaTypeRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaTypeRepository(tx);
   let storedTypes: Type[] = [];
 
   return {

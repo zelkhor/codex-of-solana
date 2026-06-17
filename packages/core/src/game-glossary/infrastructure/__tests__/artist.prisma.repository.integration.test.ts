@@ -1,7 +1,7 @@
 import type { PrismaClient } from '@codex/orm';
 import { createTestPrismaClient, wrapInTransaction } from '@codex/orm/__tests__/test-database';
 
-import { createArtistPrismaRepositoryFixture } from './artist.prisma.repository.fixture';
+import { createPrismaArtistRepositoryFixture } from './artist.prisma.repository.fixture';
 
 describe('Integration: Persisting artists', () => {
   let prisma: PrismaClient;
@@ -17,7 +17,7 @@ describe('Integration: Persisting artists', () => {
   describe('Feature: Getting artists', () => {
     test('Rule: It should return an empty list when no artists have been stored yet', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createArtistPrismaRepositoryFixture(tx);
+        const fixture = createPrismaArtistRepositoryFixture(tx);
 
         await fixture.givenPreExistingArtists([]);
 
@@ -29,7 +29,7 @@ describe('Integration: Persisting artists', () => {
 
     test('Rule: It should order the artists by name ASC', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createArtistPrismaRepositoryFixture(tx);
+        const fixture = createPrismaArtistRepositoryFixture(tx);
 
         await fixture.givenPreExistingArtists(['Tomasz Jedruszek', 'AOJI Maiko', 'Faizal Fikri']);
         await fixture.whenGettingArtists();
@@ -42,7 +42,7 @@ describe('Integration: Persisting artists', () => {
   describe('Feature: Importing artists', () => {
     test('Rule: It should save imported artists', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createArtistPrismaRepositoryFixture(tx);
+        const fixture = createPrismaArtistRepositoryFixture(tx);
 
         await fixture.givenPreExistingArtists([]);
 
@@ -54,7 +54,7 @@ describe('Integration: Persisting artists', () => {
 
     test('Rule: It should not duplicate an artist that already exists', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createArtistPrismaRepositoryFixture(tx);
+        const fixture = createPrismaArtistRepositoryFixture(tx);
 
         await fixture.givenPreExistingArtists(['Tomasz Jedruszek']);
 

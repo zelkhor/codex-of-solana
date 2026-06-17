@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Format } from '../../domain/format';
-import { FormatPrismaRepository } from '../format.prisma.repository';
+import { PrismaFormatRepository } from '../format.prisma.repository';
 
 const toFormat = (name: string): Format => {
   const result = Format.create(name);
@@ -11,8 +11,8 @@ const toFormat = (name: string): Format => {
   return result.value;
 };
 
-export const createFormatPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new FormatPrismaRepository(tx);
+export const createPrismaFormatRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaFormatRepository(tx);
   let storedFormats: Format[] = [];
 
   return {

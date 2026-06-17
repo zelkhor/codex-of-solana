@@ -2,7 +2,7 @@ import type { PrismaClient } from '@codex/orm';
 import { createTestPrismaClient, wrapInTransaction } from '@codex/orm/__tests__/test-database';
 
 import { setReleaseBuilder } from '../../../__tests__';
-import { createSetReleasePrismaRepositoryFixture } from './set-release.prisma.repository.fixture';
+import { createPrismaSetReleaseRepositoryFixture } from './set-release.prisma.repository.fixture';
 
 describe('Integration: Persisting set releases', () => {
   let prisma: PrismaClient;
@@ -18,7 +18,7 @@ describe('Integration: Persisting set releases', () => {
   describe('Feature: Getting set releases', () => {
     test('Rule: It should return an empty list when no sets have been stored yet', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createSetReleasePrismaRepositoryFixture(tx);
+        const fixture = createPrismaSetReleaseRepositoryFixture(tx);
 
         await fixture.whenGettingSets();
 
@@ -28,7 +28,7 @@ describe('Integration: Persisting set releases', () => {
 
     test('Rule: It should order sets by release date, then by release order for ties', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createSetReleasePrismaRepositoryFixture(tx);
+        const fixture = createPrismaSetReleaseRepositoryFixture(tx);
 
         await fixture.givenExistingGroups(['Main Sets', 'Armory Decks']);
         await fixture.whenImportingSets([
@@ -54,7 +54,7 @@ describe('Integration: Persisting set releases', () => {
   describe('Feature: Importing set releases', () => {
     test('Rule: It should not duplicate a set that already exists', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createSetReleasePrismaRepositoryFixture(tx);
+        const fixture = createPrismaSetReleaseRepositoryFixture(tx);
 
         await fixture.givenExistingGroups(['Main Sets']);
         await fixture.whenImportingSets([setReleaseBuilder().withName('Rosetta').build()]);
@@ -66,7 +66,7 @@ describe('Integration: Persisting set releases', () => {
 
     test('Rule: It should fail when a set references a group that does not exist', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createSetReleasePrismaRepositoryFixture(tx);
+        const fixture = createPrismaSetReleaseRepositoryFixture(tx);
 
         await fixture.whenImportingSetsExpectingFailure([
           setReleaseBuilder().withGroup('Missing Group').build(),

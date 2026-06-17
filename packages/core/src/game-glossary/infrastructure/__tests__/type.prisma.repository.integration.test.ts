@@ -1,7 +1,7 @@
 import type { PrismaClient } from '@codex/orm';
 import { createTestPrismaClient, wrapInTransaction } from '@codex/orm/__tests__/test-database';
 
-import { createTypePrismaRepositoryFixture } from './type.prisma.repository.fixture';
+import { createPrismaTypeRepositoryFixture } from './type.prisma.repository.fixture';
 
 describe('Integration: Persisting types', () => {
   let prisma: PrismaClient;
@@ -17,7 +17,7 @@ describe('Integration: Persisting types', () => {
   describe('Feature: Getting types', () => {
     test('Rule: It should return an empty list when no types have been stored yet', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createTypePrismaRepositoryFixture(tx);
+        const fixture = createPrismaTypeRepositoryFixture(tx);
 
         await fixture.givenPreExistingTypes([]);
 
@@ -29,7 +29,7 @@ describe('Integration: Persisting types', () => {
 
     test('Rule: It should return the list of stored types', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createTypePrismaRepositoryFixture(tx);
+        const fixture = createPrismaTypeRepositoryFixture(tx);
 
         await fixture.givenPreExistingTypes(['Weapon']);
         await fixture.whenGettingTypes();
@@ -40,7 +40,7 @@ describe('Integration: Persisting types', () => {
 
     test('Rule: It should order the types by name ASC', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createTypePrismaRepositoryFixture(tx);
+        const fixture = createPrismaTypeRepositoryFixture(tx);
 
         await fixture.givenPreExistingTypes(['Weapon', 'Action', 'Instant']);
         await fixture.whenGettingTypes();
@@ -53,7 +53,7 @@ describe('Integration: Persisting types', () => {
   describe('Feature: Importing types', () => {
     test('Rule: It should save imported types', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createTypePrismaRepositoryFixture(tx);
+        const fixture = createPrismaTypeRepositoryFixture(tx);
 
         await fixture.givenPreExistingTypes([]);
 
@@ -65,7 +65,7 @@ describe('Integration: Persisting types', () => {
 
     test('Rule: It should not duplicate a type that already exists', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createTypePrismaRepositoryFixture(tx);
+        const fixture = createPrismaTypeRepositoryFixture(tx);
 
         await fixture.givenPreExistingTypes(['Weapon']);
 

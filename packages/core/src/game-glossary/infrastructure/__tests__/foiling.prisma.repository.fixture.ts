@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Foiling } from '../../domain/foiling';
-import { FoilingPrismaRepository } from '../foiling.prisma.repository';
+import { PrismaFoilingRepository } from '../foiling.prisma.repository';
 
 const toFoiling = (name: string): Foiling => {
   const result = Foiling.create(name);
@@ -11,8 +11,8 @@ const toFoiling = (name: string): Foiling => {
   return result.value;
 };
 
-export const createFoilingPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new FoilingPrismaRepository(tx);
+export const createPrismaFoilingRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaFoilingRepository(tx);
   let storedFoilings: Foiling[] = [];
 
   return {

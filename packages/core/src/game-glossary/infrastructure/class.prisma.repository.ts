@@ -14,7 +14,7 @@ export class ClassRepositoryError extends AppError {
   }
 }
 
-export class ClassPrismaRepository implements IClassRepository {
+export class PrismaClassRepository implements IClassRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Class[]>> {

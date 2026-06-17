@@ -1,7 +1,7 @@
 import type { PrismaClient } from '@codex/orm';
 import { createTestPrismaClient, wrapInTransaction } from '@codex/orm/__tests__/test-database';
 
-import { createFormatPrismaRepositoryFixture } from './format.prisma.repository.fixture';
+import { createPrismaFormatRepositoryFixture } from './format.prisma.repository.fixture';
 
 describe('Integration: Persisting formats', () => {
   let prisma: PrismaClient;
@@ -17,7 +17,7 @@ describe('Integration: Persisting formats', () => {
   describe('Feature: Getting formats', () => {
     test('Rule: It should return an empty list when no formats have been stored yet', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createFormatPrismaRepositoryFixture(tx);
+        const fixture = createPrismaFormatRepositoryFixture(tx);
 
         await fixture.givenPreExistingFormats([]);
 
@@ -29,7 +29,7 @@ describe('Integration: Persisting formats', () => {
 
     test('Rule: It should return the list of stored formats', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createFormatPrismaRepositoryFixture(tx);
+        const fixture = createPrismaFormatRepositoryFixture(tx);
 
         await fixture.givenPreExistingFormats(['Blitz']);
         await fixture.whenGettingFormats();
@@ -40,7 +40,7 @@ describe('Integration: Persisting formats', () => {
 
     test('Rule: It should order the formats by name ASC', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createFormatPrismaRepositoryFixture(tx);
+        const fixture = createPrismaFormatRepositoryFixture(tx);
 
         await fixture.givenPreExistingFormats(['Draft', 'Blitz', 'Classic Constructed']);
         await fixture.whenGettingFormats();
@@ -53,7 +53,7 @@ describe('Integration: Persisting formats', () => {
   describe('Feature: Importing formats', () => {
     test('Rule: It should save imported formats', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createFormatPrismaRepositoryFixture(tx);
+        const fixture = createPrismaFormatRepositoryFixture(tx);
 
         await fixture.givenPreExistingFormats([]);
 
@@ -65,7 +65,7 @@ describe('Integration: Persisting formats', () => {
 
     test('Rule: It should not duplicate a format that already exists', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createFormatPrismaRepositoryFixture(tx);
+        const fixture = createPrismaFormatRepositoryFixture(tx);
 
         await fixture.givenPreExistingFormats(['Blitz']);
 

@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Subtype } from '../../domain/subtype';
-import { SubtypePrismaRepository } from '../subtype.prisma.repository';
+import { PrismaSubtypeRepository } from '../subtype.prisma.repository';
 
 const toSubtype = (name: string): Subtype => {
   const result = Subtype.create(name);
@@ -11,8 +11,8 @@ const toSubtype = (name: string): Subtype => {
   return result.value;
 };
 
-export const createSubtypePrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new SubtypePrismaRepository(tx);
+export const createPrismaSubtypeRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaSubtypeRepository(tx);
   let storedSubtypes: Subtype[] = [];
 
   return {

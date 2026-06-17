@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Artist } from '../../domain/artist';
-import { ArtistPrismaRepository } from '../artist.prisma.repository';
+import { PrismaArtistRepository } from '../artist.prisma.repository';
 
 const toArtist = (name: string): Artist => {
   const result = Artist.create(name);
@@ -11,8 +11,8 @@ const toArtist = (name: string): Artist => {
   return result.value;
 };
 
-export const createArtistPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new ArtistPrismaRepository(tx);
+export const createPrismaArtistRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaArtistRepository(tx);
   let storedArtists: Artist[] = [];
 
   return {

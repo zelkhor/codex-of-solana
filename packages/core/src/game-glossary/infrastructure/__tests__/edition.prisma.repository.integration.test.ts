@@ -1,7 +1,7 @@
 import type { PrismaClient } from '@codex/orm';
 import { createTestPrismaClient, wrapInTransaction } from '@codex/orm/__tests__/test-database';
 
-import { createEditionPrismaRepositoryFixture } from './edition.prisma.repository.fixture';
+import { createPrismaEditionRepositoryFixture } from './edition.prisma.repository.fixture';
 
 describe('Integration: Persisting editions', () => {
   let prisma: PrismaClient;
@@ -17,7 +17,7 @@ describe('Integration: Persisting editions', () => {
   describe('Feature: Getting editions', () => {
     test('Rule: It should return an empty list when no editions have been stored yet', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createEditionPrismaRepositoryFixture(tx);
+        const fixture = createPrismaEditionRepositoryFixture(tx);
 
         await fixture.givenPreExistingEditions([]);
 
@@ -29,7 +29,7 @@ describe('Integration: Persisting editions', () => {
 
     test('Rule: It should return the list of stored editions', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createEditionPrismaRepositoryFixture(tx);
+        const fixture = createPrismaEditionRepositoryFixture(tx);
 
         await fixture.givenPreExistingEditions(['Unlimited']);
         await fixture.whenGettingEditions();
@@ -40,7 +40,7 @@ describe('Integration: Persisting editions', () => {
 
     test('Rule: It should order the editions by name ASC', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createEditionPrismaRepositoryFixture(tx);
+        const fixture = createPrismaEditionRepositoryFixture(tx);
 
         await fixture.givenPreExistingEditions(['Unlimited', 'Alpha', 'First']);
         await fixture.whenGettingEditions();
@@ -53,7 +53,7 @@ describe('Integration: Persisting editions', () => {
   describe('Feature: Importing editions', () => {
     test('Rule: It should save imported editions', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createEditionPrismaRepositoryFixture(tx);
+        const fixture = createPrismaEditionRepositoryFixture(tx);
 
         await fixture.givenPreExistingEditions([]);
 
@@ -65,7 +65,7 @@ describe('Integration: Persisting editions', () => {
 
     test('Rule: It should not duplicate an edition that already exists', async () => {
       await wrapInTransaction(prisma, async (tx) => {
-        const fixture = createEditionPrismaRepositoryFixture(tx);
+        const fixture = createPrismaEditionRepositoryFixture(tx);
 
         await fixture.givenPreExistingEditions(['Unlimited']);
 

@@ -14,7 +14,7 @@ export class TypeRepositoryError extends AppError {
   }
 }
 
-export class TypePrismaRepository implements ITypeRepository {
+export class PrismaTypeRepository implements ITypeRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Type[]>> {

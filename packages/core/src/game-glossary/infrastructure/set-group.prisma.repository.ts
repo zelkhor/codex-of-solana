@@ -14,7 +14,7 @@ export class SetGroupRepositoryError extends AppError {
   }
 }
 
-export class SetGroupPrismaRepository implements ISetGroupRepository {
+export class PrismaSetGroupRepository implements ISetGroupRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<SetGroup[]>> {

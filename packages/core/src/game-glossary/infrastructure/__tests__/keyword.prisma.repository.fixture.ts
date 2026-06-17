@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Keyword } from '../../domain/keyword';
-import { KeywordPrismaRepository } from '../keyword.prisma.repository';
+import { PrismaKeywordRepository } from '../keyword.prisma.repository';
 
 const toKeyword = (name: string): Keyword => {
   const result = Keyword.create(name);
@@ -11,8 +11,8 @@ const toKeyword = (name: string): Keyword => {
   return result.value;
 };
 
-export const createKeywordPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new KeywordPrismaRepository(tx);
+export const createPrismaKeywordRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaKeywordRepository(tx);
   let storedKeywords: Keyword[] = [];
 
   return {

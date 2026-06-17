@@ -4,7 +4,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import type { Result } from '../../../shared/helpers/result';
 import { SetRelease, type SetReleaseProps } from '../../domain/set-release';
-import { SetReleasePrismaRepository } from '../set-release.prisma.repository';
+import { PrismaSetReleaseRepository } from '../set-release.prisma.repository';
 
 const toSetRelease = (props: SetReleaseProps): SetRelease => {
   const result = SetRelease.create(props);
@@ -12,8 +12,8 @@ const toSetRelease = (props: SetReleaseProps): SetRelease => {
   return result.value;
 };
 
-export const createSetReleasePrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new SetReleasePrismaRepository(tx);
+export const createPrismaSetReleaseRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaSetReleaseRepository(tx);
   let storedSets: SetRelease[] = [];
   let lastSave: Result<void> | null = null;
 

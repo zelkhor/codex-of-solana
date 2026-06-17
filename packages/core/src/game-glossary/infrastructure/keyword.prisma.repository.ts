@@ -14,7 +14,7 @@ export class KeywordRepositoryError extends AppError {
   }
 }
 
-export class KeywordPrismaRepository implements IKeywordRepository {
+export class PrismaKeywordRepository implements IKeywordRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Keyword[]>> {

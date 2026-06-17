@@ -14,7 +14,7 @@ export class RarityRepositoryError extends AppError {
   }
 }
 
-export class RarityPrismaRepository implements IRarityRepository {
+export class PrismaRarityRepository implements IRarityRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<Rarity[]>> {

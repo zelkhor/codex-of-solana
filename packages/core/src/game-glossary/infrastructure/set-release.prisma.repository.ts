@@ -14,7 +14,7 @@ export class SetReleaseRepositoryError extends AppError {
   }
 }
 
-export class SetReleasePrismaRepository implements ISetReleaseRepository {
+export class PrismaSetReleaseRepository implements ISetReleaseRepository {
   constructor(private readonly prisma: Prisma.TransactionClient) {}
 
   async findAll(): Promise<Result<SetRelease[]>> {

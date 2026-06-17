@@ -3,7 +3,7 @@ import type { TransactionClient } from '@codex/orm/__tests__/test-database';
 
 import { expectOk } from '../../../__tests__/helpers/result.helpers';
 import { Talent } from '../../domain/talent';
-import { TalentPrismaRepository } from '../talent.prisma.repository';
+import { PrismaTalentRepository } from '../talent.prisma.repository';
 
 const toTalent = (name: string): Talent => {
   const result = Talent.create(name);
@@ -11,8 +11,8 @@ const toTalent = (name: string): Talent => {
   return result.value;
 };
 
-export const createTalentPrismaRepositoryFixture = (tx: TransactionClient) => {
-  const repository = new TalentPrismaRepository(tx);
+export const createPrismaTalentRepositoryFixture = (tx: TransactionClient) => {
+  const repository = new PrismaTalentRepository(tx);
   let storedTalents: Talent[] = [];
 
   return {
